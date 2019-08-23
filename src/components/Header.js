@@ -7,13 +7,22 @@ class Header extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <View style={styles.rowContainer}>
-                    <Image source={this.props.image} style={styles.image} />
-                    <Text style={styles.title}>{this.props.texto}</Text>
-                    <TouchableOpacity onPress={this.props.onPress}>
-                        <Icon name={this.props.icon} size={25} style={styles.icon} />
-                    </TouchableOpacity>
-                </View>
+                {this.props.paginaInicial && 
+                    <View style={styles.rowContainer}>
+                        <TouchableOpacity onPress={this.props.onPressImage} >
+                            <Image source={this.props.image} style={styles.image} />
+                        </TouchableOpacity>
+                        <Text style={styles.title}>{this.props.texto}</Text>
+                        <TouchableOpacity onPress={this.props.onPress}>
+                            <Icon name={this.props.icon} size={25} style={styles.icon} />
+                        </TouchableOpacity>
+                    </View>
+                }
+                {!this.props.paginaInicial && 
+                    <View style={styles.rowContainer}>
+                        <Text style={styles.title}>{this.props.texto}</Text>
+                    </View>
+                }
             </View>
         )
     }
