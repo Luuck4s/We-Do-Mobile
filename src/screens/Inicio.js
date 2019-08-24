@@ -5,12 +5,14 @@ import Header from '../components/Header'
 import Ideia from '../components/Ideia'
 import EstiloComum from '../EstiloComum'
 import ActionButton from 'react-native-action-button'
+import AddIdeia from './AddIdeia'
 
 import logo_icon from '../../assets/img/weDo_logo.png' // usada a logo apenas para testar por enquanto
 
 export default class Inicio extends Component {
     //ajustar o array de ideias para ser compativel com o que vem da API 
     state = {
+        AddIdeia: false,
         ideias: [
             {
                 id_ideia: 1,
@@ -348,6 +350,16 @@ export default class Inicio extends Component {
     }
 
     /**
+     * Funcao que vai passada para salvar a ideia
+    */
+    adicionarIdeia = ideia => {
+
+        Alert.alert('Ideia Criada', `${ideia}`)
+
+        this.setState({AddIdeia: false})
+    }
+
+    /**
      * Mostrar informações sobre o autor
      * @param - idAutor 
      */
@@ -401,6 +413,7 @@ export default class Inicio extends Component {
 
         return (
             <View style={styles.container}>
+                <AddIdeia isVisible={this.state.AddIdeia} onCancel={() => this.setState({AddIdeia: false})} adicionarIdeia={this.adicionarIdeia} />
                 <Header paginaInicial={true} image={logo_icon} texto={"Página Inicial"} icon={"search"} onPress={() => Alert.alert("Teste", "teste")} onPressImage={() => this.props.navigation.openDrawer()} />
                 <FlatList
                     removeClippedSubviews={true}
@@ -409,7 +422,7 @@ export default class Inicio extends Component {
                     keyExtractor={item => `${item.id_ideia}`}
                     renderItem={renderItem} />
                 <ActionButton buttonColor={EstiloComum.cores.fundoWeDo}
-                    onPress={() => Alert.alert('Adicionar Ideia')} />
+                    onPress={() => {this.setState({AddIdeia: true})}} />
             </View>
         )
     }

@@ -27,6 +27,17 @@ const EstiloSlideMenu = (props) => {
 
 const SlideMenu = createAppContainer(
     createDrawerNavigator({
+        /**
+         * Foi criada mais uma navegacao Inicio para definir ela como a inicial
+         * porem está oculta pois o slideMenu é exibido apenas na pagina inicial.
+         */
+        Inicio: {
+            name: 'Inicio',
+            screen: Inicio,
+            navigationOptions: {
+                drawerLabel: () => null
+            }
+        },
         ProjetosAtuais: {
             name: 'ProjetosAtuais',
             screen: Inicio,
@@ -65,8 +76,8 @@ const SlideMenu = createAppContainer(
         },
     }, 
     {
-        
-        overlayColor: 'rgba(0,0,0,0.7)',
+        initialRouteName: 'Inicio',
+        overlayColor: 'rgba(0,0,0,0.4)',
         contentComponent: EstiloSlideMenu,
         backBehavior: 'none',
         drawerWidth: 300,
@@ -123,7 +134,7 @@ const MenuRoutes =
             initialRouteName: 'Inicio', 
             tabBarOptions: {
                 showLabel: false,
-                activeTintColor: EstiloComum.cores.fundoWeDo
+                activeTintColor: EstiloComum.cores.fundoWeDo,
             }
         }
     )

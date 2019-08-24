@@ -285,6 +285,7 @@ export default class Auth extends Component {
 						<AuthInput style={[styles.input, { height: 'auto', width: 'auto', padding: -5 }]}
 							interesses={true}
 							icon='star'
+							placeholder="Interesses"
 							uniqueKey="id_tecnologia"
 							subKey="tecnologias"
 							displayKey='nm_tecnologia'
