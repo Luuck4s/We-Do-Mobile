@@ -358,6 +358,7 @@ const styles = StyleSheet.create({
 		resizeMode: 'contain',
 	},
 	subtitulo: {
+		fontFamily: EstiloComum.fontFamily,
 		marginTop: -92,
 		marginLeft: 120,
 		textAlign: 'left',

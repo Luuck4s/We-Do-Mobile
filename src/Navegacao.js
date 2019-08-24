@@ -15,8 +15,8 @@ const EstiloSlideMenu = (props) => {
     return (
         <SafeAreaView style={{flex: 1}}>
             <View style={{height: 100, flexDirection: 'row', borderBottomWidth: 0.5}}>
-                <Image source={logo} style={{height: 70, width: 70, borderRadius: 60, margin: '7%'}} />
-                <Text style={{marginTop: '13%', fontSize: 18}}>Paula Cavalcante</Text>
+                <Image source={logo} style={{height: 50, width: 50, borderRadius: 60, margin: '7%'}} />
+                <Text style={{marginTop: '11%', fontSize: 19, fontFamily: EstiloComum.fontFamily, color: EstiloComum.cores.fundoWeDo}}>Paula Cavalcante</Text>
             </View>
             <ScrollView>
                 <DrawerItems {...props} />

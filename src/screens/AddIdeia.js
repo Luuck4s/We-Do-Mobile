@@ -140,6 +140,8 @@ const styles = StyleSheet.create({
         backgroundColor: EstiloComum.cores.fundoWeDo,
     },
     header: {
+        fontFamily: EstiloComum.fontFamily,
+        color: EstiloComum.cores.fundoWeDo,
         fontSize: 25,
         textAlign: 'center',
         padding: 10,

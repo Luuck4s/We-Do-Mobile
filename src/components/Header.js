@@ -2,6 +2,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import EstiloComum from '../EstiloComum';
 
 class Header extends Component {
     render() {
@@ -49,8 +50,9 @@ const styles = StyleSheet.create({
         marginLeft: '63%'
     },
     title: {
+        fontFamily: EstiloComum.fontFamily,
         marginLeft: '3%',
-        color: '#000',
+        color: EstiloComum.cores.fundoWeDo,
         fontSize: 20,
     }
 })
