@@ -60,8 +60,8 @@ export default class AddIdeia extends Component {
      * 
     */
     selecionarTecnologia = (tecnologias) => {
-        if (tecnologias.length >= 4) {
-            if (tecnologias.length === 4) {
+        if (tecnologias.length >= 10) {
+            if (tecnologias.length === 10) {
                 this.setState({ tecnologias })
             }
             this.setState({
@@ -107,7 +107,7 @@ export default class AddIdeia extends Component {
                         items={tecnologias}
                         onSelectedItemsChange={this.selecionarTecnologia}
                         selectedItems={this.state.tecnologias} />
-                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end'}}>
                         <TouchableOpacity style={styles.button} onPress={this.save}>
                             <Text style={styles.textButton}>Pronto</Text>
                         </TouchableOpacity>
@@ -123,13 +123,12 @@ export default class AddIdeia extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 2,
-        backgroundColor: 'white',
-        justifyContent: 'space-between',
+        flex: 3,
+        backgroundColor: '#FFF',
     },
     offset: {
         flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.3)',
+        backgroundColor: 'rgba(0,0,0,0.1)',
     },
     button: {
         margin: 15,

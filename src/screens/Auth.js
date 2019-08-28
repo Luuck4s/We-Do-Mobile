@@ -14,8 +14,10 @@ import Api from '../api/Api'
 import logo from '../../assets/img/weDo_logo.png'
 import AuthInput from '../components/AuthInput'
 import EstiloComum from '../EstiloComum'
-
+import Icon from 'react-native-vector-icons/FontAwesome5'
+import SectionedMultiSelect from 'react-native-sectioned-multi-select'
 import { YellowBox } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 YellowBox.ignoreWarnings([
 	'Warning: componentWillReceiveProps is deprecated',
 ]);
@@ -31,8 +33,6 @@ export default class Auth extends Component {
 		senha_usuario: '',
 		confirmar_senha: '',
 		dt_nascimento: '',
-		ds_bio: '-',
-		tel_usuario: '',
 		interesses: [],
 		manterConectado: false,
 		maximoInterrese: false,
@@ -61,26 +61,6 @@ export default class Auth extends Component {
 		}
 	}
 
-	/**
-	 * Função que pega atraves do estado o número do usuário
-	 * e converte para um formato que o banco irá aceitar, tirando
-	 * a mascara do número. Caso não tenha nada no número do usuário
-	 * retorna null
-	 */
-	ajustarNumero = () => {
-		if (this.state.tel_usuario) {
-			let numeroAntigo = this.state.tel_usuario
-
-			let dddNovo = numeroAntigo.substring(1, 3)
-			let primeiraParte = numeroAntigo.substring(4, 9)
-			let segundaParte = numeroAntigo.substring(10, 14)
-
-			let numeroNovo = dddNovo.concat(primeiraParte).concat(segundaParte)
-
-			return `${numeroNovo}`
-		}
-		return null
-	}
 
 	/**
 	 * Função que tira a mascara da data de nascimento e coloca
@@ -119,8 +99,8 @@ export default class Auth extends Component {
 	 *  ele nao permite mais adicionar.
 	 */
 	selecionarTecnologia = (interesses) => {
-		if (interesses.length >= 4) {
-			if (interesses.length === 4) {
+		/*if (interesses.length >= 10) {
+			if (interesses.length === 10) {
 				this.setState({ interesses })
 			}
 			this.setState({
@@ -130,7 +110,7 @@ export default class Auth extends Component {
 		}
 		this.setState({
 			maximoInterrese: false,
-		})
+		})*/
 
 		this.setState({ interesses })
 
@@ -173,11 +153,9 @@ export default class Auth extends Component {
 					senha_usuario: this.state.senha_usuario,
 					nm_usuario: this.state.nm_usuario,
 					dt_nascimento: this.ajustarData(),
-					ds_bio: this.state.ds_bio, // definir se sai ou se fica
-					tel_usuario: this.ajustarNumero(),
 					tecnologias_usuario: this.state.interesses
 				},
-			}).then((response) =>{
+			}).then((response) => {
 				Alert.alert('Cadastro com sucesso', `${response.data}`)
 				this.setState({ criarConta: false })
 			})
@@ -200,7 +178,7 @@ export default class Auth extends Component {
 	}
 
 	render() {
-		
+
 		/**
 		 * Utilizando um array guardo resultados boolean dos campos, logo apos
 		 * utilizo a funcao reduce para verificar se todos os campos estão preenchidos
@@ -250,18 +228,10 @@ export default class Auth extends Component {
 							onChangeText={dt_nascimento => this.setState({ dt_nascimento })} />
 					}
 					{this.state.criarConta &&
-						<AuthInput style={[styles.input]}
-							icon='phone'
-							telefone={true}
-							placeholder='Telefone(opcional)'
-							value={this.state.tel_usuario}
-							onChangeText={tel_usuario => this.setState({ tel_usuario })} />
-					}
-					{this.state.criarConta &&
 						<AuthInput icon='asterisk' placeholder='Senha'
 							metade={true}
 							secureTextEntry={true}
-							style={styles.input}
+							style={{ marginTop: 10, height: 40 }}
 							value={this.state.senha_usuario}
 							onChangeText={senha_usuario => this.setState({ senha_usuario })} />
 					}
@@ -273,7 +243,7 @@ export default class Auth extends Component {
 							onChangeText={senha_usuario => this.setState({ senha_usuario })} />
 					}
 					{this.state.criarConta &&
-						<AuthInput style={[styles.input, { marginLeft: '51%', marginTop: -40 }]}
+						<AuthInput style={[{ height: 40, marginLeft: '51%', marginTop: -39 }]}
 							metade={true}
 							icon='asterisk'
 							placeholder='Confirmar Senha'
@@ -282,27 +252,32 @@ export default class Auth extends Component {
 							onChangeText={confirmar_senha => this.setState({ confirmar_senha })} />
 					}
 					{this.state.criarConta &&
-						<AuthInput style={[styles.input, { height: 'auto', width: 'auto', padding: -5 }]}
-							interesses={true}
-							icon='star'
-							placeholder="Interesses"
-							uniqueKey="id_tecnologia"
-							subKey="tecnologias"
-							displayKey='nm_tecnologia'
-							selectText='Tecnologias'
-							confirmText='Confirmar'
-							searchPlaceholderText='Pesquisar Tecnologias'
-							selectedText='Selecionadas'
-							items={tecnologias}
-							onSelectedItemsChange={this.selecionarTecnologia}
-							selectedItems={this.state.interesses} />
+						<View style={{ backgroundColor: '#EEE', borderRadius: 10, marginTop: 10, height: 100 }}>
+							<ScrollView>
+								<SectionedMultiSelect
+									colors={{ primary: EstiloComum.cores.fundoWeDo }}
+									showDropDowns={false}
+									readOnlyHeadings={true}
+									placeholder="Tecnologias"
+									uniqueKey="id_tecnologia"
+									subKey="tecnologias"
+									displayKey='nm_tecnologia'
+									selectText='Tecnologias'
+									confirmText='Confirmar'
+									searchPlaceholderText='Pesquisar Tecnologias'
+									selectedText='Selecionadas'
+									items={tecnologias}
+									onSelectedItemsChange={this.selecionarTecnologia}
+									selectedItems={this.state.interesses} />
+							</ScrollView>
+						</View>
 					}
 					{!this.state.criarConta &&
 						<View style={styles.conectado}>
 							<Switch
 								onValueChange={manterConectado => this.setState({ manterConectado })}
 								value={this.state.manterConectado} />
-							<Text style={{ marginLeft: 10, color: '#FFF' , fontSize: 16}}>Manter-se Conectado</Text>
+							<Text style={{ marginLeft: 10, color: '#FFF', fontSize: 14 }}>Manter-se Conectado</Text>
 						</View>
 					}
 					<TouchableOpacity
@@ -367,11 +342,13 @@ const styles = StyleSheet.create({
 	},
 	formContainer: {
 		flex: 2,
-		marginTop: 10,
-		padding: 20,
+		marginTop: 8,
+		padding: 15,
 		width: '100%',
 	},
 	input: {
+		width: '100%',
+		height: 40,
 		marginTop: 10,
 		color: '#AAA'
 	},
@@ -382,7 +359,7 @@ const styles = StyleSheet.create({
 	},
 	botao: {
 		backgroundColor: '#FFF',
-		marginTop: 8,
+		marginTop: 13,
 		padding: 10,
 		alignItems: 'center',
 		borderRadius: 15,
@@ -399,9 +376,9 @@ const styles = StyleSheet.create({
 	},
 	politicas: {
 		padding: 5,
-		marginLeft: '-8%',
+		marginLeft: '-5%',
 		textAlign: 'left',
-		marginTop: '20%',
+		marginTop: '6%',
 		fontSize: 15,
 		color: '#FFF',
 	},

@@ -50,16 +50,6 @@ export default props => {
                             placeholder={props.placeholder}
                             value={props.value}
                             onChangeText={props.onChangeText} />}
-
-                    {props.interesses && !props.date && !props.telefone &&
-                        <SectionedMultiSelect style={styles.input} colors={{ primary: EstiloComum.cores.fundoWeDo }}
-                            showDropDowns={false}
-                            readOnlyHeadings={true}
-                            {...props}
-                        />
-                    }
-
-
                 </View>
             }
         </View>
@@ -89,12 +79,12 @@ const styles = StyleSheet.create({
     },
     input: {
         marginLeft: 20,
-        width: 'auto',
+        width: '100%',
         fontSize: 16
     },
     inputMetade: {
         marginLeft: 20,
-        width: 'auto',
+        width: '100%',
         fontSize: 15
     }
 })

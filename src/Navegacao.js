@@ -3,10 +3,70 @@ import { SafeAreaView, Image, Text, View, ScrollView} from 'react-native'
 import { createSwitchNavigator, createBottomTabNavigator, createDrawerNavigator, DrawerItems,createAppContainer } from 'react-navigation'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import EstiloComum from './EstiloComum'
+//Telas 
 import Auth from './screens/Auth'
 import Inicio from './screens/Inicio'
+import Trends from './screens/Trends'
+import Notificacoes from './screens/Notificacoes'
+import Projetos from './screens/Projetos'
+import ProjetosAtuais from './screens/ProjetosAtuais'
+import Portifolio from './screens/Portifolio'
+import Configuracoes from './screens/Configuracoes'
 
 import logo from '../assets/img/weDo_logo.png'
+
+/**
+ * Menu apresentado na tela inicial e nas outras tela apos o login 
+*/
+const MenuRoutes =
+    createAppContainer(
+        createBottomTabNavigator({
+            Inicio: {
+                name: 'Inicio',
+                screen: Inicio,
+                navigationOptions: {
+                    title: 'Inicio',
+                    tabBarIcon: ({ tintColor }) =>
+                        <Icon name='home' size={30} color={tintColor} />
+                }
+            },
+            Trends: {
+                name: 'Trends',
+                screen: Trends, 
+                navigationOptions: {
+                    title: 'Trends',
+                    tabBarIcon: ({ tintColor }) =>
+                        <Icon name='crown' size={30} color={tintColor} />
+                }
+            },
+            Notificacao: {
+                name: 'Notificacao',
+                screen: Notificacoes, 
+                navigationOptions: {
+                    title: 'Notificação',
+                    tabBarIcon: ({ tintColor }) =>
+                        <Icon name='medapps' size={30} color={tintColor} />
+                }
+            },
+            Projetos: {
+                name: 'Projetos',
+                screen: Projetos,
+                navigationOptions: {
+                    title: 'Projetos',
+                    tabBarIcon: ({ tintColor }) =>
+                        <Icon name='comment-alt' size={30} color={tintColor} />
+                }
+            }
+        },
+        {
+            initialRouteName: 'Inicio', 
+            tabBarOptions: {
+                showLabel: false,
+                activeTintColor: EstiloComum.cores.fundoWeDo,
+            }
+        }
+    )
+)
 
 /**
  * Menu Lateral
@@ -33,14 +93,14 @@ const SlideMenu = createAppContainer(
          */
         Inicio: {
             name: 'Inicio',
-            screen: Inicio,
+            screen: MenuRoutes,
             navigationOptions: {
                 drawerLabel: () => null
             }
         },
         ProjetosAtuais: {
             name: 'ProjetosAtuais',
-            screen: Inicio,
+            screen: ProjetosAtuais,
             navigationOptions: {
                 title: 'Projetos Atuais',
                 drawerIcon: ({ tintColor }) =>
@@ -49,7 +109,7 @@ const SlideMenu = createAppContainer(
         },
         Portifolio: {
             name: 'Portifolio',
-            screen: Inicio,
+            screen: Portifolio,
             navigationOptions: {
                 title: 'Seu Portifolio',
                 drawerIcon: ({ tintColor }) =>
@@ -58,7 +118,7 @@ const SlideMenu = createAppContainer(
         },
         Configuracoes: {
             name: 'Configuracoes',
-            screen: Inicio,
+            screen: Configuracoes,
             navigationOptions: {
                 title: 'Configuracoes',
                 drawerIcon: ({ tintColor }) =>
@@ -67,7 +127,7 @@ const SlideMenu = createAppContainer(
         },
         Ajuda: {
             name: 'Ajuda',
-            screen: Inicio,
+            screen: MenuRoutes,
             navigationOptions: {
                 title: 'Ajuda',
                 drawerIcon: ({ tintColor }) =>
@@ -87,59 +147,6 @@ const SlideMenu = createAppContainer(
     })
 )
 
-/**
- * Menu apresentado na tela inicial e nas outras tela apos o login 
-*/
-const MenuRoutes =
-    createAppContainer(
-        createBottomTabNavigator({
-            Inicio: {
-                name: 'Inicio',
-                screen: SlideMenu,
-                navigationOptions: {
-                    title: 'Inicio',
-                    tabBarIcon: ({ tintColor }) =>
-                        <Icon name='home' size={30} color={tintColor} />
-                }
-            },
-            Trends: {
-                name: 'Trends',
-                screen: Inicio, //trocar para pagina de trends
-                navigationOptions: {
-                    title: 'Trends',
-                    tabBarIcon: ({ tintColor }) =>
-                        <Icon name='crown' size={30} color={tintColor} />
-                }
-            },
-            Notificacao: {
-                name: 'Notificacao',
-                screen: Inicio, //Trocar para pagina notificacao
-                navigationOptions: {
-                    title: 'Notificação',
-                    tabBarIcon: ({ tintColor }) =>
-                        <Icon name='medapps' size={30} color={tintColor} />
-                }
-            },
-            Chat: {
-                name: 'Chat',
-                screen: Inicio,
-                navigationOptions: {
-                    title: 'Chat',
-                    tabBarIcon: ({ tintColor }) =>
-                        <Icon name='comment-alt' size={30} color={tintColor} />
-                }
-            }
-        },
-        {
-            initialRouteName: 'Inicio', 
-            tabBarOptions: {
-                showLabel: false,
-                activeTintColor: EstiloComum.cores.fundoWeDo,
-            }
-        }
-    )
-)
-
 
 /**
  * Coloca a tela de login primeiro e depois troca de tela logo apos o login
@@ -148,9 +155,9 @@ const authRoutes =
     createAppContainer(
         createSwitchNavigator({
             Auth: Auth,
-            Inicio: MenuRoutes
+            Inicio: SlideMenu
         },
-        { initialRouteName: 'Inicio' } // Mudar para auth 
+        { initialRouteName: 'Auth' } // Mudar para auth 
     )
 )
 
