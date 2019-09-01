@@ -1,4 +1,6 @@
-//Componente que redeniza a parte superior da tela inicial do app
+/**
+ * Componente que redeniza o Header das paginas que o usuario vera após a autenticação
+ */
 import React, { Component } from 'react'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome5'

@@ -14,7 +14,7 @@ import Api from '../api/Api'
 import logo from '../../assets/img/weDo_logo.png'
 import AuthInput from '../components/AuthInput'
 import EstiloComum from '../EstiloComum'
-import Icon from 'react-native-vector-icons/FontAwesome5'
+import AsyncStorage from '@react-native-community/async-storage'
 import SectionedMultiSelect from 'react-native-sectioned-multi-select'
 import { YellowBox } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -34,12 +34,11 @@ export default class Auth extends Component {
 		confirmar_senha: '',
 		dt_nascimento: '',
 		interesses: [],
-		manterConectado: false,
-		maximoInterrese: false,
+		manterConectado: true,
 	}
 
 	componentDidMount = () => {
-		//implementar a busca para saber se ja tem emil e senha salva e realizar o login
+		//implementar a busca para saber se ja tem email e senha salva e realizar o login
 		this.buscaTecnologias()
 	}
 
@@ -47,7 +46,6 @@ export default class Auth extends Component {
 	 * Função que através da API busca e armazena as tecnologias que 
 	 * o usuário podera escolher.
 	 */
-
 	buscaTecnologias = async () => {
 		try {
 			Api.get('/tecnologia')
@@ -87,9 +85,30 @@ export default class Auth extends Component {
 	 * caso esteja salva os dados do usuario para ele não necessitar 
 	 * digitar o email e a senha para se logar novamente.
 	 */
-	manterLogado = async () => {
+	manterLogado = (data) => {
 		if (this.state.manterConectado) {
+			this.storeData(data)
+		}else{
+			return true
+		}
+	}
 
+	/**
+	 * Armarzenar os dados recebidos para manter logado 
+	*/
+	storeData = async (data) => {
+		try{
+			AsyncStorage.setItem('@weDo:userData',JSON.stringify(data))
+		}catch(err){
+			Alert.alert('Error','Async Error')
+		}
+	}
+
+	storeId = async (data) => {
+		try{
+			AsyncStorage.setItem('@weDo:userId',JSON.stringify(data))
+		}catch(err){
+			Alert.alert('Error','Async Error')
 		}
 	}
 
@@ -99,21 +118,7 @@ export default class Auth extends Component {
 	 *  ele nao permite mais adicionar.
 	 */
 	selecionarTecnologia = (interesses) => {
-		/*if (interesses.length >= 10) {
-			if (interesses.length === 10) {
-				this.setState({ interesses })
-			}
-			this.setState({
-				maximoInterrese: true,
-			})
-			return
-		}
-		this.setState({
-			maximoInterrese: false,
-		})*/
-
 		this.setState({ interesses })
-
 	}
 
 	/**
@@ -129,10 +134,10 @@ export default class Auth extends Component {
 					senha_usuario: this.state.senha_usuario
 				}
 			}).then((response) => {
-				//salvar o id para fazer a proxima requisição na pagina
-				Api.defaults.headers.common['Authorization'] = `bearer ${response.data.token}`
+				Api.defaults.headers.common['Authorization'] = `${response.data.token}`
+				this.manterLogado(response.data)
+				this.storeId(response.data.usuario.id_usuario)
 			})
-
 			this.props.navigation.navigate('Inicio')
 		} catch (error) {
 			Alert.alert('Error ao Logar', `Aconteceu um erro ${error.data}`)
@@ -200,7 +205,6 @@ export default class Auth extends Component {
 		const validaFormulario = validacao.reduce((all, v) => all && v)
 
 		return (
-
 			<View style={this.state.criarConta ? styles.containerCadastrar : styles.container}>
 				<Image source={logo} style={this.state.criarConta ? styles.logoCadastrar : styles.logo} />
 				{this.state.criarConta &&
@@ -275,6 +279,8 @@ export default class Auth extends Component {
 					{!this.state.criarConta &&
 						<View style={styles.conectado}>
 							<Switch
+								thumbColor={'#FFF'}
+								trackColor={{true: '#313c4d'}}
 								onValueChange={manterConectado => this.setState({ manterConectado })}
 								value={this.state.manterConectado} />
 							<Text style={{ marginLeft: 10, color: '#FFF', fontSize: 14 }}>Manter-se Conectado</Text>
@@ -282,27 +288,27 @@ export default class Auth extends Component {
 					}
 					<TouchableOpacity
 						onPress={() => this.setState({ criarConta: !this.state.criarConta })}>
-						<Text style={[this.state.criarConta ? [styles.textLink, { marginTop: 10 }] : styles.textLink]}>
+						<Text style={[this.state.criarConta ? [styles.textLink, { marginTop: 12 }] : styles.textLink]}>
 							{this.state.criarConta
 								? 'Já possui conta ?'
 								: 'Cadastre-se'}
 						</Text>
 					</TouchableOpacity>
+					{/* Implementar Politicas de privacidade */}
+					{this.state.criarConta &&
+						<TouchableOpacity style={{marginTop: -6}} onPress={() => Alert.alert('Alerta')} >
+							<Text style={styles.politicas}>Políticas de Privacidade</Text>
+						</TouchableOpacity>
+					}
 					<View style={styles.containerBotao}>
 						<TouchableOpacity disabled={!validaFormulario} onPress={this.logarOuCadastrar} >
-							<View style={[styles.botao, !validaFormulario ? { backgroundColor: '#AAA' } : {}]}>
+							<View style={[this.state.criarConta ? styles.botaoCadastro : styles.botao, !validaFormulario ? { backgroundColor: '#AAA' } : {}]}>
 								<Text style={styles.textButton}>
 									{this.state.criarConta ? 'Pronto' : 'Entrar'}
 								</Text>
 							</View>
 						</TouchableOpacity>
 					</View>
-					{/* Implementar Politicas de privacidade */}
-					{!this.state.criarConta &&
-						<TouchableOpacity style={{ marginTop: 20, padding: 15 }} onPress={() => false}>
-							<Text style={styles.politicas}>Políticas de Privacidade</Text>
-						</TouchableOpacity>
-					}
 				</View>
 			</View>
 
@@ -357,10 +363,17 @@ const styles = StyleSheet.create({
 		marginTop: 30,
 		width: '60%',
 	},
+	botaoCadastro: {
+		backgroundColor: '#FFF',
+		marginTop: 8,
+		padding: 8,
+		alignItems: 'center',
+		borderRadius: 15,
+	},
 	botao: {
 		backgroundColor: '#FFF',
-		marginTop: 13,
-		padding: 10,
+		marginTop: 40,
+		padding: 8,
 		alignItems: 'center',
 		borderRadius: 15,
 	},
@@ -376,10 +389,10 @@ const styles = StyleSheet.create({
 	},
 	politicas: {
 		padding: 5,
-		marginLeft: '-5%',
+		marginLeft: '2%',
 		textAlign: 'left',
-		marginTop: '6%',
-		fontSize: 15,
+		marginTop: -6,
+		fontSize: 14,
 		color: '#FFF',
 	},
 	conectado: {

@@ -1,3 +1,6 @@
+/**
+ * Componente que redeinar o campo de adicionar novos comentarios 
+ */
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TextInput, TouchableWithoutFeedback, Alert } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'

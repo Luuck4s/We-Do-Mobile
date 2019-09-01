@@ -1,8 +1,9 @@
+/**
+ * Componente utilizado para redenizar as tecnologias utilizadas na ideia
+*/
 import React, { Component } from 'react';
 import { View, StyleSheet, Text } from 'react-native'
 import EstiloComum from '../EstiloComum'
-
-
 
 class TecnologiaIdeia extends Component {
 

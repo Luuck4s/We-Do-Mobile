@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Modal, Text, TouchableWithoutFeedback, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native'
+import { View, Modal, Text, TouchableWithoutFeedback, StyleSheet, TextInput, TouchableOpacity, Alert, ScrollView } from 'react-native'
 import SectionedMultiSelect from 'react-native-sectioned-multi-select'
 import Api from '../api/Api'
 import EstiloComum from '../EstiloComum'
@@ -40,9 +40,10 @@ export default class AddIdeia extends Component {
         this.setState({ ...initialState })
     }
 
-    /**
-     * 
-    */
+	/**
+	 * Função que através da API busca e armazena as tecnologias que 
+	 * o usuário podera escolher.
+	 */
     buscaTecnologias = async () => {
         try {
             Api.get('/tecnologia')
@@ -60,8 +61,8 @@ export default class AddIdeia extends Component {
      * 
     */
     selecionarTecnologia = (tecnologias) => {
-        if (tecnologias.length >= 10) {
-            if (tecnologias.length === 10) {
+        if (tecnologias.length >= 20) {
+            if (tecnologias.length === 20) {
                 this.setState({ tecnologias })
             }
             this.setState({
@@ -90,24 +91,29 @@ export default class AddIdeia extends Component {
                     <TextInput placeholder="Titulo Ideia" style={styles.input}
                         onChangeText={titulo => this.setState({ titulo })}
                         value={this.state.titulo} />
-                    <TextInput placeholder="Descrição" style={[styles.input,{height: 50}]}
+                    <TextInput placeholder="Descrição" style={[styles.input, { height: 50 }]}
                         onChangeText={desc => this.setState({ desc })}
                         value={this.state.desc} multiline={true} />
-                    <SectionedMultiSelect style={styles.inputTec}
-                        showDropDowns={false}
-                        readOnlyHeadings={true}
-                        placeholder="Tecnologias"
-                        uniqueKey="id_tecnologia"
-                        subKey="tecnologias"
-                        displayKey='nm_tecnologia'
-                        selectText='Tecnologias'
-                        confirmText='Confirmar'
-                        searchPlaceholderText='Pesquisar Tecnologias'
-                        selectedText='Selecionadas'
-                        items={tecnologias}
-                        onSelectedItemsChange={this.selecionarTecnologia}
-                        selectedItems={this.state.tecnologias} />
-                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end'}}>
+                    <View style={{ backgroundColor: '#EEE', borderRadius: 10, marginTop: 10, height: 100 }}>
+                        <ScrollView>
+                            <SectionedMultiSelect
+                                colors={{ primary: EstiloComum.cores.fundoWeDo }}
+                                showDropDowns={false}
+                                readOnlyHeadings={true}
+                                placeholder="Tecnologias"
+                                uniqueKey="id_tecnologia"
+                                subKey="tecnologias"
+                                displayKey='nm_tecnologia'
+                                selectText='Tecnologias'
+                                confirmText='Confirmar'
+                                searchPlaceholderText='Pesquisar Tecnologias'
+                                selectedText='Selecionadas'
+                                items={tecnologias}
+                                onSelectedItemsChange={this.selecionarTecnologia}
+                                selectedItems={this.state.tecnologias} />
+                        </ScrollView>
+                    </View>
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
                         <TouchableOpacity style={styles.button} onPress={this.save}>
                             <Text style={styles.textButton}>Pronto</Text>
                         </TouchableOpacity>
@@ -158,7 +164,7 @@ const styles = StyleSheet.create({
     },
     inputTec: {
         height: 'auto',
-        width: 'auto', 
+        width: 'auto',
         padding: -5
     },
     textButton: {

@@ -9,7 +9,6 @@ import {
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { TextInputMask } from 'react-native-masked-text'
-import SectionedMultiSelect from 'react-native-sectioned-multi-select'
 import EstiloComum from '../EstiloComum'
 
 export default props => {
@@ -18,7 +17,7 @@ export default props => {
         <View>
             {props.metade &&
                 <View style={[styles.containerMetade, props.style]}>
-                    <Icon name={props.icon} size={20} style={styles.icones} />
+                    <Icon name={props.icon} size={18} style={styles.icones} />
                     <TextInput {...props} style={styles.inputMetade} />
                 </View>
             }
@@ -75,7 +74,7 @@ const styles = StyleSheet.create({
     },
     icones: {
         color: '#333',
-        marginLeft: 20,
+        marginLeft: 10,
     },
     input: {
         marginLeft: 20,

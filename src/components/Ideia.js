@@ -1,6 +1,9 @@
-//Componente que compoe a ideia
+/**
+ * Componente de redeniza a ideia, utilizado dentro desse componente outros componentes 
+ * como o @MembroIdeia, @TecnologiaIdeia, @AddComentario.
+ */
 import React, { Component } from 'react'
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native'
 import AddComentario from './AddComentario'
 import TecnologiaIdeia from './TecnologiaIdeia'
 import EstiloComum from '../EstiloComum'
@@ -10,23 +13,24 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 class Ideia extends Component {
     render() {
-        let qtdCurtidas = this.props.curtidas.length > 0 
-        ? this.props.curtidas.map((item, index) => {
-            return item.quantidade_curtida }) 
-        : 0
-
-        let qtdComentario = this.props.comentarios.length > 0 
-        ? this.props.comentarios.map((item, index) => {
-            return item.quantidade_comentario }) 
-        : 0
-
+        let qtdCurtidas = this.props.curtidas.length > 0
+            ? this.props.curtidas.map((item, index) => {
+                return item.quantidade_curtida
+            })
+            : 0
+        let qtdComentario = this.props.comentarios.length > 0
+            ? this.props.comentarios.map((item, index) => {
+                return item.quantidade_comentario
+            })
+            : 0
+        
         return (
             <View style={styles.container}>
                 <Text style={styles.titulo} onPress={this.props.onPresNomeIdeia}>{this.props.nm_ideia}</Text>
                 <Text style={styles.autor} onPress={this.props.onPressAutor}>por {this.props.nm_usuario}</Text>
 
                 <TecnologiaIdeia tecnologias={this.props.tecnologias} />
-                
+
                 <Text style={styles.descricao}>{this.props.ds_ideia}</Text>
 
                 <MembroIdeia onPressMembros={this.props.onPressMembros} membros={this.props.membros} />

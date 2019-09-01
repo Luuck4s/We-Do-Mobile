@@ -1,4 +1,6 @@
-//Componente que recebe um array de usuario e separa as informações e retorna as imagens 
+/**
+ * Componente que recebe um array de usuario e separa as informações e retorna as imagens 
+*/
 import React, { Component } from 'react';
 import { View, StyleSheet, Image, Text } from 'react-native'
 
@@ -21,7 +23,7 @@ class MembroIdeia extends Component {
             <View style={styles.container}>
                 <Text style={styles.text}>Com</Text>
                 {membros}
-                <Text style={[styles.text,{fontSize: 16}]} onPress={this.props.onPressMembros}> + </Text>
+                <Text style={[styles.text, { fontSize: 16 }]} onPress={this.props.onPressMembros}> + </Text>
             </View>
         )
     }
