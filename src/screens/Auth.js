@@ -47,15 +47,17 @@ export default class Auth extends Component {
 	 * o usuário podera escolher.
 	 */
 	buscaTecnologias = async () => {
-		try {
-			Api.get('/tecnologia')
-				.then((response) => {
-					tecnologias.push(response.data)
-				}).catch(function (err) {
-					Alert.alert("Erro Tecnologias", `Ocorreu um erro inesperado ${err}`)
-				})
-		} catch (error) {
-			Alert.alert("Erro Tecnologias", `Ocorreu um erro inesperado ${error.data}`)
+		if (tecnologias.length === 0) {
+			try {
+				await Api.get('/tecnologia')
+					.then((response) => {
+						tecnologias.push(response.data)
+					}).catch(function (err) {
+						Alert.alert("Erro Tecnologias", `Ocorreu um erro inesperado ${err}`)
+					})
+			} catch (error) {
+				Alert.alert("Erro Tecnologias", `Ocorreu um erro inesperado ${error.data}`)
+			}
 		}
 	}
 
@@ -88,7 +90,7 @@ export default class Auth extends Component {
 	manterLogado = (data) => {
 		if (this.state.manterConectado) {
 			this.storeData(data)
-		}else{
+		} else {
 			return true
 		}
 	}
@@ -97,18 +99,18 @@ export default class Auth extends Component {
 	 * Armarzenar os dados recebidos para manter logado 
 	*/
 	storeData = async (data) => {
-		try{
-			AsyncStorage.setItem('@weDo:userData',JSON.stringify(data))
-		}catch(err){
-			Alert.alert('Error','Async Error')
+		try {
+			await AsyncStorage.setItem('@weDo:userData', JSON.stringify(data))
+		} catch (err) {
+			Alert.alert('Error', 'Async Error')
 		}
 	}
 
 	storeId = async (data) => {
-		try{
-			AsyncStorage.setItem('@weDo:userId',JSON.stringify(data))
-		}catch(err){
-			Alert.alert('Error','Async Error')
+		try {
+			await AsyncStorage.setItem('@weDo:userId', JSON.stringify(data))
+		} catch (err) {
+			Alert.alert('Error', 'Async Error')
 		}
 	}
 
@@ -280,7 +282,7 @@ export default class Auth extends Component {
 						<View style={styles.conectado}>
 							<Switch
 								thumbColor={'#FFF'}
-								trackColor={{true: '#313c4d'}}
+								trackColor={{ true: '#313c4d' }}
 								onValueChange={manterConectado => this.setState({ manterConectado })}
 								value={this.state.manterConectado} />
 							<Text style={{ marginLeft: 10, color: '#FFF', fontSize: 14 }}>Manter-se Conectado</Text>
@@ -296,7 +298,7 @@ export default class Auth extends Component {
 					</TouchableOpacity>
 					{/* Implementar Politicas de privacidade */}
 					{this.state.criarConta &&
-						<TouchableOpacity style={{marginTop: -6}} onPress={() => Alert.alert('Alerta')} >
+						<TouchableOpacity style={{ marginTop: -6 }} onPress={() => Alert.alert('Alerta')} >
 							<Text style={styles.politicas}>Políticas de Privacidade</Text>
 						</TouchableOpacity>
 					}
@@ -349,7 +351,7 @@ const styles = StyleSheet.create({
 	formContainer: {
 		flex: 2,
 		marginTop: 8,
-		padding: 15,
+		padding: 17,
 		width: '100%',
 	},
 	input: {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Alert, FlatList, StyleSheet, ActivityIndicator } from 'react-native'
+import { View, Text, Alert, FlatList, StyleSheet, ActivityIndicator, RefreshControl } from 'react-native'
 import Api from '../api/Api'
 import AsyncStorage from '@react-native-community/async-storage'
 import Icon from 'react-native-vector-icons/FontAwesome5'
@@ -11,12 +11,14 @@ import AddIdeia from './AddIdeia'
 
 import logo_icon from '../../assets/img/weDo_logo.png' // usada a logo apenas para testar por enquanto
 
-const ideias = []
 
 export default class Inicio extends Component {
 
     state = {
         AddIdeia: false,
+        ideias: [],
+        carregando: true,
+        atualizando: false
     }
 
     componentDidMount = () => {
@@ -32,14 +34,7 @@ export default class Inicio extends Component {
             let idUsuario = await AsyncStorage.getItem('@weDo:userId')
 
             Api.get(`/usuario/perfil/${idUsuario}`).then((response) => {
-                /**
-                 * let dados = JSON.stringify(response.data.perfil_usuario[0])
-                    let dadosJson = JSON.parse(dados)
-                    let nome = dadosJson.nm_usuario
-                    Alert.alert(`Nome`, `${nome}`)
-                */
-               
-                //AsyncStorage.setItem('@weDo:dadosUsuario', `${nome}`)
+                AsyncStorage.setItem('@weDo:nomeUsuario', JSON.stringify(response.data.perfil_usuario[0]))
                 Api.defaults.headers.common['Authorization'] = `${response.data.token}`
             })
         } catch (err) {
@@ -56,12 +51,27 @@ export default class Inicio extends Component {
 
             Api.get('/feed/' + idUsuario)
                 .then((response) => {
-                    ideias.push(response.data.ideias)
+                    Api.defaults.headers.common['Authorization'] = `${response.data.token}`
+                    this.setState({ ideias: response.data.ideias })
+                }).then(() => {
+                    this.setState({carregando: false})
+                }).catch((err) => {
+                    this.setState({carregando: false,ideia: false})
                 })
 
         } catch (err) {
             Alert.alert('Error', `${err}`)
         }
+    }
+
+    /**
+     * Função para atualizar o feed
+    */
+    atualizarFeed = () => {
+        this.setState({atualizando: true, carregando: true})
+        this.buscarFeed().then(() => {
+            this.setState({atualizando: false, carregando: false})
+        })
     }
 
     /**
@@ -128,11 +138,20 @@ export default class Inicio extends Component {
             <View style={styles.container}>
                 <Header paginaInicial={true} image={logo_icon} texto={"Página Inicial"} icon={"search"} onPress={() => Alert.alert("Teste", "teste")} onPressImage={() => this.props.navigation.openDrawer()} />
                 <AddIdeia isVisible={this.state.AddIdeia} onCancel={() => this.setState({ AddIdeia: false })} adicionarIdeia={this.adicionarIdeia} />
-                <FlatList
-                    initialNumToRender={2}
-                    data={ideias[0]}
-                    keyExtractor={item => `${item.id_ideia}`}
-                    renderItem={renderItem} />
+                {this.state.carregando &&
+                    <ActivityIndicator style={{padding: 10}} size="large" color={EstiloComum.cores.fundoWeDo}  />
+                }
+                {this.state.ideias == false &&
+                    <Text>Não tem ideias de acordo com seu gosto</Text>
+                }
+                {this.state.ideias &&
+                        <FlatList
+                            refreshControl={<RefreshControl refreshing={this.state.atualizando} onRefresh={this.atualizarFeed} />}
+                            initialNumToRender={2}
+                            data={this.state.ideias}
+                            keyExtractor={item => `${item.id_ideia}`}
+                            renderItem={renderItem} />
+                }
                 <ActionButton buttonColor={EstiloComum.cores.fundoWeDo}
                     onPress={() => { this.setState({ AddIdeia: true }) }} />
 

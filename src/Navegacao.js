@@ -74,7 +74,6 @@ const MenuRoutes =
 /**
  * Menu Lateral
 */
-
 const EstiloSlideMenu = (props) => {
     /**
      * Função que apaga o header do token e limpa o storage para deslogar o usuario
@@ -88,10 +87,10 @@ const EstiloSlideMenu = (props) => {
     /**
      * Captura os dados do usuario que foram salvos no storage
      */
-    const dadosUsuario = () => {
-        const nome = 'Lucas'
-        return nome
-    } 
+    function dadosUsuario(){
+        const nome = 'Nome Teste'
+        return `${nome}`
+    }
 
     return (
         <SafeAreaView style={{ flex: 1 }}>

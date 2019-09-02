@@ -45,15 +45,17 @@ export default class AddIdeia extends Component {
 	 * o usuário podera escolher.
 	 */
     buscaTecnologias = async () => {
-        try {
-            Api.get('/tecnologia')
-                .then((response) => {
-                    tecnologias.push(response.data)
-                }).catch(function (err) {
-                    Alert.alert("Erro Tecnologias", `Ocorreu um erro inesperado ${err}`)
-                })
-        } catch (error) {
-            Alert.alert("Erro Tecnologias", `Ocorreu um erro inesperado ${error.data}`)
+        if (tecnologias.length === 0) {
+            try {
+                Api.get('/tecnologia')
+                    .then((response) => {
+                        tecnologias.push(response.data)
+                    }).catch(function (err) {
+                        Alert.alert("Erro Tecnologias", `Ocorreu um erro inesperado ${err}`)
+                    })
+            } catch (error) {
+                Alert.alert("Erro Tecnologias", `Ocorreu um erro inesperado ${error.data}`)
+            }
         }
     }
 
