@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import Api from '../api/Api'
-import EstiloComum from '../EstiloComum'
-import { View, ActivityIndicator, StyleSheet, Image, Alert } from 'react-native'
+import Api from '../../api/Api'
+import { View, ActivityIndicator, Image, Alert } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
-import logo from '../../assets/img/weDo_logo.png'
+import StyleAuthOrInicio from './StyleAuthOrInicio'
+import logo from '../../../assets/img/weDo_logo.png'
 
 export default class AuthOrInicio extends Component {
     componentDidMount = async () => {
@@ -20,25 +20,10 @@ export default class AuthOrInicio extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <Image source={logo} style={styles.logo} />
+            <View style={StyleAuthOrInicio.container}>
+                <Image source={logo} style={StyleAuthOrInicio.logo} />
                 <ActivityIndicator size='large' color={'#FFF'} />
             </View>
         )
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: EstiloComum.cores.fundoWeDo
-    },
-    logo: {
-        marginTop: 20,
-		width: '45%',
-		height: '35%',
-		resizeMode: 'contain',
-    }
-})

@@ -1,15 +1,16 @@
 import React, { Component } from 'react'
-import { View, Text, Alert, FlatList, StyleSheet, ActivityIndicator, RefreshControl } from 'react-native'
-import Api from '../api/Api'
+import { View, Text, Alert, FlatList, ActivityIndicator, RefreshControl } from 'react-native'
+import StyleInicio from './StyleInicio'
+import Api from '../../api/Api'
 import AsyncStorage from '@react-native-community/async-storage'
 import Icon from 'react-native-vector-icons/FontAwesome5'
-import Header from '../components/Header'
-import Ideia from '../components/Ideia'
-import EstiloComum from '../EstiloComum'
+import Header from '../../components/Header/Header'
+import Ideia from '../../components/Ideia/Ideia'
+import EstiloComum from '../../EstiloComum'
 import ActionButton from 'react-native-action-button'
-import AddIdeia from './AddIdeia'
+import AddIdeia from '../AddIdeia/AddIdeia'
 
-import logo_icon from '../../assets/img/weDo_logo.png' // usada a logo apenas para testar por enquanto
+import logo_icon from '../../../assets/img/weDo_logo.png' 
 
 
 export default class Inicio extends Component {
@@ -21,10 +22,11 @@ export default class Inicio extends Component {
         atualizando: false
     }
 
-    componentDidMount = () => {
-        this.buscarFeed(),
-            this.storeName()
+    componentDidMount = async () => {
+       await this.buscarFeed(),
+       await this.storeName()
     }
+
 
     /**
      * Função que guarda o nome do usuario
@@ -34,7 +36,7 @@ export default class Inicio extends Component {
             let idUsuario = await AsyncStorage.getItem('@weDo:userId')
 
             Api.get(`/usuario/perfil/${idUsuario}`).then((response) => {
-                AsyncStorage.setItem('@weDo:nomeUsuario', JSON.stringify(response.data.perfil_usuario[0]))
+                AsyncStorage.setItem('@weDo:nomeUsuario', `${response.data.perfil_usuario[0].nm_usuario}`)
                 Api.defaults.headers.common['Authorization'] = `${response.data.token}`
             })
         } catch (err) {
@@ -132,10 +134,17 @@ export default class Inicio extends Component {
         /**
          * renderItem foi retirado de dentro da FlatList para melhor desenpenho do componente
          */
-        renderItem = ({ item }) => (<Ideia key={item.id_ideia} {...item} />)
+        renderItem = ({ item }) => (<Ideia key={item.id_ideia}
+            {...item} 
+            onPressAutor={() => this.infoAutor(item.id_usuario)} 
+            onPresNomeIdeia={() => this.ideia(item.id_ideia)} 
+            onPressMembros={() => this.membros(item.id_ideia)}
+            onPressCurtir={() => this.curtirIdeia(item.id_ideia)}
+            onPressComentario={() => this.comentarios(item.id_ideia)}
+            onPressInteresse={() => this.interesse(item.id_ideia)} />)
 
         return (
-            <View style={styles.container}>
+            <View style={StyleInicio.container}>
                 <Header paginaInicial={true} image={logo_icon} texto={"Página Inicial"} icon={"search"} onPress={() => Alert.alert("Teste", "teste")} onPressImage={() => this.props.navigation.openDrawer()} />
                 <AddIdeia isVisible={this.state.AddIdeia} onCancel={() => this.setState({ AddIdeia: false })} adicionarIdeia={this.adicionarIdeia} />
                 {this.state.carregando &&
@@ -159,12 +168,3 @@ export default class Inicio extends Component {
         )
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        marginLeft: 0,
-        justifyContent: 'center',
-        alignItems: 'center',
-    }
-})

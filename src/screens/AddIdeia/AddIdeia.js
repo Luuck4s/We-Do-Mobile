@@ -1,27 +1,27 @@
 import React, { Component } from 'react'
-import { View, Modal, Text, TouchableWithoutFeedback, StyleSheet, TextInput, TouchableOpacity, Alert, ScrollView } from 'react-native'
+import { View, Modal, Text, TouchableWithoutFeedback, TextInput, TouchableOpacity, Alert, ScrollView } from 'react-native'
+import StylesAddIdeia from './StylesAddIdeia'
 import SectionedMultiSelect from 'react-native-sectioned-multi-select'
-import Api from '../api/Api'
-import EstiloComum from '../EstiloComum'
-
-const initialState = {
-    titulo: '',
-    desc: '',
-    tecnologias: [],
-    maximoTecnologia: false,
-}
+import Api from '../../api/Api'
+import EstiloComum from '../../EstiloComum'
 
 const tecnologias = []
 
 export default class AddIdeia extends Component {
-    state = { ...initialState }
+    state = {
+        titulo: '',
+        desc: '',
+        tecnologiasIdeia: [],
+        maximoTecnologia: false,
+    }
 
     componentDidMount = () => {
         this.buscaTecnologias()
     }
 
     /**
-     * 
+     * Função que verifica os campos do componente e caso esteja tudo preenchido 
+     * espera recever por props uma função de add a ideia
     */
     save = () => {
         if (!this.state.titulo.trim()) {
@@ -37,7 +37,7 @@ export default class AddIdeia extends Component {
 
         const data = { ...this.state }
         this.props.adicionarIdeia(data)
-        this.setState({ ...initialState })
+        this.setState({titulo: '', desc: '', tecnologiasIdeia: [], maximoTecnologia: false,})
     }
 
 	/**
@@ -60,13 +60,11 @@ export default class AddIdeia extends Component {
     }
 
     /**
-     * 
+     * Verifica quantas tecnologias ja foram selecionadas e
+     * caso passe de 20 nao permite mais selecionar elas
     */
-    selecionarTecnologia = (tecnologias) => {
-        if (tecnologias.length >= 20) {
-            if (tecnologias.length === 20) {
-                this.setState({ tecnologias })
-            }
+    selecionarTecnologia = (tecnologiasIdeia) => {
+        if (tecnologiasIdeia.length > 20) {
             this.setState({
                 maximoTecnologia: true,
             })
@@ -75,9 +73,7 @@ export default class AddIdeia extends Component {
         this.setState({
             maximoTecnologia: false,
         })
-
-        this.setState({ tecnologias })
-
+        this.setState({ tecnologiasIdeia })
     }
 
     render() {
@@ -86,17 +82,17 @@ export default class AddIdeia extends Component {
                 visible={this.props.isVisible}
                 animationType='fade' transparent={true}>
                 <TouchableWithoutFeedback onPress={this.props.onCancel}>
-                    <View style={styles.offset}></View>
+                    <View style={StylesAddIdeia.offset}></View>
                 </TouchableWithoutFeedback>
-                <View style={styles.container}>
-                    <Text style={styles.header}>Adicionar uma ideia</Text>
-                    <TextInput placeholder="Titulo Ideia" style={styles.input}
+                <View style={StylesAddIdeia.container}>
+                    <Text style={StylesAddIdeia.header}>Adicionar uma ideia</Text>
+                    <TextInput placeholder="Titulo Ideia" style={StylesAddIdeia.input}
                         onChangeText={titulo => this.setState({ titulo })}
                         value={this.state.titulo} />
-                    <TextInput placeholder="Descrição" style={[styles.input, { height: 50 }]}
+                    <TextInput placeholder="Descrição" style={StylesAddIdeia.inputDesc}
                         onChangeText={desc => this.setState({ desc })}
                         value={this.state.desc} multiline={true} />
-                    <View style={{ backgroundColor: '#EEE', borderRadius: 10, marginTop: 10, height: 100 }}>
+                    <View style={StylesAddIdeia.containerTec}>
                         <ScrollView>
                             <SectionedMultiSelect
                                 colors={{ primary: EstiloComum.cores.fundoWeDo }}
@@ -112,65 +108,19 @@ export default class AddIdeia extends Component {
                                 selectedText='Selecionadas'
                                 items={tecnologias}
                                 onSelectedItemsChange={this.selecionarTecnologia}
-                                selectedItems={this.state.tecnologias} />
+                                selectedItems={this.state.tecnologiasIdeia} />
                         </ScrollView>
                     </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-                        <TouchableOpacity style={styles.button} onPress={this.save}>
-                            <Text style={styles.textButton}>Pronto</Text>
+                    <View style={StylesAddIdeia.containerButton}>
+                        <TouchableOpacity style={StylesAddIdeia.button} onPress={this.save}>
+                            <Text style={StylesAddIdeia.textButton}>Pronto</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
                 <TouchableWithoutFeedback onPress={this.props.onCancel}>
-                    <View style={styles.offset}></View>
+                    <View style={StylesAddIdeia.offset}></View>
                 </TouchableWithoutFeedback>
             </Modal>
         )
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 3,
-        backgroundColor: '#FFF',
-    },
-    offset: {
-        flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.1)',
-    },
-    button: {
-        margin: 15,
-        borderRadius: 5,
-        alignItems: 'center',
-        width: 100,
-        height: 40,
-        backgroundColor: EstiloComum.cores.fundoWeDo,
-    },
-    header: {
-        fontFamily: EstiloComum.fontFamily,
-        color: EstiloComum.cores.fundoWeDo,
-        fontSize: 25,
-        textAlign: 'center',
-        padding: 10,
-        borderBottomWidth: 0.4,
-        borderBottomColor: '#000'
-    },
-    input: {
-        width: '90%',
-        height: 35,
-        marginTop: 10,
-        marginLeft: 10,
-        backgroundColor: 'white',
-        borderRadius: 5,
-        borderWidth: 0.4,
-    },
-    inputTec: {
-        height: 'auto',
-        width: 'auto',
-        padding: -5
-    },
-    textButton: {
-        marginTop: '9%',
-        color: 'white'
-    }
-})

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {View} from 'react-native'
-import Header from '../components/Header'
+import Header from '../../components/Header/Header'
 
 export default class Trends extends Component {
 
@@ -11,7 +11,7 @@ export default class Trends extends Component {
     render(){
         return(
             <View>
-                <Header paginaInicial={false} texto={"Projetos"} icon={"comment-alt"} />
+                <Header paginaInicial={false} texto={"Trends Ideias"} icon={"crown"} />
             </View>
         )
     }

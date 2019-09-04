@@ -1,21 +1,13 @@
 //Screen para redenizar a tela de login/cadastro do usuario 
 import React, { Component } from 'react'
-import {
-	View,
-	Text,
-	TouchableOpacity,
-	Modal,
-	Image,
-	StyleSheet,
-	Switch,
-	Alert
-} from 'react-native'
-import Api from '../api/Api'
-import logo from '../../assets/img/weDo_logo.png'
-import AuthInput from '../components/AuthInput'
-import EstiloComum from '../EstiloComum'
+import { View, Text, TouchableOpacity, Image, Switch, Alert } from 'react-native'
+import Api from '../../api/Api'
+import logo from '../../../assets/img/weDo_logo.png'
+import AuthInput from '../../components/AuthInput/AuthInput'
+import EstiloComum from '../../EstiloComum'
 import AsyncStorage from '@react-native-community/async-storage'
 import SectionedMultiSelect from 'react-native-sectioned-multi-select'
+import StyleAuth from './StyleAuth'
 import { YellowBox } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 YellowBox.ignoreWarnings([
@@ -207,26 +199,26 @@ export default class Auth extends Component {
 		const validaFormulario = validacao.reduce((all, v) => all && v)
 
 		return (
-			<View style={this.state.criarConta ? styles.containerCadastrar : styles.container}>
-				<Image source={logo} style={this.state.criarConta ? styles.logoCadastrar : styles.logo} />
+			<View style={this.state.criarConta ? StyleAuth.containerCadastrar : StyleAuth.container}>
+				<Image source={logo} style={this.state.criarConta ? StyleAuth.logoCadastrar : StyleAuth.logo} />
 				{this.state.criarConta &&
-					<Text style={styles.subtitulo}>Cadastro</Text>
+					<Text style={StyleAuth.subtitulo}>Cadastro</Text>
 				}
-				<View style={styles.formContainer}>
+				<View style={StyleAuth.formContainer}>
 					{this.state.criarConta &&
-						<AuthInput style={styles.input}
+						<AuthInput style={StyleAuth.input}
 							icon='user'
 							placeholder='Nome'
 							value={this.state.nm_usuario}
 							onChangeText={nm_usuario => this.setState({ nm_usuario })} />
 					}
-					<AuthInput style={styles.input}
+					<AuthInput style={StyleAuth.input}
 						icon='envelope'
 						placeholder='Email'
 						value={this.state.email_usuario}
 						onChangeText={email_usuario => this.setState({ email_usuario })} />
 					{this.state.criarConta &&
-						<AuthInput style={styles.input}
+						<AuthInput style={StyleAuth.input}
 							icon='calendar'
 							date={true}
 							placeholder="Data Nascimento"
@@ -237,19 +229,19 @@ export default class Auth extends Component {
 						<AuthInput icon='asterisk' placeholder='Senha'
 							metade={true}
 							secureTextEntry={true}
-							style={{ marginTop: 10, height: 40 }}
+							style={StyleAuth.inputMetadeSenha}
 							value={this.state.senha_usuario}
 							onChangeText={senha_usuario => this.setState({ senha_usuario })} />
 					}
 					{!this.state.criarConta &&
 						<AuthInput icon='asterisk' placeholder='Senha'
 							secureTextEntry={true}
-							style={styles.input}
+							style={StyleAuth.input}
 							value={this.state.senha_usuario}
 							onChangeText={senha_usuario => this.setState({ senha_usuario })} />
 					}
 					{this.state.criarConta &&
-						<AuthInput style={[{ height: 40, marginLeft: '51%', marginTop: -39 }]}
+						<AuthInput style={StyleAuth.inputMetadeConfirmarSenha}
 							metade={true}
 							icon='asterisk'
 							placeholder='Confirmar Senha'
@@ -258,7 +250,7 @@ export default class Auth extends Component {
 							onChangeText={confirmar_senha => this.setState({ confirmar_senha })} />
 					}
 					{this.state.criarConta &&
-						<View style={{ backgroundColor: '#EEE', borderRadius: 10, marginTop: 10, height: 100 }}>
+						<View style={StyleAuth.containerTecnologias}>
 							<ScrollView>
 								<SectionedMultiSelect
 									colors={{ primary: EstiloComum.cores.fundoWeDo }}
@@ -279,18 +271,18 @@ export default class Auth extends Component {
 						</View>
 					}
 					{!this.state.criarConta &&
-						<View style={styles.conectado}>
+						<View style={StyleAuth.conectado}>
 							<Switch
 								thumbColor={'#FFF'}
 								trackColor={{ true: '#313c4d' }}
 								onValueChange={manterConectado => this.setState({ manterConectado })}
 								value={this.state.manterConectado} />
-							<Text style={{ marginLeft: 10, color: '#FFF', fontSize: 14 }}>Manter-se Conectado</Text>
+							<Text style={StyleAuth.textManterConectado}>Manter-se Conectado</Text>
 						</View>
 					}
 					<TouchableOpacity
 						onPress={() => this.setState({ criarConta: !this.state.criarConta })}>
-						<Text style={[this.state.criarConta ? [styles.textLink, { marginTop: 12 }] : styles.textLink]}>
+						<Text style={[this.state.criarConta ? [StyleAuth.textLink, { marginTop: 12 }] : StyleAuth.textLink]}>
 							{this.state.criarConta
 								? 'Já possui conta ?'
 								: 'Cadastre-se'}
@@ -299,13 +291,13 @@ export default class Auth extends Component {
 					{/* Implementar Politicas de privacidade */}
 					{this.state.criarConta &&
 						<TouchableOpacity style={{ marginTop: -6 }} onPress={() => Alert.alert('Alerta')} >
-							<Text style={styles.politicas}>Políticas de Privacidade</Text>
+							<Text style={StyleAuth.politicas}>Políticas de Privacidade</Text>
 						</TouchableOpacity>
 					}
-					<View style={styles.containerBotao}>
+					<View style={StyleAuth.containerBotao}>
 						<TouchableOpacity disabled={!validaFormulario} onPress={this.logarOuCadastrar} >
-							<View style={[this.state.criarConta ? styles.botaoCadastro : styles.botao, !validaFormulario ? { backgroundColor: '#AAA' } : {}]}>
-								<Text style={styles.textButton}>
+							<View style={[this.state.criarConta ? StyleAuth.botaoCadastro : StyleAuth.botao, !validaFormulario ? { backgroundColor: '#AAA' } : {}]}>
+								<Text style={StyleAuth.textButton}>
 									{this.state.criarConta ? 'Pronto' : 'Entrar'}
 								</Text>
 							</View>
@@ -313,94 +305,6 @@ export default class Auth extends Component {
 					</View>
 				</View>
 			</View>
-
 		)
 	}
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: EstiloComum.cores.fundoWeDo,
-		alignItems: 'center',
-	},
-	containerCadastrar: {
-		flex: 1,
-		backgroundColor: EstiloComum.cores.fundoWeDo,
-	},
-	logo: {
-		marginTop: 20,
-		width: '45%',
-		height: '35%',
-		resizeMode: 'contain',
-	},
-	logoCadastrar: {
-		margin: 30,
-		width: 70,
-		height: 80,
-		resizeMode: 'contain',
-	},
-	subtitulo: {
-		fontFamily: EstiloComum.fontFamily,
-		marginTop: -92,
-		marginLeft: 120,
-		textAlign: 'left',
-		color: '#FFF',
-		fontSize: 30,
-	},
-	formContainer: {
-		flex: 2,
-		marginTop: 8,
-		padding: 17,
-		width: '100%',
-	},
-	input: {
-		width: '100%',
-		height: 40,
-		marginTop: 10,
-		color: '#AAA'
-	},
-	containerBotao: {
-		marginLeft: '20%',
-		marginTop: 30,
-		width: '60%',
-	},
-	botaoCadastro: {
-		backgroundColor: '#FFF',
-		marginTop: 8,
-		padding: 8,
-		alignItems: 'center',
-		borderRadius: 15,
-	},
-	botao: {
-		backgroundColor: '#FFF',
-		marginTop: 40,
-		padding: 8,
-		alignItems: 'center',
-		borderRadius: 15,
-	},
-	textLink: {
-		fontSize: 16,
-		marginRight: 8,
-		color: '#FFF',
-		textAlign: 'right'
-	},
-	textButton: {
-		fontSize: 18,
-		color: EstiloComum.cores.fundoWeDo,
-	},
-	politicas: {
-		padding: 5,
-		marginLeft: '2%',
-		textAlign: 'left',
-		marginTop: -6,
-		fontSize: 14,
-		color: '#FFF',
-	},
-	conectado: {
-		width: '50%',
-		height: '5%',
-		flexDirection: 'row',
-		marginTop: '5%'
-	}
-})
