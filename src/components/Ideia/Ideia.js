@@ -10,27 +10,58 @@ import TecnologiaIdeia from '../TecnologiaIdeia/TecnologiaIdeia'
 import EstiloComum from '../../EstiloComum'
 import MembroIdeia from '../MembroIdeia/MembroIdeia'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import AsyncStorage from '@react-native-community/async-storage';
 
 class Ideia extends Component {
 
     state = {
         curtido: false,
+        idUsuarioAtual: null,
+        qtdCurtidas: this.props.curtidas.length
+    }
+
+    componentDidMount = async () => {
+        await this.getIdUsuario(),
+        await this.ideiaCurtidaBanco()
+    }
+
+    getIdUsuario = async() => {
+        let idUsuario = await AsyncStorage.getItem('@weDo:userId')
+        this.setState({idUsuarioAtual: idUsuario})
+    }
+
+    ideiaCurtidaBanco = () => {
+        this.props.curtidas.map((item,index) => {
+            if(this.state.idUsuarioAtual == item.id_usuario){
+                this.setState({curtido: true})
+            }else{
+                this.setState({curtido: false})
+            }
+        })
     }
 
     /**
      * Função responsavel por alterar a cor do icone de curtida ao ser cliclado
     */
     curtida = () => {
-        this.setState({curtido: !this.state.curtido})
-        this.props.onPressCurtir()
+        if(this.state.curtido){
+            this.setState({curtido: false},this.setState({qtdCurtidas: this.state.qtdCurtidas - 1}))
+            this.props.onPressCurtir()
+        }
+
+        if(!this.state.curtido){
+            this.setState({curtido: true},this.setState({qtdCurtidas: this.state.qtdCurtidas + 1}))
+            this.props.onPressCurtir()
+        }
     }
 
     render() {
-        let qtdCurtidas = this.props.curtidas.length > 0
-            ? this.props.curtidas.map((item, index) => {
-                return item.quantidade_curtida
-            })
-            : 0
+        let idealizador = this.props.membros.map((item,index) => {
+            if(item.idealizador == 1){
+                return item.nm_usuario 
+            }
+        })
+
         let qtdComentario = this.props.comentarios.length > 0
             ? this.props.comentarios.map((item, index) => {
                 return item.quantidade_comentario
@@ -40,7 +71,7 @@ class Ideia extends Component {
         return (
             <View style={StyleIdeia.container}>
                 <Text style={StyleIdeia.titulo} onPress={this.props.onPresNomeIdeia}>{this.props.nm_ideia}</Text>
-                <Text style={StyleIdeia.autor} onPress={this.props.onPressAutor}>por {this.props.nm_usuario}</Text>
+                <Text style={StyleIdeia.autor} onPress={this.props.onPressAutor}>por {idealizador}</Text>
 
                 <TecnologiaIdeia tecnologias={this.props.tecnologias} />
 
@@ -50,7 +81,7 @@ class Ideia extends Component {
 
                 <View style={{ flexDirection: 'row' }}>
                     <Icon name='heart' style={this.state.curtido ? StyleIdeia.iconCurtido : StyleIdeia.iconCurtida} size={19} onPress={() => this.curtida()} >
-                        <Text style={StyleIdeia.numComentCurti}> {qtdCurtidas}</Text>
+                        <Text style={StyleIdeia.numComentCurti}> {this.state.qtdCurtidas}</Text>
                     </Icon>
                     <Icon name='comment' style={StyleIdeia.iconComentario} size={19} color={EstiloComum.cores.fundoWeDo} onPress={this.props.onPressComentario} >
                         <Text style={StyleIdeia.numComentCurti}> {qtdComentario}</Text>

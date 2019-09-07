@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     },
     autor: {
         marginTop: 2,
-        fontSize: 12,
+        fontSize: 13,
         color: '#000',
         fontWeight: 'bold',
     },

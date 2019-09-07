@@ -9,14 +9,17 @@ class TecnologiaIdeia extends Component {
 
     render() {
         let tecnologias = null
-
+        let t = 0
         if (this.props.tecnologias) {
             tecnologias = this.props.tecnologias.map((item, index) => {
-                return (
-                    <View style={StyleTecnologiaIdeia.TecContainer} key={index}>
-                        <Text style={StyleTecnologiaIdeia.nomeTecnologia}>{item.nm_tecnologia}</Text>
-                    </View>
-                )
+                t = t + 1
+                if (t <= 4) {
+                    return (
+                        <View style={StyleTecnologiaIdeia.TecContainer} key={index}>
+                            <Text style={StyleTecnologiaIdeia.nomeTecnologia}>{item.nm_tecnologia}</Text>
+                        </View>
+                    )
+                }
             })
         }
         return (

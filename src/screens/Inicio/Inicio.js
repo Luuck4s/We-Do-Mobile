@@ -3,7 +3,6 @@ import { View, Text, Alert, FlatList, ActivityIndicator, RefreshControl } from '
 import StyleInicio from './StyleInicio'
 import Api from '../../api/Api'
 import AsyncStorage from '@react-native-community/async-storage'
-import Icon from 'react-native-vector-icons/FontAwesome5'
 import Header from '../../components/Header/Header'
 import Ideia from '../../components/Ideia/Ideia'
 import EstiloComum from '../../EstiloComum'
@@ -136,7 +135,7 @@ export default class Inicio extends Component {
          */
         renderItem = ({ item }) => (<Ideia key={item.id_ideia}
             {...item} 
-            onPressAutor={() => this.infoAutor(item.id_usuario)} 
+            onPressAutor={() => this.infoAutor(item.id_ideia)} 
             onPresNomeIdeia={() => this.ideia(item.id_ideia)} 
             onPressMembros={() => this.membros(item.id_ideia)}
             onPressCurtir={() => this.curtirIdeia(item.id_ideia)}

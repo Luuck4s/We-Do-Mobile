@@ -6,7 +6,6 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
 import EstiloComum from './EstiloComum'
 import Api from './api/Api'
 import AsyncStorage from '@react-native-community/async-storage'
-//Telas 
 import AuthOrInicio from './screens/AuthOrInicio/AuthOrInicio'
 import Auth from './screens/Auth/Auth'
 import Inicio from './screens/Inicio/Inicio'
@@ -104,21 +103,18 @@ const EstiloSlideMenu = (props) => {
         props.navigation.navigate('Carregando')
     }
 
-    getNome = async () => {
-        try {
-            const value = await AsyncStorage.getItem('@weDo:nomeUsuario')
-            if (value !== null) {
-                return `Lucas`
-            }
-        } catch (e) {
-            Alert.alert('Erro', `${e}`)
-        }
-    }
+        
+    const value = `${AsyncStorage.getItem('@weDo:nomeUsuario').then((response) =>{
+        //Alert.alert(`${response}`)
+        return `Lucas`
+    })}`
+    
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={{ height: 100, flexDirection: 'row', borderBottomWidth: 0.5 }}>
                 <Image source={logo} style={{ height: 50, width: 50, borderRadius: 60, margin: '7%' }} />
-                <Text style={{ marginTop: '11%', fontSize: 19, fontFamily: EstiloComum.fontFamily, color: EstiloComum.cores.fundoWeDo }}>{`${getNome()}`}</Text>
+                <Text style={{ marginTop: '11%', fontSize: 19, fontFamily: EstiloComum.fontFamily, color: EstiloComum.cores.fundoWeDo }}>{value}</Text>
             </View>
             <ScrollView>
                 <DrawerItems {...props} />
