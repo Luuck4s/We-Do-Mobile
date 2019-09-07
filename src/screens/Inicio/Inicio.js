@@ -144,7 +144,7 @@ export default class Inicio extends Component {
 
         return (
             <View style={StyleInicio.container}>
-                <Header paginaInicial={true} image={logo_icon} texto={"Página Inicial"} icon={"search"} onPress={() => Alert.alert("Teste", "teste")} onPressImage={() => this.props.navigation.openDrawer()} />
+                <Header paginaInicial={true} image={logo_icon} texto={"Página Inicial"} icon={"search"} onPressPesquisa={() => Alert.alert("Teste", "teste")} onPressImage={() => this.props.navigation.openDrawer()} />
                 <AddIdeia isVisible={this.state.AddIdeia} onCancel={() => this.setState({ AddIdeia: false })} adicionarIdeia={this.adicionarIdeia} />
                 {this.state.carregando &&
                     <ActivityIndicator style={{padding: 10}} size="large" color={EstiloComum.cores.fundoWeDo}  />

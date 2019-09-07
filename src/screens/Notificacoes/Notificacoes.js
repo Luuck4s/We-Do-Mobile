@@ -11,7 +11,7 @@ export default class Trends extends Component {
     render(){
         return(
             <View>
-                <Header paginaInicial={false} texto={"Notificações"} icon={"medapps"} />
+                <Header paginaInicial={false} texto={"Notificações"} icon={"medapps"} onPress={() => this.props.navigation.openDrawer()}/>
             </View>
         )
     }

@@ -41,6 +41,17 @@ const styles = StyleSheet.create({
         marginLeft: '4%',
         color: EstiloComum.cores.fundoWeDo,
         fontSize: 20,
+    },
+    inputPesquisa:{
+        marginLeft: '2%',
+        width: '50%',
+    },
+    inputTec:{
+        width: '44%', 
+        marginTop: '2%'
+    },
+    iconTec: {
+        marginLeft: '25%'
     }
 })
 
