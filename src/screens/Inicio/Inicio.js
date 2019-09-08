@@ -15,32 +15,16 @@ import logo_icon from '../../../assets/img/weDo_logo.png'
 export default class Inicio extends Component {
 
     state = {
-        AddIdeia: false,
+        idUsuario: '',
         ideias: [],
+        AddIdeia: false,
+        semFeed: false,
         carregando: true,
         atualizando: false
     }
 
     componentDidMount = async () => {
-       await this.buscarFeed(),
-       await this.storeName()
-    }
-
-
-    /**
-     * Função que guarda o nome do usuario
-    */
-    storeName = async () => {
-        try {
-            let idUsuario = await AsyncStorage.getItem('@weDo:userId')
-
-            Api.get(`/usuario/perfil/${idUsuario}`).then((response) => {
-                AsyncStorage.setItem('@weDo:nomeUsuario', `${response.data.perfil_usuario[0].nm_usuario}`)
-                Api.defaults.headers.common['Authorization'] = `${response.data.token}`
-            })
-        } catch (err) {
-            Alert.alert('Erro', `${err}`)
-        }
+       await this.buscarFeed()
     }
 
     /**
@@ -50,14 +34,14 @@ export default class Inicio extends Component {
         try {
             let idUsuario = await AsyncStorage.getItem('@weDo:userId')
 
+            await this.setState({idUsuario})
+
             Api.get('/feed/' + idUsuario)
                 .then((response) => {
                     Api.defaults.headers.common['Authorization'] = `${response.data.token}`
-                    this.setState({ ideias: response.data.ideias })
-                }).then(() => {
-                    this.setState({carregando: false})
+                    this.setState({ ideias: response.data.ideias, carregando: false})
                 }).catch((err) => {
-                    this.setState({carregando: false,ideia: false})
+                    this.setState({carregando: false,semFeed: true})
                 })
 
         } catch (err) {
@@ -104,8 +88,15 @@ export default class Inicio extends Component {
     /**
      * Curtir ideia
      */
-    curtirIdeia = (idIdeia) => {
-        return Alert.alert('Curtida', `ideia: ${idIdeia}`)
+    curtirIdeia = async (idIdeia) => {
+        Api.post('/feed/curtida',{
+            usuario:{
+                id_usuario: this.state.idUsuario
+            },
+            ideia: {
+                id_ideia: idIdeia
+            }
+        })
     }
 
     /**
@@ -149,7 +140,7 @@ export default class Inicio extends Component {
                 {this.state.carregando &&
                     <ActivityIndicator style={{padding: 10}} size="large" color={EstiloComum.cores.fundoWeDo}  />
                 }
-                {this.state.ideias == false &&
+                {this.state.semFeed &&
                     <Text>Não tem ideias de acordo com seu gosto</Text>
                 }
                 {this.state.ideias &&

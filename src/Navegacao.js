@@ -1,11 +1,8 @@
-import React, { Component } from 'react'
-import { SafeAreaView, Image, Text, View, ScrollView, TouchableWithoutFeedback, Alert } from 'react-native'
+import React from 'react'
 import { createSwitchNavigator, createBottomTabNavigator, createDrawerNavigator, DrawerItems, createAppContainer } from 'react-navigation'
-import BottomTabBar from "react-navigation-selective-tab-bar";
+import BottomTabBar from "react-navigation-selective-tab-bar"
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import EstiloComum from './EstiloComum'
-import Api from './api/Api'
-import AsyncStorage from '@react-native-community/async-storage'
 import AuthOrInicio from './screens/AuthOrInicio/AuthOrInicio'
 import Auth from './screens/Auth/Auth'
 import Inicio from './screens/Inicio/Inicio'
@@ -16,8 +13,7 @@ import ProjetosAtuais from './screens/ProjetosAtuais/ProjetosAtuais'
 import Portifolio from './screens/Portifolio/Portifolio'
 import Configuracoes from './screens/Configuracoes/Configuracoes'
 import Ajuda from './screens/Ajuda/Ajuda'
-
-import logo from '../assets/img/weDo_logo.png'
+import ScreenSlideMenu from './screens/ScreenSlideMenu/ScreenSlideMenu';
 
 /**
  * Menu apresentado na tela inicial e nas outras tela apos o login 
@@ -91,47 +87,6 @@ const MenuRoutes = createAppContainer(createBottomTabNavigator(
 ))
 
 /**
- * Menu Lateral
-*/
-const EstiloSlideMenu = (props) => {
-    /**
-     * Função que apaga o header do token e limpa o storage para deslogar o usuario
-     */
-    const logout = () => {
-        delete Api.defaults.headers.common['Authorization']
-        AsyncStorage.clear()
-        props.navigation.navigate('Carregando')
-    }
-
-        
-    const value = `${AsyncStorage.getItem('@weDo:nomeUsuario').then((response) =>{
-        //Alert.alert(`${response}`)
-        return `Lucas`
-    })}`
-    
-
-    return (
-        <SafeAreaView style={{ flex: 1 }}>
-            <View style={{ height: 100, flexDirection: 'row', borderBottomWidth: 0.5 }}>
-                <Image source={logo} style={{ height: 50, width: 50, borderRadius: 60, margin: '7%' }} />
-                <Text style={{ marginTop: '11%', fontSize: 19, fontFamily: EstiloComum.fontFamily, color: EstiloComum.cores.fundoWeDo }}>{value}</Text>
-            </View>
-            <ScrollView>
-                <DrawerItems {...props} />
-            </ScrollView>
-            <View style={{ height: 50, flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'flex-end', borderWidth: 0.5 }}>
-                <TouchableWithoutFeedback style={{ flexDirection: 'row', marginTop: '4%' }} onPress={logout}>
-                    <Icon name='sign-out-alt' size={25} color={'#808080'} style={{ marginTop: '4%', marginLeft: '6%' }} />
-                </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback style={{ flexDirection: 'row', marginTop: '4%' }} onPress={logout}>
-                    <Text style={{ marginTop: '4%', marginLeft: '3%', marginRight: '3%', fontSize: 19, fontFamily: EstiloComum.fontFamily, color: '#808080' }}>Sair</Text>
-                </TouchableWithoutFeedback>
-            </View>
-        </SafeAreaView>
-    )
-}
-
-/**
  * Menu Lateral que mostra mais opções de navegação para o usuario
 */
 const SlideMenu = createAppContainer(createDrawerNavigator({
@@ -186,7 +141,7 @@ const SlideMenu = createAppContainer(createDrawerNavigator({
     {
         initialRouteName: 'Inicio',
         overlayColor: 'rgba(0,0,0,0.4)',
-        contentComponent: EstiloSlideMenu,
+        contentComponent: ScreenSlideMenu,
         backBehavior: 'none',
         drawerWidth: 300,
         contentOptions: {
@@ -194,7 +149,6 @@ const SlideMenu = createAppContainer(createDrawerNavigator({
         }
     })
 )
-
 
 /**
  * Coloca a tela de login primeiro e depois troca de tela logo apos o login

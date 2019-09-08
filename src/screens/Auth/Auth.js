@@ -131,8 +131,8 @@ export default class Auth extends Component {
 				Api.defaults.headers.common['Authorization'] = `${response.data.token}`
 				this.manterLogado(response.data)
 				this.storeId(response.data.usuario.id_usuario)
+				this.props.navigation.navigate('Inicio', response.data.usuario)
 			})
-			this.props.navigation.navigate('Inicio')
 		} catch (error) {
 			Alert.alert('Error ao Logar', `Aconteceu um erro ${error.data}`)
 		}
