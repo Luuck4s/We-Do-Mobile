@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { View, Modal, Text, TouchableWithoutFeedback, TextInput, TouchableOpacity, Alert, ScrollView } from 'react-native'
+import { View, Modal, Text, TextInput, TouchableOpacity, Alert, ScrollView } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome5'
 import StylesAddIdeia from './StylesAddIdeia'
 import SectionedMultiSelect from 'react-native-sectioned-multi-select'
 import Api from '../../api/Api'
@@ -37,7 +38,7 @@ export default class AddIdeia extends Component {
 
         const data = { ...this.state }
         this.props.adicionarIdeia(data)
-        this.setState({titulo: '', desc: '', tecnologiasIdeia: [], maximoTecnologia: false,})
+        this.setState({ titulo: '', desc: '', tecnologiasIdeia: [], maximoTecnologia: false, })
     }
 
 	/**
@@ -80,18 +81,21 @@ export default class AddIdeia extends Component {
         return (
             <Modal onRequestClose={this.props.onCancel}
                 visible={this.props.isVisible}
-                animationType='fade' transparent={true}>
-                <TouchableWithoutFeedback onPress={this.props.onCancel}>
-                    <View style={StylesAddIdeia.offset}></View>
-                </TouchableWithoutFeedback>
-                <View style={StylesAddIdeia.container}>
+                animationType='slide' transparent={false}>
+                <TouchableOpacity onPress={() => this.props.onCancel()}>
+                    <Icon name={'times-circle'} style={StylesAddIdeia.icone} size={30} />
                     <Text style={StylesAddIdeia.header}>Adicionar uma ideia</Text>
-                    <TextInput placeholder="Titulo Ideia" style={StylesAddIdeia.input}
+                </TouchableOpacity>
+                <View style={StylesAddIdeia.container}>
+                    <TextInput placeholder="Titulo da Ideia" style={StylesAddIdeia.input}
                         onChangeText={titulo => this.setState({ titulo })}
                         value={this.state.titulo} />
                     <TextInput placeholder="Descrição" style={StylesAddIdeia.inputDesc}
+                        maxLength={300}
                         onChangeText={desc => this.setState({ desc })}
                         value={this.state.desc} multiline={true} />
+                    <TextInput placeholder="Tags para ajudar a buscar sua ideia" style={StylesAddIdeia.inputDesc}
+                        onChangeText={() => null} />
                     <View style={StylesAddIdeia.containerTec}>
                         <ScrollView>
                             <SectionedMultiSelect
@@ -117,9 +121,6 @@ export default class AddIdeia extends Component {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <TouchableWithoutFeedback onPress={this.props.onCancel}>
-                    <View style={StylesAddIdeia.offset}></View>
-                </TouchableWithoutFeedback>
             </Modal>
         )
     }
