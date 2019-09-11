@@ -14,6 +14,7 @@ import Portifolio from './screens/Portifolio/Portifolio'
 import Configuracoes from './screens/Configuracoes/Configuracoes'
 import Ajuda from './screens/Ajuda/Ajuda'
 import ScreenSlideMenu from './screens/ScreenSlideMenu/ScreenSlideMenu';
+import Pesquisa from './components/Pesquisa/Pesquisa'
 
 /**
  * Menu apresentado na tela inicial e nas outras tela apos o login 
@@ -55,6 +56,9 @@ const MenuRoutes = createAppContainer(createBottomTabNavigator(
                 tabBarIcon: ({ tintColor }) =>
                     <Icon name='comment-alt' size={30} color={tintColor} />
             }
+        },
+        Pesquisa:{
+            screen: Pesquisa
         },
         ProjetosAtuais: {
             screen: ProjetosAtuais

@@ -11,12 +11,13 @@ import Api from '../../api/Api'
 
 const tecnologias = []
 
-class Header extends Component {
+export default class Header extends Component {
 
     state = {
         pesquisa: false,
         pesquisaTec: false,
-        tecnologiaSelect: []
+        tecnologiaSelect: [],
+        textoPesquisa: '',
     }
 
     componentDidMount = async () => {
@@ -41,18 +42,24 @@ class Header extends Component {
         }
     }
 
+    selecionarTecnologias = (tecnologiaSelect) => {
+        if(tecnologiaSelect.length > 1){
+            return
+        }
+
+        this.setState({ tecnologiaSelect})
+        
+        
+    }
+
     /**
      * Exibe a barra de pesquisa caso o usuario clique sobre o icone de lupa,
      * caso o state esteja true ele apenas esconde o input e caso ao contraio 
      * espera receber uma função para reelizar a busca
     */
     onPressPesquisa = () => {
-        if (this.state.pesquisa) {
-            this.setState({ pesquisa: false, pesquisaTec: false })
-        } else {
-            this.setState({ pesquisa: true })
-            this.props.onPressPesquisa()
-        }
+        this.setState({ pesquisa: true })
+        this.props.trocarPagina()
     }
 
     /**
@@ -62,10 +69,21 @@ class Header extends Component {
         this.setState({ pesquisaTec: true })
     }
 
+    /**
+     * Verifica se foi passado algum texto ou tecnologia e manda os dados para tela de pesquisa
+    */
+    realizarPesquisa = () => {
+        if (this.state.textoPesquisa.length > 0 || this.state.tecnologiaSelect) {
+            let data = this.state
+            this.props.trocarPagina(data)
+        }
+    }
+
+
     render() {
         return (
             <View style={StyleHeader.container}>
-                {this.props.paginaInicial && !this.state.pesquisa &&
+                {this.props.paginaInicial &&
                     <View style={StyleHeader.rowContainer}>
                         <TouchableOpacity onPress={this.props.onPressImage} >
                             <Image source={this.props.image} style={StyleHeader.image} />
@@ -76,12 +94,16 @@ class Header extends Component {
                         </TouchableOpacity>
                     </View>
                 }
-                {this.props.paginaInicial && this.state.pesquisa &&
+                {this.props.ScreenPesquisa && !this.props.paginaInicial &&
                     <View style={[StyleHeader.rowContainer, { height: 50 }]}>
-                        <TouchableOpacity onPress={() => this.onPressPesquisa()} >
+                        <TouchableOpacity onPress={() => this.props.voltarTela()} >
                             <Icon name={'long-arrow-alt-left'} size={25} />
                         </TouchableOpacity>
-                        <TextInput style={StyleHeader.inputPesquisa} placeholder="Escreva algo para pesquisar" />
+                        <TextInput style={StyleHeader.inputPesquisa} value={this.state.textoPesquisa} 
+                            placeholder="Escreva algo para pesquisar" 
+                            onChangeText={textoPesquisa => this.setState({ textoPesquisa })}
+                            onSubmitEditing={() => this.realizarPesquisa()}
+                            autoFocus={true} />
                         {!this.state.pesquisaTec &&
                             <TouchableOpacity onPress={() => this.onPressPesquisaTec()} style={StyleHeader.iconTec} >
                                 <Icon name='code' size={20} />
@@ -94,7 +116,6 @@ class Header extends Component {
                                     showDropDowns={false}
                                     readOnlyHeadings={true}
                                     showChips={false}
-                                    single={true}
                                     placeholder="Tecnologia"
                                     uniqueKey="id_tecnologia"
                                     subKey="tecnologias"
@@ -104,13 +125,13 @@ class Header extends Component {
                                     searchPlaceholderText='Pesquisar Tecnologias'
                                     selectedText='Selecionada'
                                     items={tecnologias}
-                                    onSelectedItemsChange={(tecnologia) => this.setState({ tecnologiaSelect: tecnologia })}
+                                    onSelectedItemsChange={this.selecionarTecnologias}
                                     selectedItems={this.state.tecnologiaSelect} />
                             </View>
                         }
                     </View>
                 }
-                {!this.props.paginaInicial &&
+                {!this.props.paginaInicial && !this.props.ScreenPesquisa &&
                     <View style={StyleHeader.rowContainer2}>
                         <TouchableOpacity onPress={this.props.onPress}>
                             <Icon name={this.props.icon} size={30} color={EstiloComum.cores.fundoWeDo} style={StyleHeader.icon2} />
@@ -122,6 +143,3 @@ class Header extends Component {
         )
     }
 }
-
-
-export default Header

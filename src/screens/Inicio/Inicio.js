@@ -9,7 +9,7 @@ import EstiloComum from '../../EstiloComum'
 import ActionButton from 'react-native-action-button'
 import AddIdeia from '../AddIdeia/AddIdeia'
 
-import logo_icon from '../../../assets/img/weDo_logo.png' 
+import logo_icon from '../../../assets/img/weDo_logo.png'
 
 
 export default class Inicio extends Component {
@@ -24,7 +24,7 @@ export default class Inicio extends Component {
     }
 
     componentDidMount = async () => {
-       await this.buscarFeed()
+        await this.buscarFeed()
     }
 
     /**
@@ -34,14 +34,14 @@ export default class Inicio extends Component {
         try {
             let idUsuario = await AsyncStorage.getItem('@weDo:userId')
 
-            await this.setState({idUsuario})
+            await this.setState({ idUsuario })
 
             Api.get('/feed/' + idUsuario)
                 .then((response) => {
                     Api.defaults.headers.common['Authorization'] = `${response.data.token}`
-                    this.setState({ ideias: response.data.ideias, carregando: false})
+                    this.setState({ ideias: response.data.ideias, carregando: false })
                 }).catch((err) => {
-                    this.setState({carregando: false,semFeed: true})
+                    this.setState({ carregando: false, semFeed: true })
                 })
 
         } catch (err) {
@@ -53,9 +53,9 @@ export default class Inicio extends Component {
      * Função para atualizar o feed
     */
     atualizarFeed = () => {
-        this.setState({atualizando: true, carregando: true})
+        this.setState({ atualizando: true, carregando: true })
         this.buscarFeed().then(() => {
-            this.setState({atualizando: false, carregando: false})
+            this.setState({ atualizando: false, carregando: false })
         })
     }
 
@@ -89,8 +89,8 @@ export default class Inicio extends Component {
      * Curtir ideia
      */
     curtirIdeia = async (idIdeia) => {
-        Api.post('/feed/curtida',{
-            usuario:{
+        Api.post('/feed/curtida', {
+            usuario: {
                 id_usuario: this.state.idUsuario
             },
             ideia: {
@@ -125,9 +125,9 @@ export default class Inicio extends Component {
          * renderItem foi retirado de dentro da FlatList para melhor desenpenho do componente
          */
         renderItem = ({ item }) => (<Ideia key={item.id_ideia}
-            {...item} 
-            onPressAutor={() => this.infoAutor(item.id_ideia)} 
-            onPresNomeIdeia={() => this.ideia(item.id_ideia)} 
+            {...item}
+            onPressAutor={() => this.infoAutor(item.id_ideia)}
+            onPresNomeIdeia={() => this.ideia(item.id_ideia)}
             onPressMembros={() => this.membros(item.id_ideia)}
             onPressCurtir={() => this.curtirIdeia(item.id_ideia)}
             onPressComentario={() => this.comentarios(item.id_ideia)}
@@ -135,21 +135,22 @@ export default class Inicio extends Component {
 
         return (
             <View style={StyleInicio.container}>
-                <Header paginaInicial={true} image={logo_icon} texto={"Página Inicial"} icon={"search"} onPressPesquisa={() => Alert.alert("Teste", "teste")} onPressImage={() => this.props.navigation.openDrawer()} />
+                <Header paginaInicial={true} image={logo_icon} texto={"Página Inicial"} icon={"search"} onPressImage={() => this.props.navigation.openDrawer()}
+                    trocarPagina={() => this.props.navigation.navigate('Pesquisa')}/>
                 <AddIdeia isVisible={this.state.AddIdeia} onCancel={() => this.setState({ AddIdeia: false })} adicionarIdeia={this.adicionarIdeia} />
                 {this.state.carregando &&
-                    <ActivityIndicator style={{padding: 10}} size="large" color={EstiloComum.cores.fundoWeDo}  />
+                    <ActivityIndicator style={{ padding: 10 }} size="large" color={EstiloComum.cores.fundoWeDo} />
                 }
                 {this.state.semFeed &&
                     <Text>Não tem ideias de acordo com seu gosto</Text>
                 }
                 {this.state.ideias &&
-                        <FlatList
-                            refreshControl={<RefreshControl refreshing={this.state.atualizando} onRefresh={this.atualizarFeed} />}
-                            initialNumToRender={2}
-                            data={this.state.ideias}
-                            keyExtractor={item => `${item.id_ideia}`}
-                            renderItem={renderItem} />
+                    <FlatList
+                        refreshControl={<RefreshControl refreshing={this.state.atualizando} onRefresh={this.atualizarFeed} />}
+                        initialNumToRender={2}
+                        data={this.state.ideias}
+                        keyExtractor={item => `${item.id_ideia}`}
+                        renderItem={renderItem} />
                 }
                 <ActionButton buttonColor={EstiloComum.cores.fundoWeDo}
                     onPress={() => { this.setState({ AddIdeia: true }) }} />

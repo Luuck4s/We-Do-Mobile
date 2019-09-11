@@ -155,7 +155,7 @@ export default class Auth extends Component {
 					tecnologias_usuario: this.state.interesses
 				},
 			}).then((response) => {
-				Alert.alert('Cadastro com sucesso', `${response.data}`)
+				Alert.alert('Cadastro com sucesso', `${response.data.msg}`)
 				this.setState({ criarConta: false })
 			})
 		} catch (error) {
