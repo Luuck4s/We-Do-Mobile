@@ -45,13 +45,15 @@ class Ideia extends Component {
     */
     curtida = () => {
         if(this.state.curtido){
-            this.setState({curtido: false},this.setState({qtdCurtidas: this.state.qtdCurtidas - 1}))
             this.props.onPressCurtir()
+            this.setState({curtido: false},this.setState({qtdCurtidas: this.state.qtdCurtidas - 1}))
+            
         }
 
         if(!this.state.curtido){
-            this.setState({curtido: true},this.setState({qtdCurtidas: this.state.qtdCurtidas + 1}))
             this.props.onPressCurtir()
+            this.setState({curtido: true},this.setState({qtdCurtidas: this.state.qtdCurtidas + 1}))
+            
         }
     }
 

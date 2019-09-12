@@ -30,7 +30,7 @@ class MembroIdeia extends Component {
                 }
                 {membros}
                 {this.props.membros.length > 0 && 
-                    <Text style={StyleMembroIdeia.textMore} onPress={this.props.onPressMembros}> + </Text>
+                    <Text style={StyleMembroIdeia.textMore} onPress={this.props.onPressMembros}>+{this.props.membros.length}</Text>
                 }
             </View>
         )

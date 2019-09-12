@@ -16,8 +16,8 @@ export default class AddIdeia extends Component {
         maximoTecnologia: false,
     }
 
-    componentDidMount = () => {
-        this.buscaTecnologias()
+    componentDidMount = async () => {
+        await this.buscaTecnologias()
     }
 
     /**
@@ -94,8 +94,6 @@ export default class AddIdeia extends Component {
                         maxLength={300}
                         onChangeText={desc => this.setState({ desc })}
                         value={this.state.desc} multiline={true} />
-                    <TextInput placeholder="Tags para ajudar a buscar sua ideia" style={StylesAddIdeia.inputDesc}
-                        onChangeText={() => null} />
                     <View style={StylesAddIdeia.containerTec}>
                         <ScrollView>
                             <SectionedMultiSelect

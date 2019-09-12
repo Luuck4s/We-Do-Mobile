@@ -42,14 +42,15 @@ export default class Header extends Component {
         }
     }
 
+    /**
+     * Função que verifica se o maximo de tecnologia ja foi selecionado para pesquisa
+    */
     selecionarTecnologias = (tecnologiaSelect) => {
-        if(tecnologiaSelect.length > 1){
+        if (tecnologiaSelect.length > 1) {
             return
         }
 
-        this.setState({ tecnologiaSelect})
-        
-        
+        this.setState({ tecnologiaSelect })
     }
 
     /**
@@ -60,13 +61,6 @@ export default class Header extends Component {
     onPressPesquisa = () => {
         this.setState({ pesquisa: true })
         this.props.trocarPagina()
-    }
-
-    /**
-     * Realiza a exibição do select caso o usuario clique sobre o icone
-    */
-    onPressPesquisaTec = () => {
-        this.setState({ pesquisaTec: true })
     }
 
     /**
@@ -99,36 +93,30 @@ export default class Header extends Component {
                         <TouchableOpacity onPress={() => this.props.voltarTela()} >
                             <Icon name={'long-arrow-alt-left'} size={25} />
                         </TouchableOpacity>
-                        <TextInput style={StyleHeader.inputPesquisa} value={this.state.textoPesquisa} 
-                            placeholder="Escreva algo para pesquisar" 
+                        <TextInput style={StyleHeader.inputPesquisa} value={this.state.textoPesquisa}
+                            placeholder="Escreva algo para pesquisar"
                             onChangeText={textoPesquisa => this.setState({ textoPesquisa })}
                             onSubmitEditing={() => this.realizarPesquisa()}
                             autoFocus={true} />
-                        {!this.state.pesquisaTec &&
-                            <TouchableOpacity onPress={() => this.onPressPesquisaTec()} style={StyleHeader.iconTec} >
-                                <Icon name='code' size={20} />
-                            </TouchableOpacity>
-                        }
-                        {this.state.pesquisaTec &&
-                            <View style={StyleHeader.inputTec}>
-                                <SectionedMultiSelect
-                                    colors={{ primary: EstiloComum.cores.fundoWeDo }}
-                                    showDropDowns={false}
-                                    readOnlyHeadings={true}
-                                    showChips={false}
-                                    placeholder="Tecnologia"
-                                    uniqueKey="id_tecnologia"
-                                    subKey="tecnologias"
-                                    displayKey='nm_tecnologia'
-                                    selectText='Tecnologia'
-                                    confirmText='Confirmar'
-                                    searchPlaceholderText='Pesquisar Tecnologias'
-                                    selectedText='Selecionada'
-                                    items={tecnologias}
-                                    onSelectedItemsChange={this.selecionarTecnologias}
-                                    selectedItems={this.state.tecnologiaSelect} />
-                            </View>
-                        }
+                        <View style={StyleHeader.inputTec}>
+                            <SectionedMultiSelect
+                                colors={{ primary: EstiloComum.cores.fundoWeDo }}
+                                showDropDowns={false}
+                                readOnlyHeadings={true}
+                                showChips={false}
+                                placeholder="Tecnologia"
+                                uniqueKey="id_tecnologia"
+                                subKey="tecnologias"
+                                displayKey='nm_tecnologia'
+                                selectText='Tecnologia'
+                                confirmText='Confirmar'
+                                searchPlaceholderText='Pesquisar Tecnologias'
+                                selectedText='Selecionada'
+                                items={tecnologias}
+                                onSelectedItemsChange={this.selecionarTecnologias}
+                                selectedItems={this.state.tecnologiaSelect} />
+                        </View>
+
                     </View>
                 }
                 {!this.props.paginaInicial && !this.props.ScreenPesquisa &&

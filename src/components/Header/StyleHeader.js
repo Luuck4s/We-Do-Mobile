@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     },
     icon2: {
         marginLeft: '3%',
+        marginBottom: '1%',
     },
     title: {
         fontFamily: EstiloComum.fontFamily,
@@ -41,8 +42,10 @@ const styles = StyleSheet.create({
         marginLeft: '4%',
         color: EstiloComum.cores.fundoWeDo,
         fontSize: 20,
+        marginBottom: '1%',
     },
     inputPesquisa:{
+        fontSize: 15,
         marginLeft: '2%',
         width: '50%',
     },

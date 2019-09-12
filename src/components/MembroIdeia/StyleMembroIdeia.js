@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     },
     MeContainer: {
         marginTop: '3%',
-        marginLeft: '2%',
+        marginLeft: '1%',
     },
     participantes: {
         fontSize: 14,
