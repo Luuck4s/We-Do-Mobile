@@ -16,51 +16,84 @@ class Ideia extends Component {
 
     state = {
         curtido: false,
+        interesse: false,
         idUsuarioAtual: null,
         qtdCurtidas: this.props.curtidas.length
     }
 
     componentDidMount = async () => {
-        await this.getIdUsuario(),
+        await this.getIdUsuario()
         await this.ideiaCurtidaBanco()
     }
 
-    getIdUsuario = async() => {
+    /**
+     * Função responsavel por buscar o Id do usuario no storage
+    */
+    getIdUsuario = async () => {
         let idUsuario = await AsyncStorage.getItem('@weDo:userId')
-        this.setState({idUsuarioAtual: idUsuario})
+        this.setState({ idUsuarioAtual: idUsuario })
     }
 
+    /**
+     * Função que verifica se o usuario ja curtiu previamente a ideia
+    */
     ideiaCurtidaBanco = () => {
-        this.props.curtidas.map((item,index) => {
-            if(this.state.idUsuarioAtual == item.id_usuario){
-                this.setState({curtido: true})
-            }else{
-                this.setState({curtido: false})
+        this.props.curtidas.map((item, index) => {
+            if (this.state.idUsuarioAtual == item.id_usuario) {
+                this.setState({ curtido: true })
+            } else {
+                this.setState({ curtido: false })
             }
         })
+    }
+
+    /**
+     * Função que muda o state e espera receber uma função pela props
+    */
+    interesse = () => {
+        if (this.state.interesse) {
+            this.props.onPressInteresse()
+            this.setState({ interesse: false })
+        }
+
+        if (!this.state.interesse) {
+            this.props.onPressInteresse()
+            this.setState({ interesse: true })
+        }
+    }
+
+    /**
+     * Função responsavel por carregar o botao de interesse de acordo com o state
+    */
+    renderInteresse = () => {
+        if (this.state.interesse) {
+            return <Icon name='check' size={20} style={StyleIdeia.iconInteresse} />
+        } else {
+            return <Text style={StyleIdeia.textInteresse}>Interesse</Text>
+        }
     }
 
     /**
      * Função responsavel por alterar a cor do icone de curtida ao ser cliclado
     */
     curtida = () => {
-        if(this.state.curtido){
+        if (this.state.curtido) {
             this.props.onPressCurtir()
-            this.setState({curtido: false},this.setState({qtdCurtidas: this.state.qtdCurtidas - 1}))
-            
+            this.setState({ curtido: false }, this.setState({ qtdCurtidas: this.state.qtdCurtidas - 1 }))
+
         }
 
-        if(!this.state.curtido){
+        if (!this.state.curtido) {
             this.props.onPressCurtir()
-            this.setState({curtido: true},this.setState({qtdCurtidas: this.state.qtdCurtidas + 1}))
-            
+            this.setState({ curtido: true }, this.setState({ qtdCurtidas: this.state.qtdCurtidas + 1 }))
+
         }
     }
 
     render() {
-        let idealizador = this.props.membros.map((item,index) => {
-            if(item.idealizador == 1){
-                return item.nm_usuario 
+        let idealizador = this.props.membros.map((item, index) => {
+            if (item.idealizador == 1) {
+                return item.nm_usuario
             }
         })
 
@@ -69,7 +102,7 @@ class Ideia extends Component {
                 return item.quantidade_comentario
             })
             : 0
-        
+
         return (
             <View style={StyleIdeia.container}>
                 <Text style={StyleIdeia.titulo} onPress={this.props.onPresNomeIdeia}>{this.props.nm_ideia}</Text>
@@ -89,8 +122,8 @@ class Ideia extends Component {
                         <Text style={StyleIdeia.numComentCurti}> {qtdComentario}</Text>
                     </Icon>
                 </View>
-                <TouchableOpacity style={StyleIdeia.interesse} onPress={this.props.onPressInteresse}>
-                    <Text style={StyleIdeia.textInteresse}>Interesse</Text>
+                <TouchableOpacity style={StyleIdeia.interesse} onPress={() => this.interesse()}>
+                    {this.renderInteresse()}
                 </TouchableOpacity>
                 <AddComentario />
             </View>

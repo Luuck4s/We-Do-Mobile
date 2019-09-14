@@ -118,7 +118,7 @@ const SlideMenu = createAppContainer(createDrawerNavigator({
         name: 'Portifolio',
         screen: MenuRoutes,
         navigationOptions: {
-            title: 'Seu Portifolio',
+            title: 'Seu Portifólio',
             drawerIcon: ({ tintColor }) =>
                 <Icon name='chart-bar' size={20} color={tintColor} />
         }
@@ -127,7 +127,7 @@ const SlideMenu = createAppContainer(createDrawerNavigator({
         name: 'Configuracoes',
         screen: MenuRoutes,
         navigationOptions: {
-            title: 'Configuracoes',
+            title: 'Configurações',
             drawerIcon: ({ tintColor }) =>
                 <Icon name='cog' size={20} color={tintColor} />
         }

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { View, Alert, FlatList } from 'react-native'
-import Header from '../Header/Header'
+import Header from '../../components/Header/Header'
 import Api from '../../api/Api'
-import Ideia from '../Ideia/Ideia'
+import Ideia from '../../components/Ideia/Ideia'
 
 export default class Pesquisa extends Component {
 
@@ -14,11 +14,7 @@ export default class Pesquisa extends Component {
      * Função resposanvel por realizar a pesquisa por palavra chave
     */
     realizarPesquisaPalavra = async (textoPesquisa) => {
-        Api.post('/ideia/buscar',{
-            ideia:{
-                busca: `${textoPesquisa}`
-            }
-        }).then((response) => {
+        Api.get(`/ideia/buscar/${textoPesquisa}`).then((response) => {
             Api.defaults.headers.common['Authorization'] = `${response.data.token}`
             this.setState({ideias: response.data.ideias})
         }).catch((err) => {

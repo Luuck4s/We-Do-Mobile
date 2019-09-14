@@ -26,15 +26,15 @@ export default props => {
             </View>
             <ScrollView>
                 <DrawerItems {...props} />
-            </ScrollView>
-            <View style={SlyleMenu.containerLogout}>
+                <View style={SlyleMenu.containerLogout}>
                 <TouchableWithoutFeedback style={SlyleMenu.areaLogout} onPress={logout}>
-                    <Icon name='sign-out-alt' size={25} color={'#808080'} style={SlyleMenu.iconLogout} />
+                    <Icon name='power-off' size={22} color={'#808080'} style={SlyleMenu.iconLogout} />
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback style={SlyleMenu.areaLogout} onPress={logout}>
                     <Text style={SlyleMenu.textLogout}>Sair</Text>
                 </TouchableWithoutFeedback>
             </View>
+            </ScrollView> 
         </SafeAreaView>
     )
 }

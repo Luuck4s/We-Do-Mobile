@@ -21,7 +21,7 @@ const style = StyleSheet.create({
     },
     iconLogout: {
         marginTop: '4%',
-        marginLeft: '6%',
+        marginLeft: '7%',
     },
     areaLogout: {
         flexDirection: 'row',
@@ -29,18 +29,18 @@ const style = StyleSheet.create({
     },
     textLogout: {
         marginTop: '4%',
-        marginLeft: '3%',
+        marginLeft: '9%',
         marginRight: '3%',
-        fontSize: 19,
+        fontSize: 16,
         fontFamily: EstiloComum.fontFamily,
-        color: '#808080',
+        color: '#111',
     },
     containerLogout: {
         height: 50,
         flexDirection: 'row',
         alignItems: 'flex-start',
-        justifyContent: 'flex-end',
-        borderWidth: 0.5,
+        justifyContent: 'flex-start',
+        borderTopWidth: 0.5,
     }
 })
 

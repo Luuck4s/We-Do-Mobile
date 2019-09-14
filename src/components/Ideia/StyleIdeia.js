@@ -48,6 +48,10 @@ const styles = StyleSheet.create({
     iconComentario: {
         marginLeft: 20,
         marginTop: 10 
+    },
+    iconInteresse: {
+        color: '#FFF',
+        marginTop: '5%',
     }
 })
 
