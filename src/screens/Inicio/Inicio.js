@@ -40,6 +40,10 @@ export default class Inicio extends Component {
                 .then((response) => {
                     Api.defaults.headers.common['Authorization'] = `${response.data.token}`
                     this.setState({ ideias: response.data.ideias, carregando: false })
+
+                    if (response.data.ideias.length == 0) {
+                        this.setState({ semFeed: true })
+                    }
                 }).catch((err) => {
                     this.setState({ carregando: false, semFeed: true })
                 })
@@ -61,10 +65,11 @@ export default class Inicio extends Component {
 
     /**
      * Funcao que vai passada para salvar a ideia
+     * @param - idIdeia 
     */
-    adicionarIdeia = ideia => {
+    adicionarIdeia = (idIdeia) => {
 
-        Alert.alert('Ideia Criada', `${ideia}`)
+        Alert.alert('Ideia Criada', `${idIdeia}`)
 
         this.setState({ AddIdeia: false })
     }
@@ -82,11 +87,19 @@ export default class Inicio extends Component {
      * @param - idIdeia 
     */
     interesse = (idIdeia) => {
-        return Alert.alert('Interesse', `ideia: ${idIdeia}`)
+        Api.post('/feed/interesse', {
+            usuario: {
+                id_usuario: this.state.idUsuario,
+            },
+            ideia: {
+                id_ideia: idIdeia
+            }
+        })
     }
 
     /**
      * Curtir ideia
+     * @param - IdIdeia
      */
     curtirIdeia = async (idIdeia) => {
         Api.post('/feed/curtida', {
@@ -101,6 +114,7 @@ export default class Inicio extends Component {
 
     /**
     * Comentarios da ideia
+    * @param - IdIdeia
     */
     comentarios = (idIdeia) => {
         return Alert.alert('Comentarios', `ideia: ${idIdeia}`)
@@ -108,6 +122,7 @@ export default class Inicio extends Component {
 
     /**
      * Membros da ideia
+     * @param - IdIdeia
     */
     membros = (idIdeia) => {
         return Alert.alert('Membros', `ideia: ${idIdeia}`)
@@ -115,6 +130,7 @@ export default class Inicio extends Component {
 
     /**
      * Ideia em si
+     * @param - IdIdeia
     */
     ideia = (idIdeia) => {
         return Alert.alert('Titulo Ideia', `Ideia: ${idIdeia}`)
@@ -136,7 +152,7 @@ export default class Inicio extends Component {
         return (
             <View style={StyleInicio.container}>
                 <Header paginaInicial={true} image={logo_icon} texto={"Página Inicial"} icon={"search"} onPressImage={() => this.props.navigation.openDrawer()}
-                    trocarPagina={() => this.props.navigation.navigate('Pesquisa')}/>
+                    trocarPagina={() => this.props.navigation.navigate('Pesquisa')} />
                 <AddIdeia isVisible={this.state.AddIdeia} onCancel={() => this.setState({ AddIdeia: false })} adicionarIdeia={this.adicionarIdeia} />
                 {this.state.carregando &&
                     <ActivityIndicator style={{ padding: 10 }} size="large" color={EstiloComum.cores.fundoWeDo} />

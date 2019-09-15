@@ -1,39 +1,77 @@
 import React, { Component } from 'react'
-import { View, Alert, FlatList } from 'react-native'
+import { View, Alert, FlatList, ActivityIndicator, Text } from 'react-native'
 import Header from '../../components/Header/Header'
 import Api from '../../api/Api'
 import Ideia from '../../components/Ideia/Ideia'
+import EstiloComum from '../../EstiloComum'
 
 export default class Pesquisa extends Component {
 
     state = {
         ideias: [],
+        carregando: false,
+        semResultados: false,
     }
 
     /**
      * Função resposanvel por realizar a pesquisa por palavra chave
     */
     realizarPesquisaPalavra = async (textoPesquisa) => {
-        Api.get(`/ideia/buscar/${textoPesquisa}`).then((response) => {
+        this.setState({ carregando: true })
+        await Api.get(`/ideia/busca_nome/${textoPesquisa}`).then((response) => {
+
             Api.defaults.headers.common['Authorization'] = `${response.data.token}`
-            this.setState({ideias: response.data.ideias})
+            this.setState({ ideias: response.data.ideias, semResultados: false })
+
+            if (response.data.ideias.length == 0) {
+                this.setState({ semResultados: true })
+            }
+
         }).catch((err) => {
-            Alert.alert(`${err}`)
+            this.setState({ semResultados: true })
+            Alert.alert('Erro', `${err}`)
         })
+        this.setState({ carregando: false })
     }
 
     /**
      * Realizar a pesquisa por tecnologia
     */
-    realizarPesquisaTecnologia = async () => {
-        Alert.alert('Pesquisa Tecnologia')
+    realizarPesquisaTecnologia = async (tecnologiaPesquisa) => {
+        this.setState({ carregando: true })
+        await Api.get(`/ideia/busca_tecnologia/${tecnologiaPesquisa}`).then((response) => {
+            Api.defaults.headers.common['Authorization'] = `${response.data.token}`
+            this.setState({ ideias: response.data.ideias, semResultados: false })
+
+            if (response.data.ideias.length == 0) {
+                this.setState({ semResultados: true })
+            }
+
+        }).catch((err) => {
+            this.setState({ semResultados: true })
+            Alert.alert('Erro', `${err}`)
+        })
+        this.setState({ carregando: false })
     }
 
     /**
      * Realizar a pesquisa por tecnologia e palavra chave
     */
-    realizarPesquisa = async () => {
-        Alert.alert('Pesquisa os dois')
+    realizarPesquisa = async (tecnologiaPesquisa, textoPesquisa) => {
+        this.setState({ carregando: true })
+        await Api.get(`/ideia/busca_tecnologia_nome/${tecnologiaPesquisa}&${textoPesquisa}`).then((response) => {
+            Api.defaults.headers.common['Authorization'] = `${response.data.token}`
+            this.setState({ ideias: response.data.ideias, semResultados: false })
+
+            if (response.data.ideias.length == 0) {
+                this.setState({ semResultados: true })
+            }
+
+        }).catch((err) => {
+            this.setState({ semResultados: true })
+            Alert.alert('Erro', `${err}`)
+        })
+        this.setState({ carregando: false })
     }
 
     /**
@@ -43,12 +81,12 @@ export default class Pesquisa extends Component {
         let textoPesquisa = await this.props.navigation.getParam('textoPesquisa')
         let tecnologiaPesquisa = await this.props.navigation.getParam('tecnologiaSelect')
 
-        if(textoPesquisa && tecnologiaPesquisa != ''){
-            this.realizarPesquisa()
-        }else if(textoPesquisa){
+        if (textoPesquisa && tecnologiaPesquisa != '') {
+            this.realizarPesquisa(tecnologiaPesquisa, textoPesquisa)
+        } else if (textoPesquisa) {
             this.realizarPesquisaPalavra(textoPesquisa)
-        } else if(tecnologiaPesquisa != '') {
-            this.realizarPesquisaTecnologia()
+        } else if (tecnologiaPesquisa != '') {
+            this.realizarPesquisaTecnologia(tecnologiaPesquisa)
         }
     }
 
@@ -63,18 +101,26 @@ export default class Pesquisa extends Component {
 
     render() {
 
-        renderItem = ({ item }) => (<Ideia key={item.id_ideia} {...item} />)
+        renderItem = ({ item }) => (<Text style={{ fontSize: 20 }} key={item.id_ideia}>{item.nm_ideia}</Text>)
 
         return (
             <View>
                 <Header ScreenPesquisa={true}
                     voltarTela={() => this.props.navigation.navigate('Inicio')}
                     trocarPagina={data => this.trocarPagina(data)} />
-                 <FlatList
+                {this.state.carregando &&
+                    <ActivityIndicator style={{ padding: 10 }} size="large" color={EstiloComum.cores.fundoWeDo} />
+                }
+                {this.state.semResultados &&
+                    <Text>Não a resultados para essa pesquisa</Text>
+                }
+                {this.state.ideias &&
+                    <FlatList
                         initialNumToRender={2}
                         data={this.state.ideias}
                         keyExtractor={item => `${item.id_ideia}`}
                         renderItem={renderItem} />
+                }
             </View>
         )
     }

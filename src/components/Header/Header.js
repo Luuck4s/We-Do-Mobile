@@ -91,7 +91,7 @@ export default class Header extends Component {
                 {this.props.ScreenPesquisa && !this.props.paginaInicial &&
                     <View style={[StyleHeader.rowContainer, { height: 50 }]}>
                         <TouchableOpacity onPress={() => this.props.voltarTela()} >
-                            <Icon name={'long-arrow-alt-left'} size={25} />
+                            <Icon name={'arrow-left'} size={25} />
                         </TouchableOpacity>
                         <TextInput style={StyleHeader.inputPesquisa} value={this.state.textoPesquisa}
                             placeholder="Escreva algo para pesquisar"
