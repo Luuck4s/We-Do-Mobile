@@ -86,6 +86,7 @@ const MenuRoutes = createAppContainer(createBottomTabNavigator(
         tabBarOptions: {
             showLabel: false,
             activeTintColor: EstiloComum.cores.fundoWeDo,
+            keyboardHidesTabBar: true,
         }
     }
 ))
