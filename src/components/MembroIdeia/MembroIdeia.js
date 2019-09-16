@@ -7,6 +7,20 @@ import StyleMembroIdeia from './StyleMembroIdeia'
 
 class MembroIdeia extends Component {
 
+    /**
+     * Filtra os membros do array recebido por props e realiza a contagem de quantos
+     * membros participa da ideia
+     */
+    qtdMembros = () => {
+        return this.props.membros.reduce((sum, item) => {
+            if (item.status_solicitacao == 1) {
+                sum++
+            }
+            return sum
+        }, 0)
+
+    }
+
     render() {
         let membros = null
         let n = 0
@@ -29,8 +43,8 @@ class MembroIdeia extends Component {
                     <Text style={StyleMembroIdeia.text}>Com</Text>
                 }
                 {membros}
-                {this.props.membros.length > 0 && 
-                    <Text style={StyleMembroIdeia.textMore} onPress={this.props.onPressMembros}>+{this.props.membros.length}</Text>
+                {this.props.membros.length > 0 &&
+                    <Text style={StyleMembroIdeia.textMore} onPress={this.props.onPressMembros}>+ {this.qtdMembros()}</Text>
                 }
             </View>
         )

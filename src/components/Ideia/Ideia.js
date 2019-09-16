@@ -18,12 +18,14 @@ class Ideia extends Component {
         curtido: false,
         interesse: false,
         idUsuarioAtual: null,
-        qtdCurtidas: this.props.curtidas.length
+        qtdCurtidas: 0,
     }
 
     componentDidMount = async () => {
         await this.getIdUsuario()
         await this.ideiaCurtidaBanco()
+        await this.quantidadeCurtida()
+        await this.interesseBanco()
     }
 
     /**
@@ -32,6 +34,10 @@ class Ideia extends Component {
     getIdUsuario = async () => {
         let idUsuario = await AsyncStorage.getItem('@weDo:userId')
         this.setState({ idUsuarioAtual: idUsuario })
+    }
+
+    quantidadeCurtida = () => {
+        this.setState({ qtdCurtidas: this.props.curtidas.length })
     }
 
     /**
@@ -43,6 +49,20 @@ class Ideia extends Component {
                 this.setState({ curtido: true })
             } else {
                 this.setState({ curtido: false })
+            }
+        })
+    }
+
+    /**
+     * Função que verifica se o usuario ja tem interesse nessa ideia e 
+     * muda o estado do componente
+    */
+    interesseBanco = () => {
+        this.props.membros.map((item, index) => {
+            if (this.state.idUsuarioAtual == item.id_usuario) {
+                if (item.status_solicitacao == 0) {
+                    this.setState({ interesse: true })
+                }
             }
         })
     }

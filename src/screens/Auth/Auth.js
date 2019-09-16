@@ -238,7 +238,8 @@ export default class Auth extends Component {
 							secureTextEntry={true}
 							style={StyleAuth.input}
 							value={this.state.senha_usuario}
-							onChangeText={senha_usuario => this.setState({ senha_usuario })} />
+							onChangeText={senha_usuario => this.setState({ senha_usuario })} 
+							onSubmitEditing={this.logarOuCadastrar} />
 					}
 					{this.state.criarConta &&
 						<AuthInput style={StyleAuth.inputMetadeConfirmarSenha}
