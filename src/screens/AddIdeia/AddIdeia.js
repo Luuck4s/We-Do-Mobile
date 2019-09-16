@@ -116,6 +116,7 @@ export default class AddIdeia extends Component {
                     <View style={StylesAddIdeia.containerButton}>
                         <TouchableOpacity style={StylesAddIdeia.button} onPress={this.save}>
                             <Text style={StylesAddIdeia.textButton}>Pronto</Text>
+                            <Icon name='check' size={20} style={StylesAddIdeia.iconeButton} />
                         </TouchableOpacity>
                     </View>
                 </View>

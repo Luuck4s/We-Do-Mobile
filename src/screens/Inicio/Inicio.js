@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Alert, FlatList, ActivityIndicator, RefreshControl } from 'react-native'
+import { View, Text, Alert, FlatList, ActivityIndicator,ToastAndroid, RefreshControl } from 'react-native'
 import StyleInicio from './StyleInicio'
 import Api from '../../api/Api'
 import AsyncStorage from '@react-native-community/async-storage'
@@ -63,15 +63,41 @@ export default class Inicio extends Component {
         })
     }
 
+    criarTags = (tituloDaIdeia) => {
+
+        let splitTituloDaIdeia = tituloDaIdeia.split(" ")
+        let tagsDaIdeia = []
+
+        for(let i = 0; i < splitTituloDaIdeia.length; i++){
+            if(splitTituloDaIdeia[i].length > 2){
+                tagsDaIdeia.push(splitTituloDaIdeia[i])
+            }
+        }
+        
+       return tagsDaIdeia
+    }
+
     /**
      * Funcao que vai passada para salvar a ideia
-     * @param - idIdeia 
+     * @param - dataIdeia 
     */
-    adicionarIdeia = (idIdeia) => {
+    adicionarIdeia = async (dataIdeia) => {
 
-        Alert.alert('Ideia Criada', `${idIdeia}`)
+        this.setState({AddIdeia: false})
 
-        this.setState({ AddIdeia: false })
+        Api.post('/ideia',{
+            ideia:{
+                nm_ideia: dataIdeia.titulo,
+                ds_ideia: dataIdeia.desc,
+                tecnologias_ideia: dataIdeia.tecnologiasIdeia,
+                tags_ideia: this.criarTags(dataIdeia.titulo)
+            },
+            usuario: {
+                id_usuario: this.state.idUsuario
+            }
+        }).then(() =>{
+            ToastAndroid.show('Ideia criada com sucesso', ToastAndroid.SHORT);
+        })
     }
 
     /**
@@ -153,7 +179,7 @@ export default class Inicio extends Component {
             <View style={StyleInicio.container}>
                 <Header paginaInicial={true} image={logo_icon} texto={"Página Inicial"} icon={"search"} onPressImage={() => this.props.navigation.openDrawer()}
                     trocarPagina={() => this.props.navigation.navigate('Pesquisa')} />
-                <AddIdeia isVisible={this.state.AddIdeia} onCancel={() => this.setState({ AddIdeia: false })} adicionarIdeia={this.adicionarIdeia} />
+                <AddIdeia isVisible={this.state.AddIdeia} onCancel={() => this.setState({ AddIdeia: false })} adicionarIdeia={dataIdeia => this.adicionarIdeia(dataIdeia)} />
                 {this.state.carregando &&
                     <ActivityIndicator style={{ padding: 10 }} size="large" color={EstiloComum.cores.fundoWeDo} />
                 }
@@ -163,14 +189,13 @@ export default class Inicio extends Component {
                 {this.state.ideias &&
                     <FlatList
                         refreshControl={<RefreshControl refreshing={this.state.atualizando} onRefresh={this.atualizarFeed} />}
-                        initialNumToRender={2}
+                        initialNumToRender={3}
                         data={this.state.ideias}
                         keyExtractor={item => `${item.id_ideia}`}
                         renderItem={renderItem} />
                 }
                 <ActionButton buttonColor={EstiloComum.cores.fundoWeDo}
                     onPress={() => { this.setState({ AddIdeia: true }) }} />
-
             </View>
         )
     }

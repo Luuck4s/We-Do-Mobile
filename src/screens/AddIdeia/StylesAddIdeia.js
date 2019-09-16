@@ -5,6 +5,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 3,
         backgroundColor: '#FFF',
+        marginTop: '1%',
         marginLeft: '2%',
         marginRight: '2%',
     },
@@ -13,14 +14,20 @@ const styles = StyleSheet.create({
         marginLeft: '5%',
         color: EstiloComum.cores.fundoWeDo
     },
+    iconeButton:{
+        marginTop: '9%',
+        color: '#FFF'
+    },
     containerButton:{
+        marginTop: '8%',
         flexDirection: 'row', 
-        justifyContent: 'flex-end'
+        justifyContent: 'center'
     },
     button: {
         margin: 15,
-        borderRadius: 20,
-        alignItems: 'center',
+        borderRadius: 15,
+        flexDirection: 'row',
+        alignContent: 'space-around',
         width: 100,
         height: 40,
         backgroundColor: EstiloComum.cores.fundoWeDo,
@@ -68,7 +75,10 @@ const styles = StyleSheet.create({
         color: '#000'
     },
     textButton: {
+        fontSize: 14,
         marginTop: '9%',
+        marginLeft: '10%',
+        marginRight: '10%',
         color: '#FFF'
     }
 })
