@@ -3,7 +3,7 @@
  * como o @MembroIdeia, @TecnologiaIdeia, @AddComentario.
  */
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, Alert } from 'react-native'
+import { View, Text, TouchableOpacity, Alert, ToastAndroid } from 'react-native'
 import StyleIdeia from './StyleIdeia'
 import AddComentario from '../AddComentario/AddComentario'
 import TecnologiaIdeia from '../TecnologiaIdeia/TecnologiaIdeia'
@@ -74,11 +74,13 @@ class Ideia extends Component {
         if (this.state.interesse) {
             this.props.onPressInteresse()
             this.setState({ interesse: false })
+            ToastAndroid.show('Interesse removido', ToastAndroid.SHORT);
         }
 
         if (!this.state.interesse) {
             this.props.onPressInteresse()
             this.setState({ interesse: true })
+            ToastAndroid.show('Interesse adicionado', ToastAndroid.SHORT);
         }
     }
 
