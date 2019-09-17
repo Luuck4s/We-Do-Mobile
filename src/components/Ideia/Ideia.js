@@ -133,7 +133,10 @@ class Ideia extends Component {
 
         return (
             <View style={StyleIdeia.container}>
-                <Text style={StyleIdeia.titulo} onPress={this.props.onPresNomeIdeia}>{this.props.nm_ideia}</Text>
+                <TouchableOpacity onPress={this.props.onPresNomeIdeia}>
+                    <Text style={StyleIdeia.titulo}>{this.props.nm_ideia}</Text>
+                </TouchableOpacity>
+
                 <Text style={StyleIdeia.autor} onPress={this.props.onPressAutor}>por {idealizador}</Text>
 
                 <TecnologiaIdeia tecnologias={this.props.tecnologias} />
@@ -143,12 +146,16 @@ class Ideia extends Component {
                 <MembroIdeia onPressMembros={this.props.onPressMembros} membros={this.props.membros} />
 
                 <View style={{ flexDirection: 'row' }}>
-                    <Icon name='heart' style={this.state.curtido ? StyleIdeia.iconCurtido : StyleIdeia.iconCurtida} size={19} onPress={() => this.curtida()} >
-                        <Text style={StyleIdeia.numComentCurti}> {this.state.qtdCurtidas}</Text>
-                    </Icon>
-                    <Icon name='comment' style={StyleIdeia.iconComentario} size={19} color={EstiloComum.cores.fundoWeDo} onPress={this.props.onPressComentario} >
-                        <Text style={StyleIdeia.numComentCurti}> {qtdComentario}</Text>
-                    </Icon>
+                    <TouchableOpacity onPress={() => this.curtida()}>
+                        <Icon name='heart' style={this.state.curtido ? StyleIdeia.iconCurtido : StyleIdeia.iconCurtida} size={19} >
+                            <Text style={StyleIdeia.numComentCurti}> {this.state.qtdCurtidas}</Text>
+                        </Icon>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this.props.onPressComentario}>
+                        <Icon name='comment' style={StyleIdeia.iconComentario} size={19} color={EstiloComum.cores.fundoWeDo}>
+                            <Text style={StyleIdeia.numComentCurti}> {qtdComentario}</Text>
+                        </Icon>
+                    </TouchableOpacity>
                 </View>
                 {!this.state.donoIdeia &&
                     <TouchableOpacity style={StyleIdeia.interesse} onPress={() => this.interesse()}>

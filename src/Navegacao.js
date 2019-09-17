@@ -15,6 +15,7 @@ import Configuracoes from './screens/Configuracoes/Configuracoes'
 import Ajuda from './screens/Ajuda/Ajuda'
 import ScreenSlideMenu from './screens/ScreenSlideMenu/ScreenSlideMenu';
 import Pesquisa from './screens/Pesquisa/Pesquisa'
+import IdeiaPage from './screens/IdeiaPage/IdeiaPage'
 
 /**
  * Menu apresentado na tela inicial e nas outras tela apos o login 
@@ -102,6 +103,13 @@ const SlideMenu = createAppContainer(createDrawerNavigator({
     Inicio: {
         name: 'Inicio',
         screen: MenuRoutes,
+        navigationOptions: {
+            drawerLabel: () => null
+        }
+    },
+    IdeiaPage:{
+        name: 'IdeiaPage',
+        screen: IdeiaPage,
         navigationOptions: {
             drawerLabel: () => null
         }

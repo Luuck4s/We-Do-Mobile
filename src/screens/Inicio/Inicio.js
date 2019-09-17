@@ -8,7 +8,6 @@ import Ideia from '../../components/Ideia/Ideia'
 import EstiloComum from '../../EstiloComum'
 import ActionButton from 'react-native-action-button'
 import AddIdeia from '../AddIdeia/AddIdeia'
-import IdeiaPage from '../IdeiaPage/IdeiaPage'
 
 import logo_icon from '../../../assets/img/weDo_logo.png'
 
@@ -92,11 +91,11 @@ export default class Inicio extends Component {
     }
 
     /**
-     * Mostrar informações sobre o autor
-     * @param - idAutor 
+     * Mostrar informações sobre o autor abrindo a pagina da ideia
+     * @param - idIdeia 
      */
-    infoAutor = (idAutor) => {
-        return Alert.alert('Autor', `id: ${idAutor}`);
+    infoAutor = (idIdeia) => {
+        this.ideia(idIdeia)
     }
 
     /**
@@ -134,7 +133,7 @@ export default class Inicio extends Component {
     * @param - IdIdeia
     */
     comentarios = (idIdeia) => {
-        return Alert.alert('Comentarios', `ideia: ${idIdeia}`)
+        this.ideia(idIdeia)
     }
 
     /**
@@ -142,7 +141,7 @@ export default class Inicio extends Component {
      * @param - IdIdeia
     */
     membros = (idIdeia) => {
-        return Alert.alert('Membros', `ideia: ${idIdeia}`)
+        this.ideia(idIdeia)
     }
 
     /**
@@ -150,8 +149,15 @@ export default class Inicio extends Component {
      * @param - IdIdeia
     */
     ideia = (idIdeia) => {
-        Alert.alert(`${idIdeia}`)
 
+        let data = []
+        
+        JSON.stringify(data = {
+            id_ideia: idIdeia,
+            id_usuario: this.state.idUsuario
+        })
+
+        this.props.navigation.navigate('IdeiaPage', data)
     }
 
     render() {

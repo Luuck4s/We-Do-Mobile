@@ -2,7 +2,7 @@
  * Componente que recebe um array de usuario e separa as informações e retorna as imagens 
 */
 import React, { Component } from 'react';
-import { View, Text } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import StyleMembroIdeia from './StyleMembroIdeia'
 
 class MembroIdeia extends Component {

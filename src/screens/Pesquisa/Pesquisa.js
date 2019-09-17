@@ -4,6 +4,7 @@ import Header from '../../components/Header/Header'
 import Api from '../../api/Api'
 import IdeiaPesquisa from '../../components/IdeiaPesquisa/IdeiaPesquisa'
 import EstiloComum from '../../EstiloComum'
+import AsyncStorage from '@react-native-community/async-storage'
 
 export default class Pesquisa extends Component {
 
@@ -99,9 +100,26 @@ export default class Pesquisa extends Component {
         await this.tipoPesquisa()
     }
 
+    /**
+     * Exibir a pagina da Ideia
+     * @param - idIdeia  
+    */
+    ideia = async (idIdeia) => {
+
+        let data = []
+        let idUsuario = await AsyncStorage.getItem('@weDo:userId')
+
+        JSON.stringify(data = {
+            id_ideia: idIdeia,
+            id_usuario: idUsuario
+        })
+
+        this.props.navigation.navigate('IdeiaPage', data)
+    }
+
     render() {
 
-        renderItem = ({ item }) => (<IdeiaPesquisa key={item.id_ideia} onPress={() => Alert.alert(`Funfou`)} {...item}/>)
+        renderItem = ({ item }) => (<IdeiaPesquisa key={item.id_ideia} onPress={() => this.ideia(item.id_ideia)} {...item}/>)
 
         return (
             <View>
