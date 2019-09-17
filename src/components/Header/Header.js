@@ -116,7 +116,6 @@ export default class Header extends Component {
                                 onSelectedItemsChange={this.selecionarTecnologias}
                                 selectedItems={this.state.tecnologiaSelect} />
                         </View>
-
                     </View>
                 }
                 {!this.props.paginaInicial && !this.props.ScreenPesquisa &&

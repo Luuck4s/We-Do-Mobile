@@ -7,8 +7,9 @@ const styles = StyleSheet.create({
         margin: 10,
     },
     titulo: {
+        fontFamily: EstiloComum.fontFamily,
         fontSize: 20,
-        color: '#000',
+        color: EstiloComum.cores.fundoWeDo,
     },
     autor: {
         marginTop: 2,
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
     },
     descricao: {
         marginTop: 5,
-        fontSize: 13,
+        fontSize: 15,
         color: '#000',
     },
     interesse: {

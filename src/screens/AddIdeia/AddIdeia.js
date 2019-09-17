@@ -13,6 +13,7 @@ export default class AddIdeia extends Component {
         titulo: '',
         desc: '',
         tecnologiasIdeia: [],
+        tagsIdeia: [],
         maximoTecnologia: false,
     }
 
@@ -21,10 +22,27 @@ export default class AddIdeia extends Component {
     }
 
     /**
+     * Cria as tag a partir do titulo
+    */
+    criarTagsTitulo = async  () => {
+        let tituloDaIdeia = this.state.titulo
+        let splitTituloDaIdeia = tituloDaIdeia.split(" ")
+        let tagsDaIdeia = []
+
+        for(let i = 0; i < splitTituloDaIdeia.length; i++){
+            if(splitTituloDaIdeia[i].length > 2){
+                tagsDaIdeia.push(splitTituloDaIdeia[i])
+            }
+        }
+         
+       this.setState({tagsIdeia: tagsDaIdeia})
+    }
+
+    /**
      * Função que verifica os campos do componente e caso esteja tudo preenchido 
      * espera recever por props uma função de add a ideia
     */
-    save = () => {
+    save = async () => {
         if (!this.state.titulo.trim()) {
             Alert.alert('Titulo Invalido', 'Informe um Titulo para a ideia!')
 
@@ -35,10 +53,11 @@ export default class AddIdeia extends Component {
 
             return
         }
+        await this.criarTagsTitulo()
 
         const data = { ...this.state }
         this.props.adicionarIdeia(data)
-        this.setState({ titulo: '', desc: '', tecnologiasIdeia: [], maximoTecnologia: false, })
+        this.setState({ titulo: '', desc: '', tecnologiasIdeia: [], maximoTecnologia: false,tagsIdeia: [] })
     }
 
 	/**
@@ -89,9 +108,9 @@ export default class AddIdeia extends Component {
                 <View style={StylesAddIdeia.container}>
                     <TextInput placeholder="Titulo da Ideia" style={StylesAddIdeia.input}
                         onChangeText={titulo => this.setState({ titulo })}
-                        value={this.state.titulo} />
+                        value={this.state.titulo} maxLength={50} />
                     <TextInput placeholder="Descrição" style={StylesAddIdeia.inputDesc}
-                        maxLength={300}
+                        maxLength={255}
                         onChangeText={desc => this.setState({ desc })}
                         value={this.state.desc} multiline={true} />
                     <View style={StylesAddIdeia.containerTec}>

@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
         marginLeft: -3,
     },
     nomeTecnologia: {
-        fontSize: 12,
+        fontSize: 13,
         color: '#FFF',
     }
 })

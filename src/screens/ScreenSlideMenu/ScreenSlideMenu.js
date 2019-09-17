@@ -3,7 +3,7 @@ import { SafeAreaView, Image, Text, View, ScrollView, TouchableWithoutFeedback }
 import AsyncStorage from '@react-native-community/async-storage'
 import { DrawerItems } from 'react-navigation'
 import Api from '../../api/Api'
-import SlyleMenu from './StyleMenu'
+import StyleMenu from './StyleMenu'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import logo from '../../../assets/img/weDo_logo.png'
 
@@ -20,18 +20,18 @@ export default props => {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <View style={SlyleMenu.header}>
-                <Image source={logo} style={SlyleMenu.image} />
-                <Text style={SlyleMenu.userName}>{props.navigation.getParam('nm_usuario')}</Text>
+            <View style={StyleMenu.header}>
+                <Image source={logo} style={StyleMenu.image} />
+                <Text style={StyleMenu.userName}>{props.navigation.getParam('nm_usuario')}</Text>
             </View>
             <ScrollView>
                 <DrawerItems {...props} />
-                <View style={SlyleMenu.containerLogout}>
-                <TouchableWithoutFeedback style={SlyleMenu.areaLogout} onPress={logout}>
-                    <Icon name='power-off' size={22} color={'#808080'} style={SlyleMenu.iconLogout} />
+                <View style={StyleMenu.containerLogout}>
+                <TouchableWithoutFeedback style={StyleMenu.areaLogout} onPress={logout}>
+                    <Icon name='power-off' size={22} color={'#808080'} style={StyleMenu.iconLogout} />
                 </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback style={SlyleMenu.areaLogout} onPress={logout}>
-                    <Text style={SlyleMenu.textLogout}>Sair</Text>
+                <TouchableWithoutFeedback style={StyleMenu.areaLogout} onPress={logout}>
+                    <Text style={StyleMenu.textLogout}>Sair</Text>
                 </TouchableWithoutFeedback>
             </View>
             </ScrollView> 

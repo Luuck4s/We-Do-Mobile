@@ -19,6 +19,7 @@ class Ideia extends Component {
         interesse: false,
         idUsuarioAtual: null,
         qtdCurtidas: 0,
+        donoIdeia: false,
     }
 
     componentDidMount = async () => {
@@ -54,7 +55,7 @@ class Ideia extends Component {
     }
 
     /**
-     * Função que verifica se o usuario ja tem interesse nessa ideia e 
+     * Função que verifica se o usuario ja tem interesse ou se é dono da ideia e 
      * muda o estado do componente
     */
     interesseBanco = () => {
@@ -63,6 +64,11 @@ class Ideia extends Component {
                 if (item.status_solicitacao == 0) {
                     this.setState({ interesse: true })
                 }
+
+                if (item.idealizador == 1) {
+                    this.setState({ donoIdeia: true })
+                }
+
             }
         })
     }
@@ -144,9 +150,11 @@ class Ideia extends Component {
                         <Text style={StyleIdeia.numComentCurti}> {qtdComentario}</Text>
                     </Icon>
                 </View>
-                <TouchableOpacity style={StyleIdeia.interesse} onPress={() => this.interesse()}>
-                    {this.renderInteresse()}
-                </TouchableOpacity>
+                {!this.state.donoIdeia &&
+                    <TouchableOpacity style={StyleIdeia.interesse} onPress={() => this.interesse()}>
+                        {this.renderInteresse()}
+                    </TouchableOpacity>
+                }
                 <AddComentario />
             </View>
         )

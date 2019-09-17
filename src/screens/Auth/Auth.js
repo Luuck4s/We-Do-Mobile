@@ -210,11 +210,13 @@ export default class Auth extends Component {
 							icon='user'
 							placeholder='Nome'
 							value={this.state.nm_usuario}
+							maxLength={80}
 							onChangeText={nm_usuario => this.setState({ nm_usuario })} />
 					}
 					<AuthInput style={StyleAuth.input}
 						icon='envelope'
 						placeholder='Email'
+						maxLength={80}
 						value={this.state.email_usuario}
 						onChangeText={email_usuario => this.setState({ email_usuario })} />
 					{this.state.criarConta &&
@@ -228,6 +230,7 @@ export default class Auth extends Component {
 					{this.state.criarConta &&
 						<AuthInput icon='asterisk' placeholder='Senha'
 							metade={true}
+							maxLength={80}
 							secureTextEntry={true}
 							style={StyleAuth.inputMetadeSenha}
 							value={this.state.senha_usuario}
@@ -236,6 +239,7 @@ export default class Auth extends Component {
 					{!this.state.criarConta &&
 						<AuthInput icon='asterisk' placeholder='Senha'
 							secureTextEntry={true}
+							maxLength={80}
 							style={StyleAuth.input}
 							value={this.state.senha_usuario}
 							onChangeText={senha_usuario => this.setState({ senha_usuario })} 
@@ -245,6 +249,7 @@ export default class Auth extends Component {
 						<AuthInput style={StyleAuth.inputMetadeConfirmarSenha}
 							metade={true}
 							icon='asterisk'
+							maxLength={80}
 							placeholder='Confirmar Senha'
 							secureTextEntry={true}
 							value={this.state.confirmar_senha}

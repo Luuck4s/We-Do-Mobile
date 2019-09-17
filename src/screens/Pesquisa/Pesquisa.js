@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, Alert, FlatList, ActivityIndicator, Text } from 'react-native'
 import Header from '../../components/Header/Header'
 import Api from '../../api/Api'
-import Ideia from '../../components/Ideia/Ideia'
+import IdeiaPesquisa from '../../components/IdeiaPesquisa/IdeiaPesquisa'
 import EstiloComum from '../../EstiloComum'
 
 export default class Pesquisa extends Component {
@@ -101,7 +101,7 @@ export default class Pesquisa extends Component {
 
     render() {
 
-        renderItem = ({ item }) => (<Text style={{ fontSize: 20 }} key={item.id_ideia}>{item.nm_ideia}</Text>)
+        renderItem = ({ item }) => (<IdeiaPesquisa key={item.id_ideia} onPress={() => Alert.alert(`Funfou`)} {...item}/>)
 
         return (
             <View>

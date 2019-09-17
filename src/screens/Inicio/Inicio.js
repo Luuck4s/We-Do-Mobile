@@ -8,6 +8,7 @@ import Ideia from '../../components/Ideia/Ideia'
 import EstiloComum from '../../EstiloComum'
 import ActionButton from 'react-native-action-button'
 import AddIdeia from '../AddIdeia/AddIdeia'
+import IdeiaPage from '../IdeiaPage/IdeiaPage'
 
 import logo_icon from '../../../assets/img/weDo_logo.png'
 
@@ -20,7 +21,7 @@ export default class Inicio extends Component {
         AddIdeia: false,
         semFeed: false,
         carregando: true,
-        atualizando: false
+        atualizando: false,
     }
 
     componentDidMount = async () => {
@@ -63,19 +64,6 @@ export default class Inicio extends Component {
         })
     }
 
-    criarTags = (tituloDaIdeia) => {
-
-        let splitTituloDaIdeia = tituloDaIdeia.split(" ")
-        let tagsDaIdeia = []
-
-        for(let i = 0; i < splitTituloDaIdeia.length; i++){
-            if(splitTituloDaIdeia[i].length > 2){
-                tagsDaIdeia.push(splitTituloDaIdeia[i])
-            }
-        }
-        
-       return tagsDaIdeia
-    }
 
     /**
      * Funcao que vai passada para salvar a ideia
@@ -90,14 +78,17 @@ export default class Inicio extends Component {
                 nm_ideia: dataIdeia.titulo,
                 ds_ideia: dataIdeia.desc,
                 tecnologias_ideia: dataIdeia.tecnologiasIdeia,
-                tags_ideia: this.criarTags(dataIdeia.titulo)
+                tags_ideia: dataIdeia.tagsIdeia
             },
             usuario: {
                 id_usuario: this.state.idUsuario
             }
-        }).then(() =>{
+        }).then((response) =>{
+            Api.defaults.headers.common['Authorization'] = `${response.data.token}`
             ToastAndroid.show('Ideia criada com sucesso', ToastAndroid.SHORT);
         })
+
+        this.atualizarFeed()
     }
 
     /**
@@ -159,7 +150,8 @@ export default class Inicio extends Component {
      * @param - IdIdeia
     */
     ideia = (idIdeia) => {
-        return Alert.alert('Titulo Ideia', `Ideia: ${idIdeia}`)
+        Alert.alert(`${idIdeia}`)
+
     }
 
     render() {
