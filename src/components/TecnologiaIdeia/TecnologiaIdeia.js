@@ -13,7 +13,7 @@ class TecnologiaIdeia extends Component {
         if (this.props.tecnologias) {
             tecnologias = this.props.tecnologias.map((item, index) => {
                 t = t + 1
-                if (t <= 4) {
+                if (t <= 3) {
                     return (
                         <View style={StyleTecnologiaIdeia.TecContainer} key={index}>
                             <Text style={StyleTecnologiaIdeia.nomeTecnologia}>{item.nm_tecnologia}</Text>

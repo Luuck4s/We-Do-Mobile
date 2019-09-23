@@ -4,8 +4,8 @@ import EstiloComum from '../../EstiloComum'
 const styles = StyleSheet.create({
     TecContainer: {
         marginLeft: 3,
-        width: 80,
-        height: 20,
+        width: 90,
+        height: 'auto',
         marginTop: 5,
         borderRadius: 5,
         backgroundColor: EstiloComum.cores.fundoWeDo,
@@ -17,8 +17,9 @@ const styles = StyleSheet.create({
         marginLeft: -3,
     },
     nomeTecnologia: {
-        fontSize: 13,
+        fontSize: 14,
         color: '#FFF',
+        alignSelf: 'center',
     }
 })
 

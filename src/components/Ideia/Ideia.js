@@ -19,6 +19,7 @@ class Ideia extends Component {
         interesse: false,
         idUsuarioAtual: null,
         qtdCurtidas: 0,
+        qtdComentario: 0,
         donoIdeia: false,
     }
 
@@ -26,6 +27,7 @@ class Ideia extends Component {
         await this.getIdUsuario()
         await this.ideiaCurtidaBanco()
         await this.quantidadeCurtida()
+        await this.quantidadeCOmentario()
         await this.interesseBanco()
     }
 
@@ -35,6 +37,17 @@ class Ideia extends Component {
     getIdUsuario = async () => {
         let idUsuario = await AsyncStorage.getItem('@weDo:userId')
         this.setState({ idUsuarioAtual: idUsuario })
+    }
+
+    quantidadeCOmentario = () => {
+        let qtd = this.props.comentarios.map((item,index) => {
+            return item.quantidade_comentario
+        })
+
+        if(qtd > 0){
+            this.setState({ qtdComentario: qtd })
+        }
+        
     }
 
     quantidadeCurtida = () => {
@@ -118,18 +131,24 @@ class Ideia extends Component {
         }
     }
 
+    /**
+     * 
+     */
+    adicionarComentario = (data) => {
+        let qtdComentario = this.state.qtdComentario
+        qtdComentario = Number(qtdComentario)
+        this.setState({qtdComentario: qtdComentario + 1})
+
+        this.props.adicionarComentario(data)
+    }
+
     render() {
         let idealizador = this.props.membros.map((item, index) => {
             if (item.idealizador == 1) {
                 return item.nm_usuario
             }
-        })
+        }) 
 
-        let qtdComentario = this.props.comentarios.length > 0
-            ? this.props.comentarios.map((item, index) => {
-                return item.quantidade_comentario
-            })
-            : 0
 
         return (
             <View style={StyleIdeia.container}>
@@ -153,7 +172,7 @@ class Ideia extends Component {
                     </TouchableOpacity>
                     <TouchableOpacity onPress={this.props.onPressComentario}>
                         <Icon name='comment' style={StyleIdeia.iconComentario} size={19} color={EstiloComum.cores.fundoWeDo}>
-                            <Text style={StyleIdeia.numComentCurti}> {qtdComentario}</Text>
+                            <Text style={StyleIdeia.numComentCurti}> {this.state.qtdComentario}</Text>
                         </Icon>
                     </TouchableOpacity>
                 </View>
@@ -162,7 +181,7 @@ class Ideia extends Component {
                         {this.renderInteresse()}
                     </TouchableOpacity>
                 }
-                <AddComentario />
+                <AddComentario adicionarComentario={data => this.adicionarComentario(data)} />
             </View>
         )
     }

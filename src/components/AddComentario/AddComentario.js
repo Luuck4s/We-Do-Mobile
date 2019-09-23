@@ -13,7 +13,9 @@ class AddComentario extends Component {
 
     AdicionarComentario = () => {
         if(this.state.comentario.length != 0){
-            Alert.alert('Adicionado', `${this.state.comentario}`)
+            let data = this.state.comentario
+            this.props.adicionarComentario(data)
+            this.setState({comentario: ''})
         }else{
             return false
         }

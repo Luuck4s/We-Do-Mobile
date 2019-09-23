@@ -103,7 +103,7 @@ export default class Inicio extends Component {
      * @param - idIdeia 
     */
     interesse = (idIdeia) => {
-        Api.post('/feed/interesse', {
+        Api.post('/interesse', {
             usuario: {
                 id_usuario: this.state.idUsuario,
             },
@@ -118,7 +118,7 @@ export default class Inicio extends Component {
      * @param - IdIdeia
      */
     curtirIdeia = async (idIdeia) => {
-        Api.post('/feed/curtida', {
+        Api.post('/curtida', {
             usuario: {
                 id_usuario: this.state.idUsuario
             },
@@ -171,7 +171,8 @@ export default class Inicio extends Component {
             onPressMembros={() => this.membros(item.id_ideia)}
             onPressCurtir={() => this.curtirIdeia(item.id_ideia)}
             onPressComentario={() => this.comentarios(item.id_ideia)}
-            onPressInteresse={() => this.interesse(item.id_ideia)} />)
+            onPressInteresse={() => this.interesse(item.id_ideia)}
+            adicionarComentario={data => Alert.alert(data)} />)
 
         return (
             <View style={StyleInicio.container}>

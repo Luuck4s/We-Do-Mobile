@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         padding: 10,
-        borderBottomWidth: 0.5,
+        borderBottomWidth: StyleSheet.hairlineWidth,
     },
     titulo:{
         fontFamily: EstiloComum.fontFamily,

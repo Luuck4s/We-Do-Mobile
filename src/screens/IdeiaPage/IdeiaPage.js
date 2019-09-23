@@ -5,6 +5,7 @@ import EstiloComum from '../../EstiloComum'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import Api from '../../api/Api'
 import TecnologiaIdeia from '../../components/TecnologiaIdeia/TecnologiaIdeia'
+import Ideia from '../../components/Ideia/Ideia'
 
 export default class IdeiaPage extends Component {
 
@@ -50,8 +51,7 @@ export default class IdeiaPage extends Component {
                 </View>
                 <View style={StyleIdeiaPage.informacoesIdeia}>
                     
-                    <TecnologiaIdeia tecnologias={this.state.ideia.tecnologia} />
-                    <Text>{this.state.ideia.ds_ideia}</Text>
+                    <Ideia {...this.state.ideia} />
                 </View>
                 <View style={StyleIdeiaPage.participantes}>
                     <Text>Participantes</Text>
