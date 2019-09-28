@@ -1,6 +1,6 @@
 //Screen para redenizar a tela de login/cadastro do usuario 
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, Image, Switch, Alert } from 'react-native'
+import { View, Text, TouchableOpacity, Image, Switch, Alert, ToastAndroid } from 'react-native'
 import Api from '../../api/Api'
 import logo from '../../../assets/img/weDo_logo.png'
 import AuthInput from '../../components/AuthInput/AuthInput'
@@ -128,13 +128,17 @@ export default class Auth extends Component {
 					senha_usuario: this.state.senha_usuario
 				}
 			}).then((response) => {
-				Api.defaults.headers.common['Authorization'] = `${response.data.token}`
-				this.manterLogado(response.data)
-				this.storeId(response.data.usuario.id_usuario)
-				this.props.navigation.navigate('Inicio', response.data.usuario)
+				if(response.data.err){
+					ToastAndroid.show(`${response.data.err}`,ToastAndroid.SHORT)
+				}else{
+					Api.defaults.headers.common['Authorization'] = `${response.data.token}`
+					this.manterLogado(response.data)
+					this.storeId(response.data.usuario.id_usuario)
+					this.props.navigation.navigate('Inicio', response.data.usuario)
+				}
 			})
-		} catch (error) {
-			Alert.alert('Error ao Logar', `Aconteceu um erro ${error.data}`)
+		} catch (err) {
+			Alert.alert('Error ao Logar', `Aconteceu um erro ${err}`)
 		}
 	}
 
@@ -155,11 +159,16 @@ export default class Auth extends Component {
 					tecnologias_usuario: this.state.interesses
 				},
 			}).then((response) => {
-				Alert.alert('Cadastro com sucesso', `${response.data.msg}`)
-				this.setState({ criarConta: false })
+				if(response.data.err){
+					ToastAndroid.show(`${response.data.err}`,ToastAndroid.SHORT)
+				}else{
+					this.setState({criarConta: false, nm_usuario: '',confirmar_senha: '',dt_nascimento: '',interesses: []})
+					Alert.alert('Cadastro com sucesso', `${response.data.msg}`)
+					this.setState({ criarConta: false })
+				}
 			})
-		} catch (error) {
-			Alert.alert("Erro ao Cadastrar", `Ocorreu um erro inesperado ${error.data}`)
+		} catch (err) {
+			Alert.alert("Erro ao Cadastrar", `Ocorreu um erro inesperado ${err}`)
 		}
 	}
 
@@ -185,15 +194,15 @@ export default class Auth extends Component {
 		 */
 		const validacao = []
 
-		validacao.push(this.state.email_usuario && this.state.email_usuario.includes('@'))
-		validacao.push(this.state.senha_usuario && this.state.senha_usuario.length > 5)
-
 		if (this.state.criarConta) {
 			validacao.push(this.state.nm_usuario && this.state.nm_usuario.trim())
 			validacao.push(this.state.dt_nascimento)
-			validacao.push(this.state.confirmar_senha && this.state.confirmar_senha > 5)
-			validacao.push(this.state.senha_usuario === this.state.confirmar_senha)
-			validacao.push(this.state.interesses && this.state.interesses.length >= 4)
+			validacao.push(this.state.senha_usuario && this.state.senha_usuario.length >= 6)
+			validacao.push(this.state.senha_usuario == this.state.confirmar_senha)
+			validacao.push(this.state.interesses && this.state.interesses.length >= 1)
+		}else{
+			validacao.push(this.state.email_usuario && this.state.email_usuario.includes('@'))
+			validacao.push(this.state.senha_usuario && this.state.senha_usuario.length >= 6)
 		}
 
 		const validaFormulario = validacao.reduce((all, v) => all && v)
