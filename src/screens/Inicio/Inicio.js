@@ -36,10 +36,11 @@ export default class Inicio extends Component {
 
             await this.setState({ idUsuario })
 
-            Api.get('/feed/' + idUsuario)
+            await Api.get('/feed/' + idUsuario)
                 .then((response) => {
                     Api.defaults.headers.common['Authorization'] = `${response.data.token}`
                     this.setState({ ideias: response.data.ideias, carregando: false })
+
 
                     if (response.data.ideias.length == 0) {
                         this.setState({ semFeed: true })

@@ -23,14 +23,11 @@ const styles = StyleSheet.create({
         color: EstiloComum.cores.fundoWeDo,
         fontSize: 19,
     },
-    informacoesIdeia:{
-        flex: 2,
-    },
     participantes:{
-        flex: 1,
+        
     },
     comentarios:{
-        flex: 2,
+        
     }
 })
 

@@ -27,7 +27,7 @@ class Ideia extends Component {
         await this.getIdUsuario()
         await this.ideiaCurtidaBanco()
         await this.quantidadeCurtida()
-        await this.quantidadeCOmentario()
+        await this.quantidadeComentario()
         await this.interesseBanco()
     }
 
@@ -39,17 +39,33 @@ class Ideia extends Component {
         this.setState({ idUsuarioAtual: idUsuario })
     }
 
-    quantidadeCOmentario = () => {
-        let qtd = this.props.comentarios.map((item,index) => {
-            return item.quantidade_comentario
-        })
+    /**
+     * 
+    */
+    quantidadeComentario = () => {
+        if(this.props.ideiaPage){
+            /*let qtd = this.props.comentarios.length
 
-        if(qtd > 0){
-            this.setState({ qtdComentario: qtd })
+            this.setState({qtdComentario: qtd})
+
+            return qtd*/
+
+        }else{
+            let qtd = this.props.comentarios.map((item, index) => {
+                return item.quantidade_comentario
+            })
+    
+            if (qtd > 0) {
+                this.setState({ qtdComentario: qtd })
+            }
         }
         
+
     }
 
+    /**
+     * 
+    */
     quantidadeCurtida = () => {
         this.setState({ qtdCurtidas: this.props.curtidas.length })
     }
@@ -81,7 +97,6 @@ class Ideia extends Component {
                 if (item.idealizador == 1) {
                     this.setState({ donoIdeia: true })
                 }
-
             }
         })
     }
@@ -137,7 +152,7 @@ class Ideia extends Component {
     adicionarComentario = (data) => {
         let qtdComentario = this.state.qtdComentario
         qtdComentario = Number(qtdComentario)
-        this.setState({qtdComentario: qtdComentario + 1})
+        this.setState({ qtdComentario: qtdComentario + 1 })
 
         this.props.adicionarComentario(data)
     }
@@ -147,7 +162,7 @@ class Ideia extends Component {
             if (item.idealizador == 1) {
                 return item.nm_usuario
             }
-        }) 
+        })
 
 
         return (

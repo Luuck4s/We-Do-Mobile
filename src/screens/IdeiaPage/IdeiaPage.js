@@ -4,15 +4,13 @@ import StyleIdeiaPage from './StyleIdeiaPage'
 import EstiloComum from '../../EstiloComum'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import Api from '../../api/Api'
-import TecnologiaIdeia from '../../components/TecnologiaIdeia/TecnologiaIdeia'
 import Ideia from '../../components/Ideia/Ideia'
+
+let ideia = []
 
 export default class IdeiaPage extends Component {
 
-    state = {
-        ideia: [],
-    }
-
+    
     componentDidMount = async () => {
         await this.getInfoIdeia()
     }
@@ -27,18 +25,25 @@ export default class IdeiaPage extends Component {
     */
     getInfoIdeia = async () => {
 
-        let idIdeia = this.props.navigation.getParam('id_ideia')
-        let idUsuario = this.props.navigation.getParam('id_usuario')
+        
+        let idIdeia = ''
 
-        Api.get(`/ideia/${idIdeia}&${idUsuario}`).then((response) => {
+        idIdeia = await this.props.navigation.getParam('id_ideia')
+        
+        let idUsuario = await this.props.navigation.getParam('id_usuario')
+
+        await Api.get(`/ideia/${idIdeia}&${idUsuario}`)
+        .then((response) => {
             Api.defaults.headers.common['Authorization'] = `${response.data.token}`
-            this.setState({ ideia: response.data.ideia })
-        }).catch((err) => {
+            ideia = []
+            ideia.push(response.data.ideia)
+        })
+        .catch((err) => {
             Alert.alert(`${err}`)
         })
     }
 
-    render() {
+    render(){
         return (
             <View style={StyleIdeiaPage.container}>
                 <View style={StyleIdeiaPage.header}>
@@ -46,13 +51,12 @@ export default class IdeiaPage extends Component {
                         <Icon name={'times-circle'} size={30} style={StyleIdeiaPage.icone} />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('Inicio')}>
-                        <Text style={StyleIdeiaPage.tituloIdeia}>{this.state.ideia.nm_ideia}</Text>
+                        <Text style={StyleIdeiaPage.tituloIdeia}>Ideia</Text>
                     </TouchableOpacity>
                 </View>
-                <View style={StyleIdeiaPage.informacoesIdeia}>
-                    
-                    <Ideia {...this.state.ideia} />
-                </View>
+                {ideia[0] &&
+                    <Ideia ideiaPage={true} tecnologias={ideia[0].tecnologia} {...ideia[0]} />
+                }
                 <View style={StyleIdeiaPage.participantes}>
                     <Text>Participantes</Text>
                 </View>
