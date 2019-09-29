@@ -25,10 +25,7 @@ export default class IdeiaPage extends Component {
     */
     getInfoIdeia = async () => {
 
-        
-        let idIdeia = ''
-
-        idIdeia = await this.props.navigation.getParam('id_ideia')
+        let idIdeia = await this.props.navigation.getParam('id_ideia')
         
         let idUsuario = await this.props.navigation.getParam('id_usuario')
 

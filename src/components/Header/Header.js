@@ -7,52 +7,14 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
 import StyleHeader from './StyleHeader'
 import EstiloComum from '../../EstiloComum'
 import SectionedMultiSelect from 'react-native-sectioned-multi-select'
-import Api from '../../api/Api'
-
-const tecnologias = []
 
 export default class Header extends Component {
 
     state = {
-        pesquisa: false,
-        pesquisaTec: false,
         tecnologiaSelect: [],
         textoPesquisa: '',
     }
-
-    componentDidMount = async () => {
-        await this.buscaTecnologias()
-    }
-
-    /**
-     * Busca da API as tecnologias para exibir no Multiselect
-    */
-    buscaTecnologias = async () => {
-        if (tecnologias.length === 0) {
-            try {
-                await Api.get('/tecnologia')
-                    .then((response) => {
-                        tecnologias.push(response.data)
-                    }).catch(function (err) {
-                        Alert.alert("Erro Tecnologias", `Ocorreu um erro inesperado ${err}`)
-                    })
-            } catch (error) {
-                Alert.alert("Erro Tecnologias", `Ocorreu um erro inesperado ${error.data}`)
-            }
-        }
-    }
-
-    /**
-     * Função que verifica se o maximo de tecnologia ja foi selecionado para pesquisa
-    */
-    selecionarTecnologias = (tecnologiaSelect) => {
-        if (tecnologiaSelect.length > 1) {
-            return
-        }
-
-        this.setState({ tecnologiaSelect })
-    }
-
+ 
     /**
      * Exibe a barra de pesquisa caso o usuario clique sobre o icone de lupa,
      * caso o state esteja true ele apenas esconde o input e caso ao contraio 
@@ -67,10 +29,7 @@ export default class Header extends Component {
      * Verifica se foi passado algum texto ou tecnologia e manda os dados para tela de pesquisa
     */
     realizarPesquisa = () => {
-        if (this.state.textoPesquisa.length > 0 || this.state.tecnologiaSelect) {
-            let data = this.state
-            this.props.trocarPagina(data)
-        }
+        this.props.trocarPagina()
     }
 
 
@@ -93,9 +52,9 @@ export default class Header extends Component {
                         <TouchableOpacity onPress={() => this.props.voltarTela()} >
                             <Icon name={'arrow-left'} size={25} />
                         </TouchableOpacity>
-                        <TextInput style={StyleHeader.inputPesquisa} value={this.state.textoPesquisa}
+                        <TextInput style={StyleHeader.inputPesquisa} value={this.props.valueText}
                             placeholder="Escreva algo para pesquisar"
-                            onChangeText={textoPesquisa => this.setState({ textoPesquisa })}
+                            onChangeText={this.props.onChangeText}
                             onSubmitEditing={() => this.realizarPesquisa()}
                             autoFocus={true} />
                         <View style={StyleHeader.inputTec}>
@@ -112,9 +71,9 @@ export default class Header extends Component {
                                 confirmText='Confirmar'
                                 searchPlaceholderText='Pesquisar Tecnologias'
                                 selectedText='Selecionada'
-                                items={tecnologias}
-                                onSelectedItemsChange={this.selecionarTecnologias}
-                                selectedItems={this.state.tecnologiaSelect} />
+                                items={this.props.items}
+                                onSelectedItemsChange={(tecnolgoiaPesquisa) => this.props.onSelectedItemsChange(tecnolgoiaPesquisa)}
+                                selectedItems={this.props.selectedItems} />
                         </View>
                     </View>
                 }
