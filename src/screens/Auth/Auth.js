@@ -8,8 +8,9 @@ import EstiloComum from '../../EstiloComum'
 import AsyncStorage from '@react-native-community/async-storage'
 import SectionedMultiSelect from 'react-native-sectioned-multi-select'
 import StyleAuth from './StyleAuth'
-import { YellowBox } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { YellowBox } from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler'
+
 YellowBox.ignoreWarnings([
 	'Warning: componentWillReceiveProps is deprecated',
 ]);
@@ -30,7 +31,6 @@ export default class Auth extends Component {
 	}
 
 	componentDidMount = () => {
-		//implementar a busca para saber se ja tem email e senha salva e realizar o login
 		this.buscaTecnologias()
 	}
 
@@ -39,13 +39,11 @@ export default class Auth extends Component {
 	 * o usuário podera escolher.
 	 */
 	buscaTecnologias = async () => {
-		if (tecnologias.length === 0) {
+		if (tecnologias.length == 0) {
 			try {
 				await Api.get('/tecnologia')
 					.then((response) => {
 						tecnologias.push(response.data)
-					}).catch(function (err) {
-						Alert.alert("Erro Tecnologias", `Ocorreu um erro inesperado ${err}`)
 					})
 			} catch (error) {
 				Alert.alert("Erro Tecnologias", `Ocorreu um erro inesperado ${error.data}`)
@@ -94,7 +92,7 @@ export default class Auth extends Component {
 		try {
 			await AsyncStorage.setItem('@weDo:userData', JSON.stringify(data))
 		} catch (err) {
-			Alert.alert('Error', 'Async Error')
+			Alert.alert('Error Interno', `Async Store Data Error ${err}`)
 		}
 	}
 
@@ -102,7 +100,7 @@ export default class Auth extends Component {
 		try {
 			await AsyncStorage.setItem('@weDo:userId', JSON.stringify(data))
 		} catch (err) {
-			Alert.alert('Error', 'Async Error')
+			Alert.alert('Error Interno', `Async Store ID Error:${err}`)
 		}
 	}
 
@@ -163,7 +161,7 @@ export default class Auth extends Component {
 					ToastAndroid.show(`${response.data.err}`,ToastAndroid.SHORT)
 				}else{
 					this.setState({criarConta: false, nm_usuario: '',confirmar_senha: '',dt_nascimento: '',interesses: []})
-					Alert.alert('Cadastro com sucesso', `${response.data.msg}`)
+					Alert.alert('Cadastro Concluído !', `${response.data.msg}`)
 					this.setState({ criarConta: false })
 				}
 			})
@@ -289,7 +287,7 @@ export default class Auth extends Component {
 						<View style={StyleAuth.conectado}>
 							<Switch
 								thumbColor={'#FFF'}
-								trackColor={{ true: '#313c4d' }}
+								trackColor={{ true: '#313c4d', false: '#333'}}
 								onValueChange={manterConectado => this.setState({ manterConectado })}
 								value={this.state.manterConectado} />
 							<Text style={StyleAuth.textManterConectado}>Manter-se Conectado</Text>
@@ -305,7 +303,7 @@ export default class Auth extends Component {
 					</TouchableOpacity>
 					{/* Implementar Politicas de privacidade */}
 					{this.state.criarConta &&
-						<TouchableOpacity style={{ marginTop: -6 }} onPress={() => Alert.alert('Alerta')} >
+						<TouchableOpacity style={{ marginTop: -4 }} onPress={() => Alert.alert('Alerta')} >
 							<Text style={StyleAuth.politicas}>Políticas de Privacidade</Text>
 						</TouchableOpacity>
 					}

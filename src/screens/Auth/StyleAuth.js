@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
 		padding: 5,
 		marginLeft: '2%',
 		textAlign: 'left',
-		marginTop: -6,
+		marginTop: -4,
 		fontSize: 14,
 		color: '#FFF',
 	},
