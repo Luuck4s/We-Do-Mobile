@@ -12,7 +12,7 @@ export default class AuthOrInicio extends Component {
 
         if (userData.token) {
             Api.defaults.headers.common['Authorization'] = `${userData.token}`
-            this.props.navigation.navigate('Inicio',userData.usuario)
+            this.props.navigation.navigate('Inicio', userData.usuario)
         } else {
             this.props.navigation.navigate('Auth')
         }

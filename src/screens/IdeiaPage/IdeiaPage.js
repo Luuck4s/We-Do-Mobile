@@ -1,46 +1,70 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, ActivityIndicator, Alert } from 'react-native'
+import { View, Text, TouchableOpacity, ActivityIndicator, Alert, FlatList } from 'react-native'
 import StyleIdeiaPage from './StyleIdeiaPage'
 import EstiloComum from '../../EstiloComum'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import Api from '../../api/Api'
 import Ideia from '../../components/Ideia/Ideia'
 
-let ideia = []
-
 export default class IdeiaPage extends Component {
 
-    
+    state = {
+        ideia: []
+    }
+
     componentDidMount = async () => {
         await this.getInfoIdeia()
     }
 
-    componentDidUpdate = async () => {
-        await this.getInfoIdeia()
+    componentDidUpdate = (prevProps, prevState) => {
+        if (this.props.navigation.getParam('id_ideia') !== prevProps.navigation.getParam('id_ideia')) {
+            let idIdeia = this.props.navigation.getParam('id_ideia')
+
+            let idUsuario = this.props.navigation.getParam('id_usuario')
+
+            Api.get(`/ideia/${idIdeia}&${idUsuario}`)
+                .then((response) => {
+                    Api.defaults.headers.common['Authorization'] = `${response.data.token}`
+                    let ideiaArr = []
+                    ideiaArr.push(response.data.ideia)
+                    this.setState({
+                        ideia: ideiaArr
+                    })
+                })
+                .catch((err) => {
+                    Alert.alert(`${err}`)
+                })
+        }
     }
 
 
     /**
-     * 
+     * Captura as informações da ideia 
     */
     getInfoIdeia = async () => {
 
         let idIdeia = await this.props.navigation.getParam('id_ideia')
-        
+
         let idUsuario = await this.props.navigation.getParam('id_usuario')
 
         await Api.get(`/ideia/${idIdeia}&${idUsuario}`)
-        .then((response) => {
-            Api.defaults.headers.common['Authorization'] = `${response.data.token}`
-            ideia = []
-            ideia.push(response.data.ideia)
-        })
-        .catch((err) => {
-            Alert.alert(`${err}`)
-        })
+            .then((response) => {
+                Api.defaults.headers.common['Authorization'] = `${response.data.token}`
+                let ideiaArr = []
+                ideiaArr.push(response.data.ideia)
+                this.setState({
+                    ideia: ideiaArr
+                })
+            })
+            .catch((err) => {
+                Alert.alert(`${err}`)
+            })
     }
 
-    render(){
+    render() {
+
+        renderItem = ({ item }) => (<Ideia ideiaPage={true} key={item.id_ideia} {...item} />)
+
         return (
             <View style={StyleIdeiaPage.container}>
                 <View style={StyleIdeiaPage.header}>
@@ -51,8 +75,13 @@ export default class IdeiaPage extends Component {
                         <Text style={StyleIdeiaPage.tituloIdeia}>Ideia</Text>
                     </TouchableOpacity>
                 </View>
-                {ideia[0] &&
-                    <Ideia ideiaPage={true} tecnologias={ideia[0].tecnologia} {...ideia[0]} />
+                {this.state.ideia &&
+                    <FlatList
+
+                        initialNumToRender={1}
+                        data={this.state.ideia}
+                        keyExtractor={item => `${item.id_ideia}`}
+                        renderItem={renderItem} />
                 }
                 <View style={StyleIdeiaPage.participantes}>
                     <Text>Participantes</Text>

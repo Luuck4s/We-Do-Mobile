@@ -53,6 +53,7 @@ export default class Header extends Component {
                             <Icon name={'arrow-left'} size={25} />
                         </TouchableOpacity>
                         <TextInput style={StyleHeader.inputPesquisa} value={this.props.valueText}
+                            autoCorrect={false}
                             placeholder="Escreva algo para pesquisar"
                             onChangeText={this.props.onChangeText}
                             onSubmitEditing={() => this.realizarPesquisa()}

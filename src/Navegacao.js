@@ -10,7 +10,7 @@ import Trends from './screens/Trends/Trends'
 import Notificacoes from './screens/Notificacoes/Notificacoes'
 import Projetos from './screens/Projetos/Projetos'
 import ProjetosAtuais from './screens/ProjetosAtuais/ProjetosAtuais'
-import Portifolio from './screens/Portifolio/Portifolio'
+import Portfolio from './screens/Portfolio/Portfolio'
 import Configuracoes from './screens/Configuracoes/Configuracoes'
 import Ajuda from './screens/Ajuda/Ajuda'
 import ScreenSlideMenu from './screens/ScreenSlideMenu/ScreenSlideMenu';
@@ -64,8 +64,8 @@ const MenuRoutes = createAppContainer(createBottomTabNavigator(
         ProjetosAtuais: {
             screen: ProjetosAtuais
         },
-        Portifolio: {
-            screen: Portifolio
+        Portfolio: {
+            screen: Portfolio
         },
         Configuracoes: {
             screen: Configuracoes

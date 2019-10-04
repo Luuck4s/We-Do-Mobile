@@ -40,31 +40,31 @@ class Ideia extends Component {
     }
 
     /**
-     * 
+     * Captura a quantidade de comentarios da ideia
     */
     quantidadeComentario = () => {
-        if(this.props.ideiaPage){
-            /*let qtd = this.props.comentarios.length
+        if (this.props.ideiaPage) {
+            let qtd = 0
 
-            this.setState({qtdComentario: qtd})
+            this.setState({ qtdComentario: qtd })
 
-            return qtd*/
+            return qtd
 
-        }else{
+        } else {
             let qtd = this.props.comentarios.map((item, index) => {
                 return item.quantidade_comentario
             })
-    
+
             if (qtd > 0) {
                 this.setState({ qtdComentario: qtd })
             }
         }
-        
+
 
     }
 
     /**
-     * 
+     * Captura a qunatidade de curtidas da ideia
     */
     quantidadeCurtida = () => {
         this.setState({ qtdCurtidas: this.props.curtidas.length })
@@ -147,7 +147,7 @@ class Ideia extends Component {
     }
 
     /**
-     * 
+     * Realizar a adição no números de comentarios e chamar a função para inserir no banco
      */
     adicionarComentario = (data) => {
         let qtdComentario = this.state.qtdComentario
