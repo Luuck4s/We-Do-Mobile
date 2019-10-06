@@ -161,11 +161,29 @@ export default class Inicio extends Component {
         this.props.navigation.navigate('IdeiaPage', data)
     }
 
+    /**
+     * Função de adicionar comentarios
+    */  
+    adicionarComentario = (data, idIdeia) => {
+        Api.post(`/comentario/${this.state.idUsuario}`,{
+            mensagem:{
+                ct_mensagem: `${data}`
+            },
+            ideia:{
+                id_ideia: idIdeia
+            }
+        }).then((response) => {
+            Api.defaults.headers.common['Authorization'] = `${response.data.token}`
+            ToastAndroid.show('Comentario enviado', ToastAndroid.SHORT);
+        })
+     
+    }
+
     render() {
         /**
          * renderItem foi retirado de dentro da FlatList para melhor desenpenho do componente
          */
-        renderItem = ({ item }) => (<Ideia key={item.id_ideia}
+        renderItem = ({ item }) => (<Ideia inicio={true} key={item.id_ideia}
             {...item}
             onPressAutor={() => this.infoAutor(item.id_ideia)}
             onPresNomeIdeia={() => this.ideia(item.id_ideia)}
@@ -173,7 +191,7 @@ export default class Inicio extends Component {
             onPressCurtir={() => this.curtirIdeia(item.id_ideia)}
             onPressComentario={() => this.comentarios(item.id_ideia)}
             onPressInteresse={() => this.interesse(item.id_ideia)}
-            adicionarComentario={data => Alert.alert(data)} />)
+            adicionarComentario={data => this.adicionarComentario(data, item.id_ideia)} />)
 
         return (
             <View style={StyleInicio.container}>

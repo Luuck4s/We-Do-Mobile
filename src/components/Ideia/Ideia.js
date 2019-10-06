@@ -9,10 +9,12 @@ import AddComentario from '../AddComentario/AddComentario'
 import TecnologiaIdeia from '../TecnologiaIdeia/TecnologiaIdeia'
 import EstiloComum from '../../EstiloComum'
 import MembroIdeia from '../MembroIdeia/MembroIdeia'
+import Comentarios from '../Comentarios/Comentarios'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import AsyncStorage from '@react-native-community/async-storage';
 
-class Ideia extends Component {
+
+export default class Ideia extends Component {
 
     state = {
         curtido: false,
@@ -164,42 +166,79 @@ class Ideia extends Component {
             }
         })
 
-
-        return (
-            <View style={StyleIdeia.container}>
-                <TouchableOpacity onPress={this.props.onPresNomeIdeia}>
-                    <Text style={StyleIdeia.titulo}>{this.props.nm_ideia}</Text>
-                </TouchableOpacity>
-
-                <Text style={StyleIdeia.autor} onPress={this.props.onPressAutor}>por {idealizador}</Text>
-
-                <TecnologiaIdeia tecnologias={this.props.tecnologias} />
-
-                <Text style={StyleIdeia.descricao}>{this.props.ds_ideia}</Text>
-
-                <MembroIdeia onPressMembros={this.props.onPressMembros} membros={this.props.membros} />
-
-                <View style={{ flexDirection: 'row' }}>
-                    <TouchableOpacity onPress={() => this.curtida()}>
-                        <Icon name='heart' style={this.state.curtido ? StyleIdeia.iconCurtido : StyleIdeia.iconCurtida} size={19} >
-                            <Text style={StyleIdeia.numComentCurti}> {this.state.qtdCurtidas}</Text>
-                        </Icon>
+        if (this.props.ideiaPage) {
+            return (
+                <View style={StyleIdeia.container}>
+                    <TouchableOpacity onPress={this.props.onPresNomeIdeia}>
+                        <Text style={StyleIdeia.titulo}>{this.props.nm_ideia}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={this.props.onPressComentario}>
-                        <Icon name='comment' style={StyleIdeia.iconComentario} size={19} color={EstiloComum.cores.fundoWeDo}>
-                            <Text style={StyleIdeia.numComentCurti}> {this.state.qtdComentario}</Text>
-                        </Icon>
-                    </TouchableOpacity>
+
+                    <Text style={StyleIdeia.autor} onPress={this.props.onPressAutor}>por {idealizador}</Text>
+
+                    <TecnologiaIdeia tecnologias={this.props.tecnologias} />
+
+                    <Text style={StyleIdeia.descricao}>{this.props.ds_ideia}</Text>
+
+                    <MembroIdeia onPressMembros={this.props.onPressMembros} membros={this.props.membros} />
+
+                    <View style={{ flexDirection: 'row' }}>
+                        <TouchableOpacity onPress={() => this.curtida()}>
+                            <Icon name='heart' style={this.state.curtido ? StyleIdeia.iconCurtido : StyleIdeia.iconCurtida} size={19} >
+                                <Text style={StyleIdeia.numComentCurti}> {this.state.qtdCurtidas}</Text>
+                            </Icon>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={this.props.onPressComentario}>
+                            <Icon name='comment' style={StyleIdeia.iconComentario} size={19} color={EstiloComum.cores.fundoWeDo}>
+                                <Text style={StyleIdeia.numComentCurti}> {this.state.qtdComentario}</Text>
+                            </Icon>
+                        </TouchableOpacity>
+                    </View>
+                    {!this.state.donoIdeia &&
+                        <TouchableOpacity style={StyleIdeia.interesse} onPress={() => this.interesse()}>
+                            {this.renderInteresse()}
+                        </TouchableOpacity>
+                    }
+                    <AddComentario adicionarComentario={data => this.adicionarComentario(data)} />
+                    <Comentarios comentarios={this.props.comentarios} />
                 </View>
-                {!this.state.donoIdeia &&
-                    <TouchableOpacity style={StyleIdeia.interesse} onPress={() => this.interesse()}>
-                        {this.renderInteresse()}
+            )
+        }
+
+        if (this.props.inicio) {
+            return (
+                <View style={StyleIdeia.container}>
+                    <TouchableOpacity onPress={this.props.onPresNomeIdeia}>
+                        <Text style={StyleIdeia.titulo}>{this.props.nm_ideia}</Text>
                     </TouchableOpacity>
-                }
-                <AddComentario adicionarComentario={data => this.adicionarComentario(data)} />
-            </View>
-        )
+
+                    <Text style={StyleIdeia.autor} onPress={this.props.onPressAutor}>por {idealizador}</Text>
+
+                    <TecnologiaIdeia tecnologias={this.props.tecnologias} />
+
+                    <Text style={StyleIdeia.descricao}>{this.props.ds_ideia}</Text>
+
+                    <MembroIdeia onPressMembros={this.props.onPressMembros} membros={this.props.membros} />
+
+                    <View style={{ flexDirection: 'row' }}>
+                        <TouchableOpacity onPress={() => this.curtida()}>
+                            <Icon name='heart' style={this.state.curtido ? StyleIdeia.iconCurtido : StyleIdeia.iconCurtida} size={19} >
+                                <Text style={StyleIdeia.numComentCurti}> {this.state.qtdCurtidas}</Text>
+                            </Icon>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={this.props.onPressComentario}>
+                            <Icon name='comment' style={StyleIdeia.iconComentario} size={19} color={EstiloComum.cores.fundoWeDo}>
+                                <Text style={StyleIdeia.numComentCurti}> {this.state.qtdComentario}</Text>
+                            </Icon>
+                        </TouchableOpacity>
+                    </View>
+                    {!this.state.donoIdeia &&
+                        <TouchableOpacity style={StyleIdeia.interesse} onPress={() => this.interesse()}>
+                            {this.renderInteresse()}
+                        </TouchableOpacity>
+                    }
+                    <AddComentario adicionarComentario={data => this.adicionarComentario(data)} />
+                </View>
+            )
+        }
     }
 }
-
-export default Ideia

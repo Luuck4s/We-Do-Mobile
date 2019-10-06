@@ -6,6 +6,8 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
 import Api from '../../api/Api'
 import Ideia from '../../components/Ideia/Ideia'
 
+
+
 export default class IdeiaPage extends Component {
 
     state = {
@@ -33,7 +35,8 @@ export default class IdeiaPage extends Component {
                 })
                 .catch((err) => {
                     Alert.alert(`${err}`)
-                })
+                }
+            )
         }
     }
 
@@ -83,12 +86,6 @@ export default class IdeiaPage extends Component {
                         keyExtractor={item => `${item.id_ideia}`}
                         renderItem={renderItem} />
                 }
-                <View style={StyleIdeiaPage.participantes}>
-                    <Text>Participantes</Text>
-                </View>
-                <View style={StyleIdeiaPage.comentarios}>
-                    <Text>Comentarios</Text>
-                </View>
             </View>
         )
     }
