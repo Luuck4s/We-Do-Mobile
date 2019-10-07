@@ -10,11 +10,12 @@ const styles = StyleSheet.create({
     },
     rowContainer: {
         flexDirection: 'row',
+        height: 30,
         alignItems: 'center'
     },
     rowContainer2: {
         width: '100%',
-        height: 40,
+        height: 30,
         flexDirection: 'row',
         alignItems: 'flex-end',
     },
@@ -31,6 +32,10 @@ const styles = StyleSheet.create({
         marginLeft: '3%',
         marginBottom: '1%',
     },
+    iconHeader: {
+        marginLeft: 5,
+        color: EstiloComum.cores.fundoWeDo,
+    },
     title: {
         fontFamily: EstiloComum.fontFamily,
         marginLeft: '3%',
@@ -39,10 +44,9 @@ const styles = StyleSheet.create({
     },
     title2: {
         fontFamily: EstiloComum.fontFamily,
-        marginLeft: '4%',
         color: EstiloComum.cores.fundoWeDo,
         fontSize: 20,
-        marginBottom: '1%',
+        
     },
     inputPesquisa:{
         fontSize: 15,

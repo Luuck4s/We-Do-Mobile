@@ -5,7 +5,6 @@ import { DrawerItems } from 'react-navigation'
 import Api from '../../api/Api'
 import StyleMenu from './StyleMenu'
 import Icon from 'react-native-vector-icons/FontAwesome5'
-import logo from '../../../assets/img/weDo_logo.png'
 
 export default props => {
     /**
@@ -21,7 +20,7 @@ export default props => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={StyleMenu.header}>
-                <Image source={logo} style={StyleMenu.image} />
+                <Icon name={"user-astronaut"} size={27} style={StyleMenu.iconUser} />
                 <Text style={StyleMenu.userName}>{props.navigation.getParam('nm_usuario')}</Text>
             </View>
             <ScrollView>

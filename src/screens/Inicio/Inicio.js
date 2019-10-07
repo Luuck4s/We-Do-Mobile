@@ -9,9 +9,6 @@ import EstiloComum from '../../EstiloComum'
 import ActionButton from 'react-native-action-button'
 import AddIdeia from '../AddIdeia/AddIdeia'
 
-import logo_icon from '../../../assets/img/weDo_logo.png'
-
-
 export default class Inicio extends Component {
 
     state = {
@@ -195,7 +192,7 @@ export default class Inicio extends Component {
 
         return (
             <View style={StyleInicio.container}>
-                <Header paginaInicial={true} image={logo_icon} texto={"Página Inicial"} icon={"search"} onPressImage={() => this.props.navigation.openDrawer()}
+                <Header paginaInicial={true} texto={"Página Inicial"} icon={"search"} onPressImage={() => this.props.navigation.openDrawer()}
                     trocarPagina={() => this.props.navigation.navigate('Pesquisa')} />
                 <AddIdeia isVisible={this.state.AddIdeia} onCancel={() => this.setState({ AddIdeia: false })} adicionarIdeia={dataIdeia => this.adicionarIdeia(dataIdeia)} />
                 {this.state.carregando &&

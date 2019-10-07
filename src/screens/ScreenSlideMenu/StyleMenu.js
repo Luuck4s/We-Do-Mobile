@@ -7,14 +7,14 @@ const style = StyleSheet.create({
         flexDirection: 'row',
         borderBottomWidth: 0.5,
     },
-    image: {
-        height: 50,
-        width: 50,
-        borderRadius: 60,
-        margin: '7%',
+    iconUser:{
+        color: EstiloComum.cores.fundoWeDo,
+        marginTop: '10%',
+        marginLeft: '5%',
     },
     userName: {
         marginTop: '11%',
+        marginLeft: '5%',
         fontSize: 19,
         fontFamily: EstiloComum.fontFamily,
         color: EstiloComum.cores.fundoWeDo,

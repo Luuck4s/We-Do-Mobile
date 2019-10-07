@@ -39,7 +39,7 @@ export default class Header extends Component {
                 {this.props.paginaInicial &&
                     <View style={StyleHeader.rowContainer}>
                         <TouchableOpacity onPress={this.props.onPressImage} >
-                            <Image source={this.props.image} style={StyleHeader.image} />
+                            <Icon name={"bars"} size={22} style={StyleHeader.iconHeader} />
                         </TouchableOpacity>
                         <Text style={StyleHeader.title}>{this.props.texto}</Text>
                         <TouchableOpacity onPress={() => this.onPressPesquisa()}>
@@ -81,7 +81,7 @@ export default class Header extends Component {
                 {!this.props.paginaInicial && !this.props.ScreenPesquisa &&
                     <View style={StyleHeader.rowContainer2}>
                         <TouchableOpacity onPress={this.props.onPress}>
-                            <Icon name={this.props.icon} size={30} color={EstiloComum.cores.fundoWeDo} style={StyleHeader.icon2} />
+                            <Icon name={this.props.icon} size={25} color={EstiloComum.cores.fundoWeDo} style={StyleHeader.icon2} />
                         </TouchableOpacity>
                         <Text style={StyleHeader.title2}>{this.props.texto}</Text>
                     </View>
