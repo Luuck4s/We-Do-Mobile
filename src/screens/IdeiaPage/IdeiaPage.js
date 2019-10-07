@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
 import Api from '../../api/Api'
 import Ideia from '../../components/Ideia/Ideia'
 
-export const comentario =  [
+export const comentario = [
     {
         "id_mensagem": 1,
         "id_usuario": 1,
@@ -38,20 +38,26 @@ export const comentario =  [
 export default class IdeiaPage extends Component {
 
     state = {
-        ideia: []
+        ideia: [],
+        id_usuario: null,
     }
 
     componentDidMount = async () => {
+        let idUsuario = await this.props.navigation.getParam('id_usuario')
+        this.setState({ id_usuario: idUsuario })
+
         await this.getInfoIdeia()
     }
 
-    componentDidUpdate = (prevProps, prevState) => {
+    componentDidUpdate = async (prevProps, prevState) => {
         if (this.props.navigation.getParam('id_ideia') !== prevProps.navigation.getParam('id_ideia')) {
-            let idIdeia = this.props.navigation.getParam('id_ideia')
 
-            let idUsuario = this.props.navigation.getParam('id_usuario')
+            let idIdeia = await this.props.navigation.getParam('id_ideia')
+            let idUsuario = await this.props.navigation.getParam('id_usuario')
 
-            Api.get(`/ideia/${idIdeia}&${idUsuario}`)
+            this.setState({ id_usuario: idUsuario })
+
+            Api.get(`/ideia/${idIdeia}&${this.state.id_usuario}`)
                 .then((response) => {
                     Api.defaults.headers.common['Authorization'] = `${response.data.token}`
                     let ideiaArr = []
@@ -72,12 +78,9 @@ export default class IdeiaPage extends Component {
      * Captura as informações da ideia 
     */
     getInfoIdeia = async () => {
-
         let idIdeia = await this.props.navigation.getParam('id_ideia')
 
-        let idUsuario = await this.props.navigation.getParam('id_usuario')
-
-        await Api.get(`/ideia/${idIdeia}&${idUsuario}`)
+        await Api.get(`/ideia/${idIdeia}&${this.state.id_usuario}`)
             .then((response) => {
                 Api.defaults.headers.common['Authorization'] = `${response.data.token}`
                 let ideiaArr = []
@@ -91,9 +94,66 @@ export default class IdeiaPage extends Component {
             })
     }
 
+
+    /**
+     * Mostra interesse na ideia
+     * @param - idIdeia 
+    */
+    interesse = (idIdeia) => {
+        Api.post('/interesse', {
+            usuario: {
+                id_usuario: this.state.id_usuario,
+            },
+            ideia: {
+                id_ideia: idIdeia
+            }
+        })
+    }
+
+    /**
+     * Curtir ideia
+     * @param - IdIdeia
+     */
+    curtirIdeia = async (idIdeia) => {
+        Api.post('/curtida', {
+            usuario: {
+                id_usuario: this.state.id_usuario
+            },
+            ideia: {
+                id_ideia: idIdeia
+            }
+        })
+    }
+
+    /**
+    * Comentarios da ideia
+    * @param - IdIdeia
+    */
+    comentarios = (idIdeia) => {
+        this.ideia(idIdeia)
+    }
+
+    /**
+     * Membros da ideia
+     * @param - IdIdeia
+    */
+    membros = (idIdeia) => {
+        this.ideia(idIdeia)
+    }
+
+
     render() {
 
-        renderItem = ({ item }) => (<Ideia ideiaPage={true} comentario={comentario} key={item.id_ideia} {...item} />)
+        renderItem = ({ item }) => (<Ideia ideiaPage={true}
+            {...item}
+            comentario={comentario} key={item.id_ideia}
+            onPressAutor={() => this.infoAutor(item.id_ideia)}
+            onPresNomeIdeia={() => this.ideia(item.id_ideia)}
+            onPressMembros={() => this.membros(item.id_ideia)}
+            onPressCurtir={() => this.curtirIdeia(item.id_ideia)}
+            onPressComentario={() => this.comentarios(item.id_ideia)}
+            onPressInteresse={() => this.interesse(item.id_ideia)}
+            adicionarComentario={data => this.adicionarComentario(data, item.id_ideia)} />)
 
         return (
             <View style={StyleIdeiaPage.container}>

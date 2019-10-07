@@ -38,7 +38,6 @@ export default class Inicio extends Component {
                     Api.defaults.headers.common['Authorization'] = `${response.data.token}`
                     this.setState({ ideias: response.data.ideias, carregando: false })
 
-
                     if (response.data.ideias.length == 0) {
                         this.setState({ semFeed: true })
                     }
@@ -55,7 +54,7 @@ export default class Inicio extends Component {
      * Função para atualizar o feed
     */
     atualizarFeed = () => {
-        this.setState({ atualizando: true, carregando: true })
+        this.setState({ atualizando: true, carregando: true, ideias: [] })
         this.buscarFeed().then(() => {
             this.setState({ atualizando: false, carregando: false })
         })
