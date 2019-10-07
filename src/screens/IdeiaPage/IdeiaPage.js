@@ -1,12 +1,39 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, ActivityIndicator, Alert, FlatList } from 'react-native'
 import StyleIdeiaPage from './StyleIdeiaPage'
-import EstiloComum from '../../EstiloComum'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import Api from '../../api/Api'
 import Ideia from '../../components/Ideia/Ideia'
 
-
+export const comentario =  [
+    {
+        "id_mensagem": 1,
+        "id_usuario": 1,
+        "nm_usuario": "Igor Miguel Galvão",
+        "ct_mensagem": "Projeto muito legal, achei muito interressante",
+        "hr_mensagem": "2019-04-13T13:20:12.000Z",
+        "id_ideia": 1,
+        "uso_mensagem": "2"
+    },
+    {
+        "id_mensagem": 2,
+        "id_usuario": 1,
+        "nm_usuario": "Igor Miguel Galvão",
+        "ct_mensagem": "Projeto muito legal, achei muito interressante",
+        "hr_mensagem": "2019-04-13T13:20:12.000Z",
+        "id_ideia": 1,
+        "uso_mensagem": "2"
+    },
+    {
+        "id_mensagem": 3,
+        "id_usuario": 1,
+        "nm_usuario": "Igor Miguel Galvão",
+        "ct_mensagem": "Projeto muito legal, achei muito interressante",
+        "hr_mensagem": "2019-04-13T13:20:12.000Z",
+        "id_ideia": 1,
+        "uso_mensagem": "2"
+    }
+]
 
 export default class IdeiaPage extends Component {
 
@@ -66,7 +93,7 @@ export default class IdeiaPage extends Component {
 
     render() {
 
-        renderItem = ({ item }) => (<Ideia ideiaPage={true} key={item.id_ideia} {...item} />)
+        renderItem = ({ item }) => (<Ideia ideiaPage={true} comentario={comentario} key={item.id_ideia} {...item} />)
 
         return (
             <View style={StyleIdeiaPage.container}>

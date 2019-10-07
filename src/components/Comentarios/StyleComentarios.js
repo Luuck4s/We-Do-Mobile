@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     comentarios: {
-        marginLeft: 5,
+        marginLeft: 0,
         fontSize: 14,
     },
     dataComentario:{

@@ -13,7 +13,6 @@ import Comentarios from '../Comentarios/Comentarios'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import AsyncStorage from '@react-native-community/async-storage';
 
-
 export default class Ideia extends Component {
 
     state = {
@@ -199,7 +198,7 @@ export default class Ideia extends Component {
                         </TouchableOpacity>
                     }
                     <AddComentario adicionarComentario={data => this.adicionarComentario(data)} />
-                    <Comentarios comentarios={this.props.comentarios} />
+                    <Comentarios comentario={this.props.comentario} />
                 </View>
             )
         }

@@ -7,14 +7,22 @@ import 'moment/locale/pt-br'
 export default class Comentarios extends Component{
 
     state = {
-        maximo: this.props.comentarios.length - 3,
+        maximo: 0,
         verMais: true,
+    }
+
+    componentDidMount = () => {
+        let metade_qtd_comentario = Math.round(this.props.comentario.length / 2)
+
+        this.setState({
+            maximo: metade_qtd_comentario
+        })
     }
 
     visualizarMais = () => {
         this.setState(
             {
-                maximo: this.props.comentarios.length,
+                maximo: this.props.comentario.length,
                 verMais: false
             }
         )
@@ -24,8 +32,8 @@ export default class Comentarios extends Component{
         let view = null
         let comentarios = 0
 
-        if(this.props.comentarios){
-            view = this.props.comentarios.map((item,index) => {
+        if(this.props.comentario){
+            view = this.props.comentario.map((item,index) => {
                 comentarios++
 
                 if(comentarios <= this.state.maximo){
@@ -34,7 +42,8 @@ export default class Comentarios extends Component{
                             <Text style={StyleComentarios.nomeUsuario}>{item.nm_usuario}</Text>
                             <Text style={StyleComentarios.comentarios}>{item.ct_mensagem}</Text>
                             <Text style={StyleComentarios.dataComentario}>postado em {moment(`${item.hr_mensagem}`).format('D/MM/YYYY')}</Text>
-                            {this.state.maximo === comentarios && this.state.verMais &&
+                            {comentarios == this.state.maximo && comentarios != 1
+                              && this.state.verMais &&
                                 <TouchableOpacity onPress={() => this.visualizarMais()}>
                                     <Text style={StyleComentarios.visualizarMais}>Ver Mais</Text>
                                 </TouchableOpacity>
