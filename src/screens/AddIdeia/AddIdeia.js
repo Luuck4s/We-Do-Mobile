@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Modal, Text, TextInput, TouchableOpacity, Alert, ScrollView } from 'react-native'
+import { View, Modal, Text, TextInput, TouchableOpacity, Alert, ScrollView, ToastAndroid } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import StylesAddIdeia from './StylesAddIdeia'
 import SectionedMultiSelect from 'react-native-sectioned-multi-select'
@@ -24,18 +24,18 @@ export default class AddIdeia extends Component {
     /**
      * Cria as tag a partir do titulo
     */
-    criarTagsTitulo = async  () => {
+    criarTagsTitulo = async () => {
         let tituloDaIdeia = this.state.titulo
         let splitTituloDaIdeia = tituloDaIdeia.split(" ")
         let tagsDaIdeia = []
 
-        for(let i = 0; i < splitTituloDaIdeia.length; i++){
-            if(splitTituloDaIdeia[i].length > 2){
+        for (let i = 0; i < splitTituloDaIdeia.length; i++) {
+            if (splitTituloDaIdeia[i].length > 2) {
                 tagsDaIdeia.push(splitTituloDaIdeia[i])
             }
         }
-         
-       this.setState({tagsIdeia: tagsDaIdeia})
+
+        this.setState({ tagsIdeia: tagsDaIdeia })
     }
 
     /**
@@ -44,20 +44,17 @@ export default class AddIdeia extends Component {
     */
     save = async () => {
         if (!this.state.titulo.trim()) {
-            Alert.alert('Titulo Invalido', 'Informe um Titulo para a ideia!')
-
-            return
-        }
-        if (!this.state.desc.trim()) {
-            Alert.alert('Descrição Invalida', 'Informe uma descrição para a ideia!')
-
-            return
-        }
-        await this.criarTagsTitulo()
-
-        const data = { ...this.state }
-        this.props.adicionarIdeia(data)
-        this.setState({ titulo: '', desc: '', tecnologiasIdeia: [], maximoTecnologia: false,tagsIdeia: [] })
+            ToastAndroid.show(`Informe um Titulo para a ideia!`, ToastAndroid.SHORT) 
+            return 
+        } 
+        if (!this.state.desc.trim()) { 
+            ToastAndroid.show(`Informe uma descrição para a ideia!`, ToastAndroid.SHORT) 
+            return 
+        } 
+        await this.criarTagsTitulo() 
+        const data = { ...this.state } 
+        this.props.adicionarIdeia(data) 
+        this.setState({ titulo: '', desc: '', tecnologiasIdeia: [], maximoTecnologia: false, tagsIdeia: [] })
     }
 
 	/**
