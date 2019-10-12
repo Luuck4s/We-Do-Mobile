@@ -22,7 +22,7 @@ export default class Inicio extends Component {
     }
 
     componentDidMount = async () => {
-        await this.buscarFeed()
+        setTimeout(() => this.buscarFeed(),2500)
     }
 
     /**
@@ -218,6 +218,18 @@ export default class Inicio extends Component {
                 <AddIdeia isVisible={this.state.AddIdeia} onCancel={() => this.setState({ AddIdeia: false })} adicionarIdeia={dataIdeia => this.adicionarIdeia(dataIdeia)} />
                 {this.state.carregando &&
                     <View>
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleInicio.shimmerTitle} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleInicio.shimmerUser} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleInicio.shimmerDesc} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleInicio.shimmerPart} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleInicio.shimmerButton} />
+
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleInicio.shimmerTitle} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleInicio.shimmerUser} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleInicio.shimmerDesc} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleInicio.shimmerPart} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleInicio.shimmerButton} />
+
                         <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleInicio.shimmerTitle} />
                         <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleInicio.shimmerUser} />
                         <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleInicio.shimmerDesc} />
