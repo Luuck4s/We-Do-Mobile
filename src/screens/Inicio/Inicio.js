@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Alert, FlatList, ActivityIndicator,ToastAndroid, RefreshControl } from 'react-native'
+import { View, Text, Alert, FlatList, ActivityIndicator, ToastAndroid, RefreshControl } from 'react-native'
 import StyleInicio from './StyleInicio'
 import Api from '../../api/Api'
 import AsyncStorage from '@react-native-community/async-storage'
@@ -8,6 +8,7 @@ import Ideia from '../../components/Ideia/Ideia'
 import EstiloComum from '../../EstiloComum'
 import ActionButton from 'react-native-action-button'
 import AddIdeia from '../AddIdeia/AddIdeia'
+import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 
 export default class Inicio extends Component {
 
@@ -42,7 +43,7 @@ export default class Inicio extends Component {
                         this.setState({ semFeed: true })
                     }
                 }).catch((err) => {
-                    this.setState({ carregando: false, semFeed: true })
+                    this.setState({ carregando: false, semFeed: true, titleVisible: true })
                 })
 
         } catch (err) {
@@ -56,12 +57,12 @@ export default class Inicio extends Component {
     atualizarFeed = async () => {
         this.setState({ atualizando: true, carregando: true, ideias: [] })
         try {
-            
+
 
             await Api.get('/feed/' + this.state.idUsuario)
                 .then((response) => {
                     Api.defaults.headers.common['Authorization'] = `${response.data.token}`
-                    this.setState({ ideias: response.data.ideias, carregando: false,atualizando: false})
+                    this.setState({ ideias: response.data.ideias, carregando: false, atualizando: false })
 
                     if (response.data.ideias.length == 0) {
                         this.setState({ semFeed: true })
@@ -82,10 +83,10 @@ export default class Inicio extends Component {
     */
     adicionarIdeia = async (dataIdeia) => {
 
-        this.setState({AddIdeia: false})
+        this.setState({ AddIdeia: false })
 
-        Api.post('/ideia',{
-            ideia:{
+        Api.post('/ideia', {
+            ideia: {
                 nm_ideia: dataIdeia.titulo,
                 ds_ideia: dataIdeia.desc,
                 tecnologias_ideia: dataIdeia.tecnologiasIdeia,
@@ -94,7 +95,7 @@ export default class Inicio extends Component {
             usuario: {
                 id_usuario: this.state.idUsuario
             }
-        }).then((response) =>{
+        }).then((response) => {
             Api.defaults.headers.common['Authorization'] = `${response.data.token}`
             ToastAndroid.show('Ideia criada com sucesso', ToastAndroid.SHORT);
         })
@@ -108,8 +109,8 @@ export default class Inicio extends Component {
      */
     infoAutor = (Membros) => {
         let idCriador = 0
-        Membros.map((item,index) => {
-            if(item.idealizador == 1){
+        Membros.map((item, index) => {
+            if (item.idealizador == 1) {
                 idCriador = item.id_usuario
             }
         })
@@ -169,7 +170,7 @@ export default class Inicio extends Component {
     ideia = (idIdeia) => {
 
         let data = []
-        
+
         JSON.stringify(data = {
             id_ideia: idIdeia,
             id_usuario: this.state.idUsuario
@@ -180,20 +181,20 @@ export default class Inicio extends Component {
 
     /**
      * Função de adicionar comentarios
-    */  
+    */
     adicionarComentario = (data, idIdeia) => {
-        Api.post(`/comentario/${this.state.idUsuario}`,{
-            mensagem:{
+        Api.post(`/comentario/${this.state.idUsuario}`, {
+            mensagem: {
                 ct_mensagem: `${data}`
             },
-            ideia:{
+            ideia: {
                 id_ideia: idIdeia
             }
         }).then((response) => {
             Api.defaults.headers.common['Authorization'] = `${response.data.token}`
             ToastAndroid.show('Comentario enviado', ToastAndroid.SHORT);
         })
-     
+
     }
 
     render() {
@@ -216,7 +217,13 @@ export default class Inicio extends Component {
                     trocarPagina={() => this.props.navigation.navigate('Pesquisa')} />
                 <AddIdeia isVisible={this.state.AddIdeia} onCancel={() => this.setState({ AddIdeia: false })} adicionarIdeia={dataIdeia => this.adicionarIdeia(dataIdeia)} />
                 {this.state.carregando &&
-                    <ActivityIndicator style={{ padding: 10 }} size="large" color={EstiloComum.cores.fundoWeDo} />
+                    <View>
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleInicio.shimmerTitle} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleInicio.shimmerUser} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleInicio.shimmerDesc} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleInicio.shimmerPart} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleInicio.shimmerButton} />
+                    </View>
                 }
                 {this.state.semFeed &&
                     <Text>Não tem ideias de acordo com seu gosto</Text>

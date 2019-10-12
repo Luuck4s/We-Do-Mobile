@@ -15,10 +15,12 @@
     "react-native": "0.60.5",
     "react-native-action-button": "^2.8.5",
     "react-native-gesture-handler": "^1.4.0",
+    "react-native-linear-gradient": "^2.5.6",
     "react-native-masked-text": "^1.13.0",
     "react-native-modalbox": "^2.0.0",
     "react-native-reanimated": "^1.2.0",
     "react-native-sectioned-multi-select": "^0.7.1",
+    "react-native-shimmer-placeholder": "^1.0.35",
     "react-native-vector-icons": "^6.6.0",
     "react-navigation": "^3.12.1",
     "react-navigation-selective-tab-bar": "^1.0.3"
