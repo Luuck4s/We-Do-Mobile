@@ -242,7 +242,7 @@ export default class Inicio extends Component {
                 }
                 {this.state.ideias &&
                     <FlatList
-                        refreshControl={<RefreshControl refreshing={this.state.atualizando} onRefresh={this.atualizarFeed} />}
+                        refreshControl={this.state.carregando ? null : <RefreshControl refreshing={this.state.atualizando} onRefresh={() => this.atualizarFeed()} />}
                         initialNumToRender={3}
                         data={this.state.ideias}
                         keyExtractor={item => `${item.id_ideia}`}
