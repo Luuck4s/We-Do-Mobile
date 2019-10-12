@@ -16,7 +16,7 @@ import Ajuda from './screens/Ajuda/Ajuda'
 import ScreenSlideMenu from './screens/ScreenSlideMenu/ScreenSlideMenu';
 import Pesquisa from './screens/Pesquisa/Pesquisa'
 import IdeiaPage from './screens/IdeiaPage/IdeiaPage'
-
+import PoliticasPrivacidade from './screens/PoliticasPrivacidade/PoliticasPrivacidade'
 /**
  * Menu apresentado na tela inicial e nas outras tela apos o login 
 */
@@ -170,6 +170,7 @@ const authRoutes = createAppContainer(createSwitchNavigator(
     {
         Carregando: AuthOrInicio,
         Auth: Auth,
+        Politicas: PoliticasPrivacidade,
         Inicio: SlideMenu
     },
     { initialRouteName: 'Carregando' }

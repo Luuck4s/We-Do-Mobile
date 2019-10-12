@@ -20,7 +20,7 @@ const tecnologias = []
 export default class Auth extends Component {
 
 	state = {
-		criarConta: false,
+		criarConta: this.props.navigation.getParam('voltarPagina') || false,
 		email_usuario: '',
 		nm_usuario: '',
 		senha_usuario: '',
@@ -29,7 +29,7 @@ export default class Auth extends Component {
 		interesses: [],
 		manterConectado: true,
 	}
-
+	
 	componentDidMount = () => {
 		this.buscaTecnologias()
 	}
@@ -310,7 +310,7 @@ export default class Auth extends Component {
 					</TouchableOpacity>
 					{/* Implementar Politicas de privacidade */}
 					{this.state.criarConta &&
-						<TouchableOpacity style={{ marginTop: -4 }} onPress={() => Alert.alert('Alerta')} >
+						<TouchableOpacity style={{ marginTop: -4 }} onPress={() => this.props.navigation.navigate('Politicas')}>
 							<Text style={StyleAuth.politicas}>Políticas de Privacidade</Text>
 						</TouchableOpacity>
 					}

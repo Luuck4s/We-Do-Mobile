@@ -91,8 +91,8 @@ const styles = StyleSheet.create({
 		padding: 5,
 		marginLeft: '2%',
 		textAlign: 'left',
-		marginTop: -4,
-		fontSize: 14,
+		marginTop: 5,
+		fontSize: 15,
 		color: '#FFF',
 	},
 	conectado: {
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
 	textManterConectado: {
 		marginLeft: 10,
 		color: '#FFF',
-		fontSize: 14
+		fontSize: 15
 	}
 })
 
