@@ -12,7 +12,7 @@ export default class Comentarios extends Component{
     }
 
     componentDidMount = () => {
-        let metade_qtd_comentario = Math.round(this.props.comentarios.length / 2)
+        let metade_qtd_comentario = Math.ceil(this.props.comentarios.length / 2)
 
         this.setState({
             maximo: metade_qtd_comentario
@@ -42,8 +42,7 @@ export default class Comentarios extends Component{
                             <Text style={StyleComentarios.nomeUsuario}>{item.nm_usuario}</Text>
                             <Text style={StyleComentarios.comentarios}>{item.ct_mensagem}</Text>
                             <Text style={StyleComentarios.dataComentario}>postado em {moment(`${item.hr_mensagem}`).format('D/MM/YYYY')}</Text>
-                            {comentarios == this.state.maximo && comentarios != 1
-                              && this.state.verMais &&
+                            {comentarios == this.state.maximo && this.props.comentarios.length != 1 && this.state.verMais &&
                                 <TouchableOpacity onPress={() => this.visualizarMais()}>
                                     <Text style={StyleComentarios.visualizarMais}>Ver Mais</Text>
                                 </TouchableOpacity>

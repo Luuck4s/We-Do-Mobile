@@ -53,11 +53,26 @@ export default class Inicio extends Component {
     /**
      * Função para atualizar o feed
     */
-    atualizarFeed = () => {
+    atualizarFeed = async () => {
         this.setState({ atualizando: true, carregando: true, ideias: [] })
-        this.buscarFeed().then(() => {
-            this.setState({ atualizando: false, carregando: false })
-        })
+        try {
+            
+
+            await Api.get('/feed/' + this.state.idUsuario)
+                .then((response) => {
+                    Api.defaults.headers.common['Authorization'] = `${response.data.token}`
+                    this.setState({ ideias: response.data.ideias, carregando: false,atualizando: false})
+
+                    if (response.data.ideias.length == 0) {
+                        this.setState({ semFeed: true })
+                    }
+                }).catch((err) => {
+                    this.setState({ carregando: false, semFeed: true })
+                })
+
+        } catch (err) {
+            Alert.alert('Error', `${err}`)
+        }
     }
 
 
