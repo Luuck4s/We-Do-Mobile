@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     tituloIdeia:{
         fontFamily: EstiloComum.fontFamily,
         color: EstiloComum.cores.fundoWeDo,
-        fontSize: 19,
+        fontSize: 20,
     },
     participantes:{
         

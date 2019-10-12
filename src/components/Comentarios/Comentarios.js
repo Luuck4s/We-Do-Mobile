@@ -12,7 +12,7 @@ export default class Comentarios extends Component{
     }
 
     componentDidMount = () => {
-        let metade_qtd_comentario = Math.round(this.props.comentario.length / 2)
+        let metade_qtd_comentario = Math.round(this.props.comentarios.length / 2)
 
         this.setState({
             maximo: metade_qtd_comentario
@@ -22,7 +22,7 @@ export default class Comentarios extends Component{
     visualizarMais = () => {
         this.setState(
             {
-                maximo: this.props.comentario.length,
+                maximo: this.props.comentarios.length,
                 verMais: false
             }
         )
@@ -32,8 +32,8 @@ export default class Comentarios extends Component{
         let view = null
         let comentarios = 0
 
-        if(this.props.comentario){
-            view = this.props.comentario.map((item,index) => {
+        if(this.props.comentarios){
+            view = this.props.comentarios.map((item,index) => {
                 comentarios++
 
                 if(comentarios <= this.state.maximo){

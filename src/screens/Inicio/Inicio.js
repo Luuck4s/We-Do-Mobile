@@ -88,11 +88,17 @@ export default class Inicio extends Component {
     }
 
     /**
-     * Mostrar informações sobre o autor abrindo a pagina da ideia
-     * @param - idIdeia 
+     * Mostrar informações sobre o autor indo para pagina do usuario 
+     * @param - Membros 
      */
-    infoAutor = (idIdeia) => {
-        this.ideia(idIdeia)
+    infoAutor = (Membros) => {
+        let idCriador = 0
+        Membros.map((item,index) => {
+            if(item.idealizador == 1){
+                idCriador = item.id_usuario
+            }
+        })
+        alert(idCriador)
     }
 
     /**
@@ -181,7 +187,7 @@ export default class Inicio extends Component {
          */
         renderItem = ({ item }) => (<Ideia inicio={true} key={item.id_ideia}
             {...item}
-            onPressAutor={() => this.infoAutor(item.id_ideia)}
+            onPressAutor={() => this.infoAutor(item.membros)}
             onPresNomeIdeia={() => this.ideia(item.id_ideia)}
             onPressMembros={() => this.membros(item.id_ideia)}
             onPressCurtir={() => this.curtirIdeia(item.id_ideia)}

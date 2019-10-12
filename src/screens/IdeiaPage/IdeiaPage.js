@@ -1,50 +1,22 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, ActivityIndicator, Alert, FlatList } from 'react-native'
+import { View, Text, TouchableOpacity, Alert, FlatList, ToastAndroid,RefreshControl } from 'react-native'
 import StyleIdeiaPage from './StyleIdeiaPage'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import Api from '../../api/Api'
 import Ideia from '../../components/Ideia/Ideia'
 
-export const comentario = [
-    {
-        "id_mensagem": 1,
-        "id_usuario": 1,
-        "nm_usuario": "Igor Miguel Galvão",
-        "ct_mensagem": "Projeto muito legal, achei muito interressante",
-        "hr_mensagem": "2019-04-13T13:20:12.000Z",
-        "id_ideia": 1,
-        "uso_mensagem": "2"
-    },
-    {
-        "id_mensagem": 2,
-        "id_usuario": 1,
-        "nm_usuario": "Igor Miguel Galvão",
-        "ct_mensagem": "Projeto muito legal, achei muito interressante",
-        "hr_mensagem": "2019-04-13T13:20:12.000Z",
-        "id_ideia": 1,
-        "uso_mensagem": "2"
-    },
-    {
-        "id_mensagem": 3,
-        "id_usuario": 1,
-        "nm_usuario": "Igor Miguel Galvão",
-        "ct_mensagem": "Projeto muito legal, achei muito interressante",
-        "hr_mensagem": "2019-04-13T13:20:12.000Z",
-        "id_ideia": 1,
-        "uso_mensagem": "2"
-    }
-]
 
 export default class IdeiaPage extends Component {
 
     state = {
         ideia: [],
-        id_usuario: null,
+        idUsuario: null,
+        atualizando: false
     }
 
     componentDidMount = async () => {
         let idUsuario = await this.props.navigation.getParam('id_usuario')
-        this.setState({ id_usuario: idUsuario })
+        this.setState({ idUsuario: idUsuario })
 
         await this.getInfoIdeia()
     }
@@ -55,9 +27,9 @@ export default class IdeiaPage extends Component {
             let idIdeia = await this.props.navigation.getParam('id_ideia')
             let idUsuario = await this.props.navigation.getParam('id_usuario')
 
-            this.setState({ id_usuario: idUsuario })
+            this.setState({ idUsuario })
 
-            Api.get(`/ideia/${idIdeia}&${this.state.id_usuario}`)
+            Api.get(`/ideia/${idIdeia}&${this.state.idUsuario}`)
                 .then((response) => {
                     Api.defaults.headers.common['Authorization'] = `${response.data.token}`
                     let ideiaArr = []
@@ -73,14 +45,13 @@ export default class IdeiaPage extends Component {
         }
     }
 
-
     /**
      * Captura as informações da ideia 
     */
     getInfoIdeia = async () => {
         let idIdeia = await this.props.navigation.getParam('id_ideia')
 
-        await Api.get(`/ideia/${idIdeia}&${this.state.id_usuario}`)
+        await Api.get(`/ideia/${idIdeia}&${this.state.idUsuario}`)
             .then((response) => {
                 Api.defaults.headers.common['Authorization'] = `${response.data.token}`
                 let ideiaArr = []
@@ -102,7 +73,7 @@ export default class IdeiaPage extends Component {
     interesse = (idIdeia) => {
         Api.post('/interesse', {
             usuario: {
-                id_usuario: this.state.id_usuario,
+                id_usuario: this.state.idUsuario,
             },
             ideia: {
                 id_ideia: idIdeia
@@ -117,12 +88,26 @@ export default class IdeiaPage extends Component {
     curtirIdeia = async (idIdeia) => {
         Api.post('/curtida', {
             usuario: {
-                id_usuario: this.state.id_usuario
+                id_usuario: this.state.idUsuario
             },
             ideia: {
                 id_ideia: idIdeia
             }
         })
+    }
+
+    /**
+     * Mostrar informações sobre o autor indo para pagina do usuario 
+     * @param - Membros 
+     */
+    infoAutor = (Membros) => {
+        let idCriador = 0
+        Membros.map((item, index) => {
+            if (item.idealizador == 1) {
+                idCriador = item.id_usuario
+            }
+        })
+
     }
 
     /**
@@ -141,13 +126,38 @@ export default class IdeiaPage extends Component {
         this.ideia(idIdeia)
     }
 
+    /**
+     * Função de adicionar comentarios
+    */
+    adicionarComentario = (data, idIdeia) => {
+        Api.post(`/comentario/${this.state.idUsuario}`, {
+            mensagem: {
+                ct_mensagem: `${data}`
+            },
+            ideia: {
+                id_ideia: idIdeia
+            }
+        }).then((response) => {   
+            Api.defaults.headers.common['Authorization'] = `${response.data.token}`
+            ToastAndroid.show('Comentario enviado', ToastAndroid.SHORT);
+        })
+    }
+
+    /**
+     * Função para atualizar o feed
+    */
+    atualizaIdeia = () => {
+        this.setState({ ideia: [] })
+        this.getInfoIdeia().then(() => {
+            
+        })
+    }
 
     render() {
 
         renderItem = ({ item }) => (<Ideia ideiaPage={true}
             {...item}
-            comentario={comentario} key={item.id_ideia}
-            onPressAutor={() => this.infoAutor(item.id_ideia)}
+            onPressAutor={() => this.infoAutor(item.membros)}
             onPresNomeIdeia={() => this.ideia(item.id_ideia)}
             onPressMembros={() => this.membros(item.id_ideia)}
             onPressCurtir={() => this.curtirIdeia(item.id_ideia)}
@@ -162,12 +172,14 @@ export default class IdeiaPage extends Component {
                         <Icon name={'times-circle'} size={30} style={StyleIdeiaPage.icone} />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('Inicio')}>
+                        
                         <Text style={StyleIdeiaPage.tituloIdeia}>Ideia</Text>
+                        
                     </TouchableOpacity>
                 </View>
                 {this.state.ideia &&
                     <FlatList
-
+                        refreshControl={<RefreshControl refreshing={this.state.atualizando} onRefresh={this.atualizaIdeia} />}
                         initialNumToRender={1}
                         data={this.state.ideia}
                         keyExtractor={item => `${item.id_ideia}`}

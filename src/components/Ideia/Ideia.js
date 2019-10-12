@@ -45,7 +45,7 @@ export default class Ideia extends Component {
     */
     quantidadeComentario = () => {
         if (this.props.ideiaPage) {
-            let qtd = 0
+            let qtd = this.props.comentarios.length
 
             this.setState({ qtdComentario: qtd })
 
@@ -168,9 +168,7 @@ export default class Ideia extends Component {
         if (this.props.ideiaPage) {
             return (
                 <View style={StyleIdeia.container}>
-                    <TouchableOpacity onPress={this.props.onPresNomeIdeia}>
-                        <Text style={StyleIdeia.titulo}>{this.props.nm_ideia}</Text>
-                    </TouchableOpacity>
+                    <Text style={StyleIdeia.titulo}>{this.props.nm_ideia}</Text>
 
                     <Text style={StyleIdeia.autor} onPress={this.props.onPressAutor}>por {idealizador}</Text>
 
@@ -198,7 +196,7 @@ export default class Ideia extends Component {
                         </TouchableOpacity>
                     }
                     <AddComentario adicionarComentario={data => this.adicionarComentario(data)} />
-                    <Comentarios comentario={this.props.comentario} />
+                    <Comentarios comentarios={this.props.comentarios} />
                 </View>
             )
         }
