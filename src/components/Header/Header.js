@@ -61,6 +61,7 @@ export default class Header extends Component {
                         <View style={StyleHeader.inputTec}>
                             <SectionedMultiSelect
                                 colors={{ primary: EstiloComum.cores.fundoWeDo }}
+                                single={true}
                                 showDropDowns={false}
                                 readOnlyHeadings={true}
                                 showChips={false}
@@ -73,7 +74,7 @@ export default class Header extends Component {
                                 searchPlaceholderText='Pesquisar Tecnologias'
                                 selectedText='Selecionada'
                                 items={this.props.items}
-                                onSelectedItemsChange={(tecnolgoiaPesquisa) => this.props.onSelectedItemsChange(tecnolgoiaPesquisa)}
+                                onSelectedItemsChange={(tecnologiaPesquisa) => this.props.onSelectedItemsChange(tecnologiaPesquisa)}
                                 selectedItems={this.props.selectedItems} />
                         </View>
                     </View>

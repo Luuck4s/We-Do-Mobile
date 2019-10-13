@@ -22,7 +22,7 @@ export default class Inicio extends Component {
     }
 
     componentDidMount = async () => {
-        setTimeout(() => this.buscarFeed(),2500)
+        setTimeout(() => this.buscarFeed(),1500)
     }
 
     /**

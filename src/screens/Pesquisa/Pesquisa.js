@@ -122,11 +122,7 @@ export default class Pesquisa extends Component {
      * Função que verifica se o maximo de tecnologia ja foi selecionado para pesquisa
     */
     selecionarTecnologias = (tecnologiaPesquisa) => {
-        if (tecnologiaPesquisa.length > 1) {
-            return
-        }
-
-        this.setState({ tecnologiaPesquisa })
+        this.setState({ tecnologiaPesquisa, pesquisando: true })
     }
 
     mudarTextoPesquisa = (texto) => {
