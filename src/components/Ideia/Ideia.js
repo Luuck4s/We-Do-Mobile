@@ -176,7 +176,7 @@ export default class Ideia extends Component {
 
                     <Text style={StyleIdeia.descricao}>{this.props.ds_ideia}</Text>
 
-                    <MembroIdeia onPressMembros={this.props.onPressMembros} membros={this.props.membros} />
+                    <MembroIdeia ideiaPage={this.props.ideiaPage} onPressMembros={this.props.onPressMembros} membros={this.props.membros} />
 
                     <View style={{ flexDirection: 'row' }}>
                         <TouchableOpacity onPress={() => this.curtida()}>

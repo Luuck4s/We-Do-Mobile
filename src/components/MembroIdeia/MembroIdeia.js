@@ -4,21 +4,48 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native'
 import StyleMembroIdeia from './StyleMembroIdeia'
+import EstiloComum from '../../EstiloComum';
+import Icon from 'react-native-vector-icons/FontAwesome5'
 
-class MembroIdeia extends Component {
+export default class MembroIdeia extends Component {
+
+    state = {
+        maximo: 1,
+        mostrarTodos: true,
+        totalMembros: 0,
+    }
+
+    componentDidMount = () => {
+        this.qtdMembros()
+    }
 
     /**
      * Filtra os membros do array recebido por props e realiza a contagem de quantos
      * membros participa da ideia
      */
     qtdMembros = () => {
-        return this.props.membros.reduce((sum, item) => {
-            if (item.status_solicitacao == 1) {
-                sum++
-            }
-            return sum
-        }, 0)
+        let total = 0
 
+        this.props.membros.map((item, index) => {
+            if (item.status_solicitacao == 1 && item.idealizador != 1) {
+                total = total + 1
+            }
+        })
+
+        this.setState({ totalMembros: total })
+
+    }
+
+    mostrarTodosParticipantes = () => {
+        if (this.props.ideiaPage) {
+            if (this.state.maximo == this.props.membros.length) {
+                this.setState({ maximo: 1, mostrarTodos: true })
+            } else {
+                this.setState({ maximo: this.props.membros.length, mostrarTodos: false })
+            }
+        } else {
+            this.props.onPressMembros()
+        }
     }
 
     render() {
@@ -26,11 +53,21 @@ class MembroIdeia extends Component {
         let n = 0
         if (this.props.membros) {
             membros = this.props.membros.map((item, index) => {
-                n = n + 1
-                if (n <= 1) {
+                n++
+                if (n <= this.state.maximo) {
                     return (
-                        <View style={StyleMembroIdeia.MeContainer} key={index}>
-                            <Text style={StyleMembroIdeia.participantes}>{item.nm_usuario}</Text>
+                        <View style={this.state.maximo >= 1 ? StyleMembroIdeia.MeContainerMax : StyleMembroIdeia.MeContainer} key={index}>
+
+                            {this.state.mostrarTodos && item.status_solicitacao == 1 &&
+                                <Text style={StyleMembroIdeia.participantes}>{item.nm_usuario}</Text>
+                            }
+
+                            {!this.state.mostrarTodos && item.idealizador == 1 &&
+                                <Text style={StyleMembroIdeia.participantes}><Icon name={'crown'} size={15} style={StyleMembroIdeia.iconDestaque} /> {item.nm_usuario}</Text>
+                            }
+                            {!this.state.mostrarTodos && item.idealizador != 1 && item.status_solicitacao == 1 &&
+                                <Text style={StyleMembroIdeia.participantes}>{item.nm_usuario}</Text>
+                            }
                         </View>
                     )
                 }
@@ -38,17 +75,22 @@ class MembroIdeia extends Component {
         }
 
         return (
-            <View style={StyleMembroIdeia.container}>
+            <View style={this.state.maximo > 1 ? StyleMembroIdeia.containerMax : StyleMembroIdeia.container}>
                 {this.props.membros.length > 0 &&
-                    <Text style={StyleMembroIdeia.text}>Com</Text>
+                    <Text style={!this.state.mostrarTodos ? [StyleMembroIdeia.text, { fontWeight: 'bold', color: EstiloComum.cores.fundoWeDo, textAlign: 'center' }] : StyleMembroIdeia.text}>{!this.state.mostrarTodos ? 'Participantes' : 'Com'}</Text>
                 }
                 {membros}
-                {this.props.membros.length > 0 &&
-                    <Text style={StyleMembroIdeia.textMore} onPress={this.props.onPressMembros}>+ {this.qtdMembros()}</Text>
+                {this.props.membros.length > 0 && this.props.membros.length != 1 && this.state.mostrarTodos && this.state.totalMembros != 0 &&
+                    <TouchableOpacity style={StyleMembroIdeia.more} onPress={() => this.mostrarTodosParticipantes()}>
+                        <Text style={StyleMembroIdeia.textMore}>+ {this.state.totalMembros}</Text>
+                    </TouchableOpacity>
+                }
+                {!this.state.mostrarTodos &&
+                    <TouchableOpacity onPress={() => this.mostrarTodosParticipantes()}>
+                        <Text style={StyleMembroIdeia.mostrarMenos}>Mostrar Menos</Text>
+                    </TouchableOpacity>
                 }
             </View>
         )
     }
 }
-
-export default MembroIdeia

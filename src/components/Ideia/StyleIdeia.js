@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     },
     autor: {
         marginTop: 2,
-        fontSize: 13,
+        fontSize: 14,
         color: '#000',
         fontWeight: 'bold',
     },
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     },
     iconComentario: {
         marginLeft: 20,
-        marginTop: 10 
+        marginTop: 10
     },
     iconInteresse: {
         color: '#FFF',

@@ -39,7 +39,7 @@ export default class IdeiaPage extends Component {
                     setTimeout(() => this.setState({
                         ideia: ideiaArr,
                         carregando: false
-                    }),1500)
+                    }), 1500)
                 })
                 .catch((err) => {
                     Alert.alert(`${err}`)
@@ -202,11 +202,12 @@ export default class IdeiaPage extends Component {
                 {this.state.carregando &&
                     <View>
                         <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={EstiloComum.shimmerTitle} />
-                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={[EstiloComum.shimmerUser, {marginLeft: 19}]} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={[EstiloComum.shimmerUser, { marginLeft: 19 }]} />
                         <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={EstiloComum.shimmerDesc} />
-                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={[EstiloComum.shimmerPart,{marginLeft: 19}]} />
-                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={[EstiloComum.shimmerButton, {marginRight: 15}]} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={[EstiloComum.shimmerPart, { marginLeft: 19 }]} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={[EstiloComum.shimmerButton, { marginRight: 15 }]} />
                         <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={EstiloComum.shimmerAddComment} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={EstiloComum.shimmerComment} />
                         <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={EstiloComum.shimmerComment} />
                         <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={EstiloComum.shimmerComment} />
                         <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={EstiloComum.shimmerMore} />
