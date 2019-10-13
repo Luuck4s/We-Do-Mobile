@@ -156,7 +156,7 @@ const SlideMenu = createAppContainer(createDrawerNavigator({
         overlayColor: 'rgba(0,0,0,0.4)',
         contentComponent: ScreenSlideMenu,
         backBehavior: 'none',
-        drawerWidth: 300,
+        drawerWidth: 350,
         contentOptions: {
             activeTintColor: EstiloComum.cores.fundoWeDo,
         }
