@@ -1,29 +1,31 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, Alert, FlatList, ToastAndroid,RefreshControl } from 'react-native'
+import { View, Text, TouchableOpacity, Alert, FlatList, ToastAndroid, RefreshControl } from 'react-native'
 import StyleIdeiaPage from './StyleIdeiaPage'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import Api from '../../api/Api'
 import Ideia from '../../components/Ideia/Ideia'
-
+import EstiloComum from '../../EstiloComum'
+import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 
 export default class IdeiaPage extends Component {
 
     state = {
         ideia: [],
         idUsuario: null,
-        atualizando: false
+        atualizando: false,
+        carregando: true,
     }
 
     componentDidMount = async () => {
         let idUsuario = await this.props.navigation.getParam('id_usuario')
         this.setState({ idUsuario: idUsuario })
 
-        await this.getInfoIdeia()
+        setTimeout(() => this.getInfoIdeia(), 1500)
     }
 
     componentDidUpdate = async (prevProps, prevState) => {
         if (this.props.navigation.getParam('id_ideia') !== prevProps.navigation.getParam('id_ideia')) {
-
+            this.setState({ carregando: true, ideia: [] })
             let idIdeia = await this.props.navigation.getParam('id_ideia')
             let idUsuario = await this.props.navigation.getParam('id_usuario')
 
@@ -34,14 +36,15 @@ export default class IdeiaPage extends Component {
                     Api.defaults.headers.common['Authorization'] = `${response.data.token}`
                     let ideiaArr = []
                     ideiaArr.push(response.data.ideia)
-                    this.setState({
-                        ideia: ideiaArr
-                    })
+                    setTimeout(() => this.setState({
+                        ideia: ideiaArr,
+                        carregando: false
+                    }),1500)
                 })
                 .catch((err) => {
                     Alert.alert(`${err}`)
                 }
-            )
+                )
         }
     }
 
@@ -54,10 +57,13 @@ export default class IdeiaPage extends Component {
         await Api.get(`/ideia/${idIdeia}&${this.state.idUsuario}`)
             .then((response) => {
                 Api.defaults.headers.common['Authorization'] = `${response.data.token}`
+
                 let ideiaArr = []
                 ideiaArr.push(response.data.ideia)
+
                 this.setState({
-                    ideia: ideiaArr
+                    ideia: ideiaArr,
+                    carregando: false
                 })
             })
             .catch((err) => {
@@ -137,7 +143,7 @@ export default class IdeiaPage extends Component {
             ideia: {
                 id_ideia: idIdeia
             }
-        }).then((response) => {   
+        }).then((response) => {
             Api.defaults.headers.common['Authorization'] = `${response.data.token}`
             ToastAndroid.show('Comentario enviado', ToastAndroid.SHORT);
         })
@@ -146,11 +152,27 @@ export default class IdeiaPage extends Component {
     /**
      * Função para atualizar o feed
     */
-    atualizaIdeia = () => {
-        this.setState({ ideia: [] })
-        this.getInfoIdeia().then(() => {
-            
-        })
+    atualizaIdeia = async () => {
+
+        this.setState({ ideia: [], carregando: true })
+
+        let idIdeia = await this.props.navigation.getParam('id_ideia')
+
+        await Api.get(`/ideia/${idIdeia}&${this.state.idUsuario}`)
+            .then((response) => {
+                Api.defaults.headers.common['Authorization'] = `${response.data.token}`
+
+                let ideiaArr = []
+                ideiaArr.push(response.data.ideia)
+
+                this.setState({
+                    ideia: ideiaArr,
+                    carregando: false
+                })
+            })
+            .catch((err) => {
+                Alert.alert(`${err}`)
+            })
     }
 
     render() {
@@ -172,11 +194,24 @@ export default class IdeiaPage extends Component {
                         <Icon name={'times-circle'} size={30} style={StyleIdeiaPage.icone} />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('Inicio')}>
-                        
+
                         <Text style={StyleIdeiaPage.tituloIdeia}>Ideia</Text>
-                        
+
                     </TouchableOpacity>
                 </View>
+                {this.state.carregando &&
+                    <View>
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={EstiloComum.shimmerTitle} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={[EstiloComum.shimmerUser, {marginLeft: 19}]} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={EstiloComum.shimmerDesc} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={[EstiloComum.shimmerPart,{marginLeft: 19}]} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={[EstiloComum.shimmerButton, {marginRight: 15}]} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={EstiloComum.shimmerAddComment} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={EstiloComum.shimmerComment} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={EstiloComum.shimmerComment} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={EstiloComum.shimmerMore} />
+                    </View>
+                }
                 {this.state.ideia &&
                     <FlatList
                         refreshControl={<RefreshControl refreshing={this.state.atualizando} onRefresh={this.atualizaIdeia} />}

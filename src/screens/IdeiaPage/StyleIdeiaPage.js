@@ -4,7 +4,7 @@ import EstiloComum from '../../EstiloComum'
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        padding: 5,
+        margin: 3,
     },
     header:{
         flexDirection: 'row',
@@ -22,12 +22,6 @@ const styles = StyleSheet.create({
         fontFamily: EstiloComum.fontFamily,
         color: EstiloComum.cores.fundoWeDo,
         fontSize: 20,
-    },
-    participantes:{
-        
-    },
-    comentarios:{
-        
     }
 })
 
