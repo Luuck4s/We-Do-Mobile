@@ -164,15 +164,15 @@ export default class Ideia extends Component {
                 return item.nm_usuario
             }
         })
-
+        // tecnologias foi mudado para tecnologia
         if (this.props.ideiaPage) {
             return (
                 <View style={StyleIdeia.container}>
                     <Text style={StyleIdeia.titulo}>{this.props.nm_ideia}</Text>
 
                     <Text style={StyleIdeia.autor} onPress={this.props.onPressAutor}>por {idealizador}</Text>
-
-                    <TecnologiaIdeia tecnologias={this.props.tecnologias} />
+                
+                    <TecnologiaIdeia tecnologias={this.props.tecnologia} />
 
                     <Text style={StyleIdeia.descricao}>{this.props.ds_ideia}</Text>
 
