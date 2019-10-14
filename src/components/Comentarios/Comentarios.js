@@ -41,7 +41,7 @@ export default class Comentarios extends Component{
                         <View style={StyleComentarios.containerComentarios} key={index}>
                             <Text style={StyleComentarios.nomeUsuario}>{item.nm_usuario}</Text>
                             <Text style={StyleComentarios.comentarios}>{item.ct_mensagem}</Text>
-                            <Text style={StyleComentarios.dataComentario}>postado {moment(`${item.hr_mensagem}`,'YYYY-MM-D h:mm:ss').fromNow()}</Text>
+                            <Text style={StyleComentarios.dataComentario}>postado {moment(`${item.hr_mensagem}`,'YYYY-MM-DD hh:mm:ss').fromNow()}</Text>
                             {comentarios == this.state.maximo && this.props.comentarios.length != 1 && this.state.verMais &&
                                 <TouchableOpacity onPress={() => this.visualizarMais()}>
                                     <Text style={StyleComentarios.visualizarMais}>Ver Mais</Text>
