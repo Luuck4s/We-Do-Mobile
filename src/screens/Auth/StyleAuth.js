@@ -105,6 +105,13 @@ const styles = StyleSheet.create({
 		marginLeft: 10,
 		color: '#FFF',
 		fontSize: 15
+	},
+	textConexao:{
+		fontSize: 15,
+		textAlign: 'center',
+		backgroundColor: '#900',
+		width: '100%',
+		color: '#FFF'
 	}
 })
 

@@ -10,6 +10,7 @@ import SectionedMultiSelect from 'react-native-sectioned-multi-select'
 import StyleAuth from './StyleAuth'
 import { YellowBox } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
+import NetInfo from "@react-native-community/netinfo"
 
 YellowBox.ignoreWarnings([
 	'Warning: componentWillReceiveProps is deprecated',
@@ -28,10 +29,26 @@ export default class Auth extends Component {
 		dt_nascimento: '',
 		interesses: [],
 		manterConectado: true,
+		conectado: this.props.navigation.getParam('conectado') || true,
 	}
-	
+
 	componentDidMount = () => {
-		this.buscaTecnologias()
+		NetInfo.isConnected.addEventListener('connectionChange', this.verificarConexao)
+		if(this.state.conectado){
+			this.buscaTecnologias()
+		}
+		
+	}
+
+	/**
+	 * Verifica se o usuario esta conectado a internet ou nao
+	 */
+	verificarConexao = (isConnected) => {
+		if (isConnected == true) {
+			this.setState({ conectado: isConnected })
+		} else {
+			this.setState({ conectado: false })
+		}
 	}
 
 	/**
@@ -39,14 +56,16 @@ export default class Auth extends Component {
 	 * o usuário podera escolher.
 	 */
 	buscaTecnologias = async () => {
-		if (tecnologias.length == 0) {
-			try {
-				await Api.get('/tecnologia')
-					.then((response) => {
-						tecnologias.push(response.data)
-					})
-			} catch (error) {
-				Alert.alert("Erro Tecnologias", `Ocorreu um erro inesperado ${error.data}`)
+		if (this.state.conectado) {
+			if (tecnologias.length == 0) {
+				try {
+					await Api.get('/tecnologia')
+						.then((response) => {
+							tecnologias.push(response.data)
+						})
+				} catch (error) {
+					Alert.alert("Erro Tecnologias", `Ocorreu um erro inesperado ${error.data}`)
+				}
 			}
 		}
 	}
@@ -126,9 +145,9 @@ export default class Auth extends Component {
 					senha_usuario: this.state.senha_usuario
 				}
 			}).then((response) => {
-				if(response.data.err){
-					ToastAndroid.show(`${response.data.err}`,ToastAndroid.SHORT)
-				}else{
+				if (response.data.err) {
+					ToastAndroid.show(`${response.data.err}`, ToastAndroid.SHORT)
+				} else {
 					Api.defaults.headers.common['Authorization'] = `${response.data.token}`
 					this.manterLogado(response.data)
 					this.storeId(response.data.usuario.id_usuario)
@@ -157,10 +176,10 @@ export default class Auth extends Component {
 					tecnologias_usuario: this.state.interesses
 				},
 			}).then((response) => {
-				if(response.data.err){
-					ToastAndroid.show(`${response.data.err}`,ToastAndroid.SHORT)
-				}else{
-					this.setState({criarConta: false, nm_usuario: '',confirmar_senha: '',dt_nascimento: '',interesses: []})
+				if (response.data.err) {
+					ToastAndroid.show(`${response.data.err}`, ToastAndroid.SHORT)
+				} else {
+					this.setState({ criarConta: false, nm_usuario: '', confirmar_senha: '', dt_nascimento: '', interesses: [] })
 					Alert.alert('Cadastro Concluído !', `${response.data.msg}`)
 					this.setState({ criarConta: false })
 				}
@@ -191,14 +210,14 @@ export default class Auth extends Component {
 		 * e validados e so assim libero o botão para cadastro ou login.
 		 */
 		const validacao = []
-
+		validacao.push(this.state.conectado)
 		if (this.state.criarConta) {
 			validacao.push(this.state.nm_usuario && this.state.nm_usuario.trim())
 			validacao.push(this.state.dt_nascimento)
 			validacao.push(this.state.senha_usuario && this.state.senha_usuario.length >= 6)
 			validacao.push(this.state.senha_usuario == this.state.confirmar_senha)
 			validacao.push(this.state.interesses && this.state.interesses.length >= 1)
-		}else{
+		} else {
 			validacao.push(this.state.email_usuario && this.state.email_usuario.includes('@'))
 			validacao.push(this.state.senha_usuario && this.state.senha_usuario.length >= 6)
 		}
@@ -207,10 +226,14 @@ export default class Auth extends Component {
 
 		return (
 			<View style={this.state.criarConta ? StyleAuth.containerCadastrar : StyleAuth.container}>
+				{!this.state.conectado &&
+					<Text style={StyleAuth.textConexao}>Você está desconectado</Text>
+				}
 				<Image source={logo} style={this.state.criarConta ? StyleAuth.logoCadastrar : StyleAuth.logo} />
 				{this.state.criarConta &&
 					<Text style={StyleAuth.subtitulo}>Cadastro</Text>
 				}
+
 				<View style={StyleAuth.formContainer}>
 					{this.state.criarConta &&
 						<AuthInput style={StyleAuth.input}
@@ -255,7 +278,7 @@ export default class Auth extends Component {
 							style={StyleAuth.input}
 							value={this.state.senha_usuario}
 							autoFocus={false}
-							onChangeText={senha_usuario => this.setState({ senha_usuario })} 
+							onChangeText={senha_usuario => this.setState({ senha_usuario })}
 							onSubmitEditing={this.logarOuCadastrar} />
 					}
 					{this.state.criarConta &&
@@ -294,7 +317,7 @@ export default class Auth extends Component {
 						<View style={StyleAuth.conectado}>
 							<Switch
 								thumbColor={'#FFF'}
-								trackColor={{ true: '#313c4d', false: '#FFF'}}
+								trackColor={{ true: '#313c4d', false: '#FFF' }}
 								onValueChange={manterConectado => this.setState({ manterConectado })}
 								value={this.state.manterConectado} />
 							<Text style={StyleAuth.textManterConectado}>Manter-se Conectado</Text>
@@ -308,7 +331,6 @@ export default class Auth extends Component {
 								: 'Cadastre-se'}
 						</Text>
 					</TouchableOpacity>
-					{/* Implementar Politicas de privacidade */}
 					{this.state.criarConta &&
 						<TouchableOpacity style={{ marginTop: -4 }} onPress={() => this.props.navigation.navigate('Politicas')}>
 							<Text style={StyleAuth.politicas}>Políticas de Privacidade</Text>

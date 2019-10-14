@@ -19,10 +19,11 @@ export default class Inicio extends Component {
         semFeed: false,
         carregando: true,
         atualizando: false,
+        conectado: null,
     }
 
     componentDidMount = async () => {
-        setTimeout(() => this.buscarFeed(),1500)
+        setTimeout(() => this.buscarFeed(), 1500)
     }
 
     /**
