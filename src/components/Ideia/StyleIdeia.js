@@ -53,6 +53,15 @@ const styles = StyleSheet.create({
     iconInteresse: {
         color: '#FFF',
         marginTop: '5%',
+    },
+    iconeOuro:{
+        color: '#FFD700'
+    },
+    iconePrata:{
+        color: '#A7A7AD'
+    },
+    iconeBronze:{
+        color: '#A77044'
     }
 })
 

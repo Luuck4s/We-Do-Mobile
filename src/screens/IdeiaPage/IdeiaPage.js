@@ -113,15 +113,7 @@ export default class IdeiaPage extends Component {
                 idCriador = item.id_usuario
             }
         })
-
-    }
-
-    /**
-    * Comentarios da ideia
-    * @param - IdIdeia
-    */
-    comentarios = (idIdeia) => {
-        this.ideia(idIdeia)
+        alert(idCriador)
     }
 
     /**
@@ -150,7 +142,7 @@ export default class IdeiaPage extends Component {
     }
 
     /**
-     * Função para atualizar o feed
+     * Função para atualizar a ideia
     */
     atualizaIdeia = async () => {
 
@@ -183,7 +175,6 @@ export default class IdeiaPage extends Component {
             onPresNomeIdeia={() => this.ideia(item.id_ideia)}
             onPressMembros={() => this.membros(item.id_ideia)}
             onPressCurtir={() => this.curtirIdeia(item.id_ideia)}
-            onPressComentario={() => this.comentarios(item.id_ideia)}
             onPressInteresse={() => this.interesse(item.id_ideia)}
             adicionarComentario={data => this.adicionarComentario(data, item.id_ideia)} />)
 

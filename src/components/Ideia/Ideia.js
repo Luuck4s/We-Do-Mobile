@@ -3,7 +3,7 @@
  * como o @MembroIdeia, @TecnologiaIdeia, @AddComentario.
  */
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, Alert, ToastAndroid } from 'react-native'
+import { View, Text, TouchableOpacity, Alert, ToastAndroid, StyleSheet } from 'react-native'
 import StyleIdeia from './StyleIdeia'
 import AddComentario from '../AddComentario/AddComentario'
 import TecnologiaIdeia from '../TecnologiaIdeia/TecnologiaIdeia'
@@ -11,6 +11,7 @@ import EstiloComum from '../../EstiloComum'
 import MembroIdeia from '../MembroIdeia/MembroIdeia'
 import Comentarios from '../Comentarios/Comentarios'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import IconFont5 from 'react-native-vector-icons/FontAwesome5'
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default class Ideia extends Component {
@@ -44,24 +45,14 @@ export default class Ideia extends Component {
      * Captura a quantidade de comentarios da ideia
     */
     quantidadeComentario = () => {
-        if (this.props.ideiaPage) {
+        if (this.props.trends) {
+            let qtd = this.props.qt_comentarios
+            this.setState({ qtdComentario: qtd })
+        } else {
             let qtd = this.props.comentarios.length
 
             this.setState({ qtdComentario: qtd })
-
-            return qtd
-
-        } else {
-            let qtd = this.props.comentarios.map((item, index) => {
-                return item.quantidade_comentario
-            })
-
-            if (qtd > 0) {
-                this.setState({ qtdComentario: qtd })
-            }
         }
-
-
     }
 
     /**
@@ -158,25 +149,36 @@ export default class Ideia extends Component {
         this.props.adicionarComentario(data)
     }
 
+    iconePosicao = () => {
+        if (this.props.posicaoIdeia == 0) {
+            return <IconFont5 name={'crown'} size={19} style={StyleIdeia.iconeOuro} />
+        } else if (this.props.posicaoIdeia == 1) {
+            return <IconFont5 name={'crown'} size={19} style={StyleIdeia.iconePrata} />
+        } else {
+            return <IconFont5 name={'crown'} size={19} style={StyleIdeia.iconeBronze} />
+        }
+    }
+
     render() {
         let idealizador = this.props.membros.map((item, index) => {
             if (item.idealizador == 1) {
                 return item.nm_usuario
             }
         })
-        
-        if (this.props.ideiaPage) {
+        if (this.props.trends) {
             return (
-                <View style={StyleIdeia.container}>
-                    <Text style={StyleIdeia.titulo}>{this.props.nm_ideia}</Text>
+                <View style={[StyleIdeia.container]}>
+                    <TouchableOpacity onPress={this.props.onPresNomeIdeia}>
+                        <Text style={StyleIdeia.titulo}>{this.iconePosicao()} {this.props.nm_ideia}</Text>
+                    </TouchableOpacity>
 
-                    <Text style={StyleIdeia.autor} onPress={this.props.onPressAutor}>por {idealizador}</Text>
-                
+                    <Text style={StyleIdeia.autor} onPress={this.props.onPressAutor}>por {this.props.nm_idealizador}</Text>
+
                     <TecnologiaIdeia tecnologias={this.props.tecnologias} />
 
                     <Text style={StyleIdeia.descricao}>{this.props.ds_ideia}</Text>
 
-                    <MembroIdeia ideiaPage={this.props.ideiaPage} onPressMembros={this.props.onPressMembros} membros={this.props.membros} />
+                    <MembroIdeia onPressMembros={this.props.onPressMembros} membros={this.props.membros} />
 
                     <View style={{ flexDirection: 'row' }}>
                         <TouchableOpacity onPress={() => this.curtida()}>
@@ -189,6 +191,37 @@ export default class Ideia extends Component {
                                 <Text style={StyleIdeia.numComentCurti}> {this.state.qtdComentario}</Text>
                             </Icon>
                         </TouchableOpacity>
+                    </View>
+                    {!this.state.donoIdeia &&
+                        <TouchableOpacity style={StyleIdeia.interesse} onPress={() => this.interesse()}>
+                            {this.renderInteresse()}
+                        </TouchableOpacity>
+                    }
+                </View>
+            )
+        }
+        if (this.props.ideiaPage) {
+            return (
+                <View style={StyleIdeia.container}>
+                    <Text style={StyleIdeia.titulo}>{this.props.nm_ideia}</Text>
+
+                    <Text style={StyleIdeia.autor} onPress={this.props.onPressAutor}>por {idealizador}</Text>
+
+                    <TecnologiaIdeia tecnologias={this.props.tecnologias} />
+
+                    <Text style={StyleIdeia.descricao}>{this.props.ds_ideia}</Text>
+
+                    <MembroIdeia ideiaPage={this.props.ideiaPage} onPressMembros={this.props.onPressMembros} membros={this.props.membros} />
+
+                    <View style={{ flexDirection: 'row' }}>
+                        <TouchableOpacity onPress={() => this.curtida()}>
+                            <Icon name='heart' style={this.state.curtido ? StyleIdeia.iconCurtido : StyleIdeia.iconCurtida} size={19} >
+                                <Text style={StyleIdeia.numComentCurti}> {this.state.qtdCurtidas}</Text>
+                            </Icon>
+                        </TouchableOpacity>
+                        <Icon name='comment' style={StyleIdeia.iconComentario} size={19} color={EstiloComum.cores.fundoWeDo}>
+                            <Text style={StyleIdeia.numComentCurti}> {this.state.qtdComentario}</Text>
+                        </Icon>
                     </View>
                     {!this.state.donoIdeia &&
                         <TouchableOpacity style={StyleIdeia.interesse} onPress={() => this.interesse()}>

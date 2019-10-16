@@ -63,9 +63,7 @@ export default class Auth extends Component {
 						.then((response) => {
 							tecnologias.push(response.data)
 						})
-				} catch (error) {
-					Alert.alert("Erro Tecnologias", `Ocorreu um erro inesperado ${error.data}`)
-				}
+				} catch (error) { }
 			}
 		}
 	}
