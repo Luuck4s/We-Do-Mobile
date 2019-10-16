@@ -3,7 +3,6 @@ import { View, Alert, FlatList, ActivityIndicator, Text, TouchableOpacity } from
 import Header from '../../components/Header/Header'
 import Api from '../../api/Api'
 import IdeiaPesquisa from '../../components/IdeiaPesquisa/IdeiaPesquisa'
-import EstiloComum from '../../EstiloComum'
 import AsyncStorage from '@react-native-community/async-storage'
 import StylePesquisa from './StylePesquisa'
 
@@ -195,7 +194,7 @@ export default class Pesquisa extends Component {
                     </TouchableOpacity>
                 }
                 {this.state.semResultados && !this.state.pesquisando &&
-                    <Text>Não a resultados para essa pesquisa</Text>
+                    <Text style={StylePesquisa.textNoResultados}>Nenhum resultado foi encontrado.</Text>
                 }
                 {this.state.ideias &&
                     <FlatList

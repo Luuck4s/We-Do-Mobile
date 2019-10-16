@@ -62,6 +62,10 @@ const styles = StyleSheet.create({
     },
     iconeBronze:{
         color: '#A77044'
+    },
+    iconeEditar:{
+        alignSelf: 'flex-end',
+        marginTop: -20,
     }
 })
 

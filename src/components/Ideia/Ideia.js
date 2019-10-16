@@ -160,8 +160,10 @@ export default class Ideia extends Component {
     }
 
     render() {
+        let idCriador = ''
         let idealizador = this.props.membros.map((item, index) => {
             if (item.idealizador == 1) {
+                idCriador = item.id_usuario
                 return item.nm_usuario
             }
         })
@@ -204,7 +206,9 @@ export default class Ideia extends Component {
             return (
                 <View style={StyleIdeia.container}>
                     <Text style={StyleIdeia.titulo}>{this.props.nm_ideia}</Text>
-
+                    {idCriador == this.state.idUsuarioAtual &&
+                        <IconFont5 onPress={() => alert('Editar Ideia')} name={'edit'} size={20} style={StyleIdeia.iconeEditar} />
+                    }
                     <Text style={StyleIdeia.autor} onPress={this.props.onPressAutor}>por {idealizador}</Text>
 
                     <TecnologiaIdeia tecnologias={this.props.tecnologias} />

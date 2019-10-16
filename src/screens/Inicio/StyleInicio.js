@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native'
+import EstiloComum from '../../EstiloComum'
 
 const styles = StyleSheet.create({
     container: {
@@ -6,7 +7,20 @@ const styles = StyleSheet.create({
         marginLeft: 0,
         justifyContent: 'center',
         alignItems: 'center',
-    }
+    },
+    textNoFeed:{
+        fontSize: 15,
+        fontFamily: EstiloComum.fontFamily,
+        marginTop: 10,
+        textAlign: 'center'
+    },
+    textConexao:{
+		fontSize: 15,
+		textAlign: 'center',
+		backgroundColor: '#900',
+		width: '100%',
+		color: '#FFF'
+	}
 })
 
 export default styles

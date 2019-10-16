@@ -8,6 +8,12 @@ const styles = StyleSheet.create({
         fontFamily: EstiloComum.fontFamily,
         color: EstiloComum.cores.fundoWeDo,
         fontSize: 18
+    },
+    textNoResultados:{
+        fontFamily: EstiloComum.fontFamily,
+        fontSize: 15,
+        textAlign: 'center',
+        marginTop: 10,
     }
 })
 

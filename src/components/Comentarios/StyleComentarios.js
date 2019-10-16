@@ -29,6 +29,12 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontFamily: EstiloComum.fontFamily,
         textAlign: 'center'
+    },
+    textNoComentarios:{
+        marginTop: 10,
+        fontSize: 15,
+        fontFamily: EstiloComum.fontFamily,
+        textAlign: 'center'
     }
 })
 

@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     icon: {
         marginLeft: '65%',
         marginRight: 5,
-        color: EstiloComum.cores.fundoWeDo,
+        color: '#000',
     },
     icon2: {
         marginLeft: '3%',

@@ -9,6 +9,7 @@ import EstiloComum from '../../EstiloComum'
 import ActionButton from 'react-native-action-button'
 import AddIdeia from '../AddIdeia/AddIdeia'
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
+import NetInfo from "@react-native-community/netinfo"
 
 export default class Inicio extends Component {
 
@@ -19,7 +20,7 @@ export default class Inicio extends Component {
         semFeed: false,
         carregando: true,
         atualizando: false,
-        conectado: null,
+        conectado: true,
     }
 
     componentDidMount = async () => {
@@ -30,25 +31,33 @@ export default class Inicio extends Component {
      * Função que busca o feed de acordo com o id do usuario
     */
     buscarFeed = async () => {
-        try {
-            let idUsuario = await AsyncStorage.getItem('@weDo:userId')
 
-            await this.setState({ idUsuario })
+        NetInfo.isConnected.fetch().done((isConnected) => {
+            if (isConnected == true) {
+                this.setState({ conectado: true })
+            } else {
+                this.setState({ conectado: false })
+            }
+        })
+        if (this.state.conectado) {
+            try {
+                let idUsuario = await AsyncStorage.getItem('@weDo:userId')
 
-            await Api.get('/feed/' + idUsuario)
-                .then((response) => {
-                    Api.defaults.headers.common['Authorization'] = `${response.data.token}`
-                    this.setState({ ideias: response.data.ideias, carregando: false })
+                await this.setState({ idUsuario })
 
-                    if (response.data.ideias.length == 0) {
-                        this.setState({ semFeed: true })
-                    }
-                }).catch((err) => {
-                    this.setState({ carregando: false, semFeed: true, titleVisible: true })
-                })
+                await Api.get('/feed/' + idUsuario)
+                    .then((response) => {
+                        Api.defaults.headers.common['Authorization'] = `${response.data.token}`
+                        this.setState({ ideias: response.data.ideias, carregando: false })
 
-        } catch (err) {
-            Alert.alert('Error', `${err}`)
+                        if (response.data.ideias.length == 0) {
+                            this.setState({ semFeed: true })
+                        }
+                    }).catch((err) => {
+                        this.setState({ carregando: false, semFeed: true, titleVisible: true })
+                    })
+
+            } catch (err) { }
         }
     }
 
@@ -56,24 +65,32 @@ export default class Inicio extends Component {
      * Função para atualizar o feed
     */
     atualizarFeed = async () => {
-        this.setState({ atualizando: true, carregando: true, ideias: [] })
-        try {
 
+        NetInfo.isConnected.fetch().done((isConnected) => {
+            if (isConnected == true) {
+                this.setState({ conectado: true })
+            } else {
+                this.setState({ conectado: false })
+            }
+        })
 
-            await Api.get('/feed/' + this.state.idUsuario)
-                .then((response) => {
-                    Api.defaults.headers.common['Authorization'] = `${response.data.token}`
-                    this.setState({ ideias: response.data.ideias, carregando: false, atualizando: false })
+        if (this.state.conectado) {
+            this.setState({ atualizando: true, carregando: true, ideias: [] })
 
-                    if (response.data.ideias.length == 0) {
-                        this.setState({ semFeed: true })
-                    }
-                }).catch((err) => {
-                    this.setState({ carregando: false, semFeed: true })
-                })
+            try {
+                await Api.get('/feed/' + this.state.idUsuario)
+                    .then((response) => {
+                        Api.defaults.headers.common['Authorization'] = `${response.data.token}`
+                        this.setState({ ideias: response.data.ideias, carregando: false, atualizando: false })
 
-        } catch (err) {
-            Alert.alert('Error', `${err}`)
+                        if (response.data.ideias.length == 0) {
+                            this.setState({ semFeed: true })
+                        }
+                    }).catch((err) => {
+                        this.setState({ carregando: false, semFeed: true })
+                    })
+
+            } catch (err) { }
         }
     }
 
@@ -216,6 +233,9 @@ export default class Inicio extends Component {
             <View style={StyleInicio.container}>
                 <Header paginaInicial={true} texto={"Página Inicial"} icon={"search"} onPressImage={() => this.props.navigation.openDrawer()}
                     trocarPagina={() => this.props.navigation.navigate('Pesquisa')} />
+                {!this.state.conectado &&
+                    <Text style={StyleInicio.textConexao}>Você está desconectado.</Text>
+                }
                 <AddIdeia isVisible={this.state.AddIdeia} onCancel={() => this.setState({ AddIdeia: false })} adicionarIdeia={dataIdeia => this.adicionarIdeia(dataIdeia)} />
                 {this.state.carregando &&
                     <View>
@@ -238,8 +258,8 @@ export default class Inicio extends Component {
                         <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={EstiloComum.shimmerButton} />
                     </View>
                 }
-                {this.state.semFeed &&
-                    <Text>Não tem ideias de acordo com seu gosto</Text>
+                {this.state.semFeed && this.state.conectado &&
+                    <Text style={StyleInicio.textNoFeed}>Não tem ideias de acordo com suas preferências</Text>
                 }
                 {this.state.ideias &&
                     <FlatList
@@ -249,6 +269,7 @@ export default class Inicio extends Component {
                         keyExtractor={item => `${item.id_ideia}`}
                         renderItem={renderItem} />
                 }
+
                 <ActionButton buttonColor={EstiloComum.cores.fundoWeDo}
                     onPress={() => { this.setState({ AddIdeia: true }) }} />
             </View>

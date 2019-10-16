@@ -56,6 +56,9 @@ export default class Comentarios extends Component{
         return(
             <View style={StyleComentarios.container}>
                 {view}
+                {this.props.comentarios.length == 0 &&
+                    <Text style={StyleComentarios.textNoComentarios}>Está ideia ainda não tem comentarios.</Text>
+                }
             </View>
         )
     }
