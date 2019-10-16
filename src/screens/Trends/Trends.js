@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Alert, FlatList, RefreshControl } from 'react-native'
+import { View, FlatList, RefreshControl } from 'react-native'
 import Header from '../../components/Header/Header'
 import StyleTrends from './StyleTrends'
 import Api from '../../api/Api'
@@ -15,12 +15,14 @@ export default class Trends extends Component {
     }
 
     componentDidMount = async () => {
+        
+        let idUsuario = await AsyncStorage.getItem('@weDo:userId')
+        this.setState({ idUsuario })
+
         await this.buscarTrends()
     }
 
     buscarTrends = async () => {
-        let idUsuario = await AsyncStorage.getItem('@weDo:userId')
-        this.setState({ idUsuario })
         await Api.get('/trends').then((response) => {
 
             let ideiaArr = []
