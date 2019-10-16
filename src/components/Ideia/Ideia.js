@@ -167,7 +167,7 @@ export default class Ideia extends Component {
         })
         if (this.props.trends) {
             return (
-                <View style={[StyleIdeia.container]}>
+                <View style={[StyleIdeia.container, { paddingBottom: 8, borderBottomWidth: StyleSheet.hairlineWidth }]}>
                     <TouchableOpacity onPress={this.props.onPresNomeIdeia}>
                         <Text style={StyleIdeia.titulo}>{this.iconePosicao()} {this.props.nm_ideia}</Text>
                     </TouchableOpacity>
