@@ -35,13 +35,12 @@ export default class Comentarios extends Component{
         if(this.props.comentarios){
             view = this.props.comentarios.map((item,index) => {
                 comentarios++
-
                 if(comentarios <= this.state.maximo){
                     return(
                         <View style={StyleComentarios.containerComentarios} key={index}>
                             <Text style={StyleComentarios.nomeUsuario}>{item.nm_usuario}</Text>
                             <Text style={StyleComentarios.comentarios}>{item.ct_mensagem}</Text>
-                            <Text style={StyleComentarios.dataComentario}>postado {moment(`${item.hr_mensagem}`,'YYYY-MM-DD hh:mm:ss').fromNow()}</Text>
+                            <Text style={StyleComentarios.dataComentario}>postado em {moment(`${item.hr_mensagem}`).format('DD/MM/YYYY')}</Text>
                             {comentarios == this.state.maximo && this.props.comentarios.length != 1 && this.state.verMais &&
                                 <TouchableOpacity onPress={() => this.visualizarMais()}>
                                     <Text style={StyleComentarios.visualizarMais}>Ver Mais</Text>
