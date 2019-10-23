@@ -3,7 +3,7 @@
  * como o @MembroIdeia, @TecnologiaIdeia, @AddComentario.
  */
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, Alert, ToastAndroid, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity, Alert, ToastAndroid, StyleSheet, TextInput, ScrollView } from 'react-native'
 import StyleIdeia from './StyleIdeia'
 import AddComentario from '../AddComentario/AddComentario'
 import TecnologiaIdeia from '../TecnologiaIdeia/TecnologiaIdeia'
@@ -12,7 +12,8 @@ import MembroIdeia from '../MembroIdeia/MembroIdeia'
 import Comentarios from '../Comentarios/Comentarios'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import IconFont5 from 'react-native-vector-icons/FontAwesome5'
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-community/async-storage'
+import SectionedMultiSelect from 'react-native-sectioned-multi-select'
 
 export default class Ideia extends Component {
 
@@ -23,6 +24,10 @@ export default class Ideia extends Component {
         qtdCurtidas: 0,
         qtdComentario: 0,
         donoIdeia: false,
+        editTitulo: false,
+        editDesc: false,
+        novoNome: this.props.nm_ideia,
+        novaDescricao: this.props.ds_ideia
     }
 
     componentDidMount = async () => {
@@ -149,6 +154,15 @@ export default class Ideia extends Component {
         this.props.adicionarComentario(data)
     }
 
+    apagarComentario = (id_mensagem) => {
+        let qtdComentario = this.state.qtdComentario
+        qtdComentario = Number(qtdComentario)
+
+        this.setState({ qtdComentario: qtdComentario - 1 })
+
+        this.props.apagarComentario(id_mensagem)
+    }
+
     iconePosicao = () => {
         if (this.props.posicaoIdeia == 0) {
             return <IconFont5 name={'crown'} size={19} style={StyleIdeia.iconeOuro} />
@@ -205,18 +219,44 @@ export default class Ideia extends Component {
         if (this.props.ideiaPage) {
             return (
                 <View style={StyleIdeia.container}>
-                    <Text style={StyleIdeia.titulo}>{this.props.nm_ideia}</Text>
-                    {idCriador == this.state.idUsuarioAtual &&
-                        <IconFont5 onPress={() => alert('Editar Ideia')} name={'edit'} size={20} style={StyleIdeia.iconeEditar} />
+                    {!this.state.editTitulo &&
+                        <Text style={StyleIdeia.titulo}>{this.props.nm_ideia}</Text>
+                    }
+                    {this.state.editTitulo &&
+                        <TextInput placeholder="Titulo da Ideia" style={StyleIdeia.input}
+                            onChangeText={novoNome => this.setState({ novoNome })}
+                            value={this.state.novoNome} maxLength={50} />
+                    }
+                    {idCriador == this.state.idUsuarioAtual && !this.state.editTitulo &&
+                        <IconFont5 onPress={() => this.setState({ editTitulo: true, editDesc: false })} name={'pencil-alt'} size={20}
+                            style={StyleIdeia.iconeEditar} />
+                    }
+                    {idCriador == this.state.idUsuarioAtual && this.state.editTitulo && 
+                        //chamar funcao mudar titulo
+                        <IconFont5 onPress={() => this.setState({ editTitulo: false })} name={'check'} size={25}
+                            style={StyleIdeia.iconeConfirmTitulo} />
                     }
                     <Text style={StyleIdeia.autor} onPress={this.props.onPressAutor}>por {idealizador}</Text>
-
                     <TecnologiaIdeia tecnologias={this.props.tecnologias} />
-
-                    <Text style={StyleIdeia.descricao}>{this.props.ds_ideia}</Text>
-
-                    <MembroIdeia ideiaPage={this.props.ideiaPage} onPressMembros={this.props.onPressMembros} membros={this.props.membros} />
-
+                    {!this.state.editDesc &&
+                        <Text style={StyleIdeia.descricao}>{this.props.ds_ideia}</Text>
+                    }
+                    {this.state.editDesc &&
+                        <TextInput placeholder="Descrição" style={StyleIdeia.inputDesc}
+                            maxLength={255} onChangeText={novaDescricao => this.setState({ novaDescricao })}
+                            value={this.state.novaDescricao} multiline={true} />
+                    }
+                    {idCriador == this.state.idUsuarioAtual &&  !this.state.editDesc &&
+                        <IconFont5 onPress={() => this.setState({ editTitulo: false, editDesc: true })} name={'pencil-alt'} size={20}
+                            style={StyleIdeia.iconeEditarDesc} />
+                    }
+                    {idCriador == this.state.idUsuarioAtual && this.state.editDesc &&
+                        //chamar funcao mudar desc
+                        <IconFont5 onPress={() => this.setState({ editDesc: false})} name={'check'} size={25}
+                            style={StyleIdeia.iconeConfirmDesc} />
+                    }
+                    <MembroIdeia ideiaPage={this.props.ideiaPage} onPressMembros={this.props.onPressMembros}
+                        membros={this.props.membros} />
                     <View style={{ flexDirection: 'row' }}>
                         <TouchableOpacity onPress={() => this.curtida()}>
                             <Icon name='heart' style={this.state.curtido ? StyleIdeia.iconCurtido : StyleIdeia.iconCurtida} size={19} >
@@ -227,13 +267,15 @@ export default class Ideia extends Component {
                             <Text style={StyleIdeia.numComentCurti}> {this.state.qtdComentario}</Text>
                         </Icon>
                     </View>
+
                     {!this.state.donoIdeia &&
                         <TouchableOpacity style={StyleIdeia.interesse} onPress={() => this.interesse()}>
                             {this.renderInteresse()}
                         </TouchableOpacity>
                     }
                     <AddComentario adicionarComentario={data => this.adicionarComentario(data)} />
-                    <Comentarios comentarios={this.props.comentarios} />
+                    <Comentarios apagarComentario={id_mensagem => this.apagarComentario(id_mensagem)}
+                        donoIdeia={this.state.donoIdeia ? true : false} comentarios={this.props.comentarios} />
                 </View>
             )
         }

@@ -3,6 +3,7 @@ import { createSwitchNavigator, createBottomTabNavigator, createDrawerNavigator,
 import BottomTabBar from "react-navigation-selective-tab-bar"
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import EstiloComum from './EstiloComum'
+
 import AuthOrInicio from './screens/AuthOrInicio/AuthOrInicio'
 import Auth from './screens/Auth/Auth'
 import Inicio from './screens/Inicio/Inicio'
@@ -17,6 +18,9 @@ import ScreenSlideMenu from './screens/ScreenSlideMenu/ScreenSlideMenu';
 import Pesquisa from './screens/Pesquisa/Pesquisa'
 import IdeiaPage from './screens/IdeiaPage/IdeiaPage'
 import PoliticasPrivacidade from './screens/PoliticasPrivacidade/PoliticasPrivacidade'
+import Perfil from './screens/Perfil/Perfil'
+import PerfilUsuario from './screens/PerfilUsuario/PerfilUsuario'
+
 /**
  * Menu apresentado na tela inicial e nas outras tela apos o login 
 */
@@ -61,17 +65,8 @@ const MenuRoutes = createAppContainer(createBottomTabNavigator(
         Pesquisa:{
             screen: Pesquisa
         },
-        ProjetosAtuais: {
-            screen: ProjetosAtuais
-        },
-        Portfolio: {
-            screen: Portfolio
-        },
-        Configuracoes: {
-            screen: Configuracoes
-        },
-        Ajuda: {
-            screen: Ajuda
+        PerfilUsuario:{
+            screen: PerfilUsuario
         }
     },
     {
@@ -104,7 +99,8 @@ const SlideMenu = createAppContainer(createDrawerNavigator({
         name: 'Inicio',
         screen: MenuRoutes,
         navigationOptions: {
-            drawerLabel: () => null
+            drawerIcon: ({ tintColor }) =>
+            <Icon name='home' size={20} color={tintColor} />
         }
     },
     IdeiaPage:{
@@ -114,9 +110,18 @@ const SlideMenu = createAppContainer(createDrawerNavigator({
             drawerLabel: () => null
         }
     },
+    Perfil:{
+        name: 'Perfil',
+        screen: Perfil,
+        navigationOptions: {
+            title: 'Perfil',
+            drawerIcon: ({ tintColor }) =>
+                <Icon name='user-astronaut' size={20} color={tintColor} />
+        }
+    },
     ProjetosAtuais: {
         name: 'ProjetosAtuais',
-        screen: MenuRoutes,
+        screen: ProjetosAtuais,
         navigationOptions: {
             title: 'Projetos Atuais',
             drawerIcon: ({ tintColor }) =>
@@ -125,7 +130,7 @@ const SlideMenu = createAppContainer(createDrawerNavigator({
     },
     Portifolio: {
         name: 'Portifolio',
-        screen: MenuRoutes,
+        screen: Portfolio,
         navigationOptions: {
             title: 'Seu Portifólio',
             drawerIcon: ({ tintColor }) =>
@@ -134,7 +139,7 @@ const SlideMenu = createAppContainer(createDrawerNavigator({
     },
     Configuracoes: {
         name: 'Configuracoes',
-        screen: MenuRoutes,
+        screen: Configuracoes,
         navigationOptions: {
             title: 'Configurações',
             drawerIcon: ({ tintColor }) =>
@@ -143,7 +148,7 @@ const SlideMenu = createAppContainer(createDrawerNavigator({
     },
     Ajuda: {
         name: 'Ajuda',
-        screen: MenuRoutes,
+        screen: Ajuda,
         navigationOptions: {
             title: 'Ajuda',
             drawerIcon: ({ tintColor }) =>

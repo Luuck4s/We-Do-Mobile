@@ -35,6 +35,11 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontFamily: EstiloComum.fontFamily,
         textAlign: 'center'
+    },
+    iconTrash:{
+        color: '#900',
+        textAlign: 'right',
+        marginRight: '3%'
     }
 })
 

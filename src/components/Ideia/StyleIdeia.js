@@ -66,6 +66,74 @@ const styles = StyleSheet.create({
     iconeEditar:{
         alignSelf: 'flex-end',
         marginTop: -20,
+        marginRight: 5,
+    },
+    iconeConfirmTitulo:{
+        alignSelf: 'flex-end',
+        marginTop: -30,
+        marginRight: 10,
+    },
+    input:{
+        width: '80%',
+        height: 45,
+        backgroundColor: '#FFF',
+        borderRadius: 5,
+        borderWidth: 0.4,
+        fontSize: 15,
+        color: '#000'
+    },
+    inputDesc:{
+        width: '80%',
+        height: 'auto',
+        marginTop: 10,
+        backgroundColor: '#FFF',
+        borderRadius: 5,
+        borderWidth: 0.4,
+        fontSize: 15,
+        color: '#000'
+    },
+    containerTec: {
+        borderWidth: 0.4,
+        backgroundColor: '#FFF',
+        borderRadius: 5,
+        marginTop: 10,
+        height: 200,
+        width: '95%'
+    },
+    iconeButton:{
+        marginTop: '9%',
+        color: '#FFF'
+    },
+    containerButton:{
+        marginTop: '8%',
+        flexDirection: 'row', 
+        justifyContent: 'center'
+    },
+    textButton: {
+        fontSize: 14,
+        marginTop: '9%',
+        marginLeft: '10%',
+        marginRight: '10%',
+        color: '#FFF'
+    },
+    button: {
+        margin: 15,
+        borderRadius: 15,
+        flexDirection: 'row',
+        alignContent: 'space-around',
+        width: 100,
+        height: 40,
+        backgroundColor: EstiloComum.cores.fundoWeDo,
+    },
+    iconeEditarDesc:{
+        alignSelf: 'flex-end',
+        marginTop: -20,
+        marginRight: 5,
+    },
+    iconeConfirmDesc:{
+        alignSelf: 'flex-end',
+        marginTop: -30,
+        marginRight: 10,
     }
 })
 

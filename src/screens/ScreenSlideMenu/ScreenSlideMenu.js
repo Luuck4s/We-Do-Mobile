@@ -1,5 +1,5 @@
 import React from 'react'
-import { SafeAreaView, Image, Text, View, ScrollView, TouchableWithoutFeedback } from 'react-native'
+import { SafeAreaView, Image, Text, View, ScrollView, TouchableWithoutFeedback, TouchableOpacity } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 import { DrawerItems } from 'react-navigation'
 import Api from '../../api/Api'
@@ -20,20 +20,22 @@ export default props => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={StyleMenu.header}>
-                <Icon name={"user-astronaut"} size={27} style={StyleMenu.iconUser} />
-                <Text style={StyleMenu.userName}>{props.navigation.getParam('nm_usuario')}</Text>
+                <Icon name={"user-astronaut"} size={35} style={StyleMenu.iconUser} />
+                <TouchableOpacity onPress={() => props.navigation.navigate('Perfil')}>
+                    <Text style={StyleMenu.userName}>{props.navigation.getParam('nm_usuario')}</Text>
+                </TouchableOpacity>
             </View>
             <ScrollView>
                 <DrawerItems {...props} />
                 <View style={StyleMenu.containerLogout}>
-                <TouchableWithoutFeedback style={StyleMenu.areaLogout} onPress={logout}>
-                    <Icon name='power-off' size={22} color={'#808080'} style={StyleMenu.iconLogout} />
-                </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback style={StyleMenu.areaLogout} onPress={logout}>
-                    <Text style={StyleMenu.textLogout}>Sair</Text>
-                </TouchableWithoutFeedback>
-            </View>
-            </ScrollView> 
+                    <TouchableWithoutFeedback style={StyleMenu.areaLogout} onPress={logout}>
+                        <Icon name='power-off' size={22} color={'#808080'} style={StyleMenu.iconLogout} />
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback style={StyleMenu.areaLogout} onPress={logout}>
+                        <Text style={StyleMenu.textLogout}>Sair</Text>
+                    </TouchableWithoutFeedback>
+                </View>
+            </ScrollView>
         </SafeAreaView>
     )
 }

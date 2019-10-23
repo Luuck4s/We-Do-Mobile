@@ -129,10 +129,11 @@ export default class Inicio extends Component {
         let idCriador = 0
         Membros.map((item, index) => {
             if (item.idealizador == 1) {
-                idCriador = item.id_usuario
+                idCriador = {"idPerfilUsuario" : item.id_usuario}
             }
         })
-        alert(idCriador)
+        
+        this.props.navigation.navigate('PerfilUsuario', idCriador)
     }
 
     /**

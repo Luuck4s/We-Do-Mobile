@@ -9,11 +9,11 @@ const style = StyleSheet.create({
     },
     iconUser:{
         color: EstiloComum.cores.fundoWeDo,
-        marginTop: '10%',
+        marginTop: '8%',
         marginLeft: '5%',
     },
     userName: {
-        marginTop: '11%',
+        marginTop: '16%',
         marginLeft: '5%',
         fontSize: 19,
         fontFamily: EstiloComum.fontFamily,
