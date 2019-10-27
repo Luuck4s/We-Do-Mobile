@@ -24,7 +24,6 @@ export default class PerfilUsuario extends Component {
     render() {
         return (
             <View>
-                <Header />
                 <Text>{this.state.idUsuario}</Text>
             </View>)
     }

@@ -154,6 +154,10 @@ export default class Ideia extends Component {
         this.props.adicionarComentario(data)
     }
 
+    /**
+     * Diminui o numero de comentarios da ideia e chama uma função por props 
+     * para realizar o delete da mensagem
+     */
     apagarComentario = (id_mensagem) => {
         let qtdComentario = this.state.qtdComentario
         qtdComentario = Number(qtdComentario)
@@ -274,8 +278,8 @@ export default class Ideia extends Component {
                         </TouchableOpacity>
                     }
                     <AddComentario adicionarComentario={data => this.adicionarComentario(data)} />
-                    <Comentarios apagarComentario={id_mensagem => this.apagarComentario(id_mensagem)}
-                        donoIdeia={this.state.donoIdeia ? true : false} comentarios={this.props.comentarios} />
+                    <Comentarios apagarComentario={id_mensagem => this.apagarComentario(id_mensagem)} idIdeia={this.props.idIdeia}
+                        donoIdeia={this.state.donoIdeia ? true : false} comentarios={this.props.comentarios} idUsuario={this.state.idUsuarioAtual} />
                 </View>
             )
         }

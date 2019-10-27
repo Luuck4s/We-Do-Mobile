@@ -8,19 +8,22 @@ import EstiloComum from '../../EstiloComum'
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 import moment from 'moment'
 import 'moment/locale/pt-br'
+import AsyncStorage from '@react-native-community/async-storage'
 
 export default class IdeiaPage extends Component {
 
     state = {
         ideia: [],
-        idUsuario: null,
+        idUsuario: '',
         atualizando: false,
         carregando: true,
+        idIdeia: ''
     }
 
     componentDidMount = async () => {
         let idUsuario = await this.props.navigation.getParam('id_usuario')
-        this.setState({ idUsuario: idUsuario })
+        let idIdeia = await this.props.navigation.getParam('id_ideia')
+        this.setState({ idUsuario: idUsuario, idIdeia })
 
         setTimeout(() => this.getInfoIdeia(), 1500)
     }
@@ -31,7 +34,7 @@ export default class IdeiaPage extends Component {
             let idIdeia = await this.props.navigation.getParam('id_ideia')
             let idUsuario = await this.props.navigation.getParam('id_usuario')
 
-            this.setState({ idUsuario })
+            this.setState({ idUsuario, idIdeia })
 
             Api.get(`/ideia/${idIdeia}&${this.state.idUsuario}`)
                 .then((response) => {
@@ -112,11 +115,11 @@ export default class IdeiaPage extends Component {
         let idCriador = 0
         Membros.map((item, index) => {
             if (item.idealizador == 1) {
-                idCriador = {"idPerfilUsuario" : item.id_usuario}
+                idCriador = { "idPerfilUsuario": item.id_usuario }
             }
         })
-        
-        this.props.navigation.navigate('PerfilUsuario',idCriador)
+
+        this.props.navigation.navigate('PerfilUsuario', idCriador)
     }
 
     /**
@@ -130,8 +133,10 @@ export default class IdeiaPage extends Component {
     /**
      * Função de adicionar comentarios
     */
-    adicionarComentario = (data, idIdeia) => {
-        Api.post(`/comentario/${this.state.idUsuario}`, {
+    adicionarComentario = async (data, idIdeia) => {
+        var nmUsuario = await AsyncStorage.getItem('@weDo:userName')
+
+        await Api.post(`/comentario/${this.state.idUsuario}`, {
             mensagem: {
                 ct_mensagem: `${data}`
             },
@@ -139,19 +144,76 @@ export default class IdeiaPage extends Component {
                 id_ideia: idIdeia
             }
         }).then((response) => {
+            let idUsuario = this.props.navigation.getParam('id_usuario')
+            var ideiaLocal = [...this.state.ideia]
+            var comentarios = ideiaLocal[0].comentarios
 
-            /* var comentario = {
-                "id_mensagem": response.id_mensagem,
+            var comentario = {
+                "id_mensagem": response.id_comentario,
                 "ct_mensagem": `${data}`,
                 "id_ideia": idIdeia,
-                "nm_usuario": this.props.navigation.getParam('nm_usuario'),
-                "hr_mensagem": 
+                "id_usuario": idUsuario,
+                "nm_usuario": JSON.parse(nmUsuario),
+                "hr_mensagem": moment().format()
             }
-            Alert.alert('Comentario',`${JSON.stringify(comentario)}`) */
+
+            comentarios.push(comentario)
+
+            ideiaLocal[0].comentarios = comentarios
+
+            this.setState({
+                ideia: ideiaLocal
+            })
+
 
             Api.defaults.headers.common['Authorization'] = `${response.data.token}`
             ToastAndroid.show('Comentario enviado', ToastAndroid.SHORT);
         })
+    }
+
+    /**
+     * Função resposanvel por apagar o comentarios
+     * @param id_mensagem
+     */
+    apagarComentario = (id_mensagem) => {
+        Api.delete(`/comentario/${this.state.idUsuario}`, {
+            data: {
+                comentario: {
+                    id_mensagem: id_mensagem
+                }
+            }
+        }).then(response => {
+
+            if (response.data.msg) {
+
+                var ideiaLocal = [...this.state.ideia]
+                var comentarios = ideiaLocal[0].comentarios
+                var novosComentarios = []
+
+                comentarios.map((item, index) => {
+                    if (item.id_mensagem !== id_mensagem) {
+                        novosComentarios.push(item)
+                    }
+                })
+
+                ideiaLocal[0].comentarios = novosComentarios
+
+                this.setState({
+                    ideia: ideiaLocal
+                })
+
+                ToastAndroid.show('Comentario deletado', ToastAndroid.SHORT)
+            }
+
+            if (response.data.msg_erro) {
+                ToastAndroid.show('Erro ao deletar comentario ' + response.data.msg_erro, ToastAndroid.SHORT)
+            }
+
+        }).catch(err => {
+            Alert.alert(`${err}`)
+        })
+
+
     }
 
     /**
@@ -180,38 +242,8 @@ export default class IdeiaPage extends Component {
             })
     }
 
-    /**
-     * Função resposanvel por apagar o comentarios
-     * @param id_mensagem
-     */
-    apagarComentario = (id_mensagem) => {
-        Api.delete(`/comentario/${this.state.idUsuario}`, {
-            data: {
-                comentario: {
-                    id_mensagem: id_mensagem
-                }
-            }
-        }).then(response => {
-            var ideiaLocal = this.state.ideia
-            var comentarios = ideiaLocal[0].comentarios
-
-            comentarios.splice(comentarios[id_mensagem], 1)
-
-            ideiaLocal[0].comentarios = comentarios
-
-            this.setState({
-                ideia: this.state.ideia
-            })
-
-            ToastAndroid.show('Comentario deletado', ToastAndroid.SHORT);
-        }).catch(err => {
-            Alert.alert(`${err}`)
-        })
-
-    }
 
     render() {
-
         renderItem = ({ item }) => (<Ideia ideiaPage={true}
             {...item}
             onPressAutor={() => this.infoAutor(item.membros)}
@@ -220,7 +252,8 @@ export default class IdeiaPage extends Component {
             onPressCurtir={() => this.curtirIdeia(item.id_ideia)}
             onPressInteresse={() => this.interesse(item.id_ideia)}
             adicionarComentario={data => this.adicionarComentario(data, item.id_ideia)}
-            apagarComentario={id_mensagem => this.apagarComentario(id_mensagem)} />)
+            apagarComentario={id_mensagem => this.apagarComentario(id_mensagem)}
+            idIdeia={this.state.idIdeia} />)
 
         return (
             <View style={StyleIdeiaPage.container}>

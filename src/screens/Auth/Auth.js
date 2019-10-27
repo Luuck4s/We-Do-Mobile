@@ -121,6 +121,14 @@ export default class Auth extends Component {
 		}
 	}
 
+	storeName = async (name) => {
+		try {
+			await AsyncStorage.setItem('@weDo:userName', JSON.stringify(name))
+		} catch (err) {
+			Alert.alert('Error Interno', `Async Store ID Error:${err}`)
+		}
+	}
+
 	/**
 	 * @interesses - recebe o interreses que é o campo que está no state que armazena
 	 *  tecnologias que o usuario escolheu, caso as tecnologias passem de "numero a definir"
@@ -149,6 +157,7 @@ export default class Auth extends Component {
 					Api.defaults.headers.common['Authorization'] = `${response.data.token}`
 					this.manterLogado(response.data)
 					this.storeId(response.data.usuario.id_usuario)
+					this.storeName(response.data.usuario.nm_usuario)
 					this.props.navigation.navigate('Inicio', response.data.usuario)
 				}
 			})

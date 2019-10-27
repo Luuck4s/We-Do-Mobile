@@ -20,6 +20,16 @@ export default class Comentarios extends Component {
         })
     }
 
+    componentDidUpdate(PrevProps, PrevState) {
+        if (this.props.idIdeia !== PrevProps.idIdeia) {
+            let metade_qtd_comentario = Math.ceil(this.props.comentarios.length / 2)
+
+            this.setState({
+                maximo: metade_qtd_comentario
+            })
+        }
+    }
+
     visualizarMais = () => {
         this.setState(
             {
@@ -32,17 +42,26 @@ export default class Comentarios extends Component {
     render() {
         let view = null
         let comentarios = 0
-
+        let iconeExibido = false
         if (this.props.comentarios) {
             view = this.props.comentarios.map((item, index) => {
                 comentarios++
                 if (comentarios <= this.state.maximo) {
                     var id_mensagem = item.id_mensagem
+                    if (item.id_usuario === this.props.idUsuario) {
+                        donoComentario = true
+                    }
                     return (
                         <View style={StyleComentarios.containerComentarios} key={index}>
                             <Text style={StyleComentarios.nomeUsuario}>{item.nm_usuario}</Text>
                             <Text style={StyleComentarios.comentarios}>{item.ct_mensagem}</Text>
                             {this.props.donoIdeia &&
+                                <TouchableOpacity onPress={() => this.props.apagarComentario(id_mensagem)}>
+                                    {iconeExibido = true}
+                                    <Icon name="trash" size={20} style={StyleComentarios.iconTrash} />
+                                </TouchableOpacity>
+                            }
+                            {item.id_usuario == this.props.idUsuario && iconeExibido != true &&
                                 <TouchableOpacity onPress={() => this.props.apagarComentario(id_mensagem)}>
                                     <Icon name="trash" size={20} style={StyleComentarios.iconTrash} />
                                 </TouchableOpacity>
