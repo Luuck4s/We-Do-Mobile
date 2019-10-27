@@ -6,14 +6,14 @@ const style = StyleSheet.create({
         height: 100,
         flexDirection: 'row',
         borderBottomWidth: 0.5,
+        paddingTop: '10%',
     },
     iconUser:{
         color: EstiloComum.cores.fundoWeDo,
-        marginTop: '8%',
         marginLeft: '5%',
     },
     userName: {
-        marginTop: '16%',
+        marginTop: '5%',
         marginLeft: '5%',
         fontSize: 19,
         fontFamily: EstiloComum.fontFamily,

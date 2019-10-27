@@ -147,9 +147,8 @@ export default class IdeiaPage extends Component {
             let idUsuario = this.props.navigation.getParam('id_usuario')
             var ideiaLocal = [...this.state.ideia]
             var comentarios = ideiaLocal[0].comentarios
-
             var comentario = {
-                "id_mensagem": response.id_comentario,
+                "id_mensagem": response.data.id_comentario,
                 "ct_mensagem": `${data}`,
                 "id_ideia": idIdeia,
                 "id_usuario": idUsuario,
@@ -165,9 +164,8 @@ export default class IdeiaPage extends Component {
                 ideia: ideiaLocal
             })
 
-
             Api.defaults.headers.common['Authorization'] = `${response.data.token}`
-            ToastAndroid.show('Comentario enviado', ToastAndroid.SHORT);
+            ToastAndroid.show('Comentario enviado', ToastAndroid.SHORT)
         })
     }
 
@@ -175,29 +173,29 @@ export default class IdeiaPage extends Component {
      * Função resposanvel por apagar o comentarios
      * @param id_mensagem
      */
-    apagarComentario = (id_mensagem) => {
-        Api.delete(`/comentario/${this.state.idUsuario}`, {
+    apagarComentario = async (id_mensagem) => {
+        await Api.delete(`/comentario/${this.state.idUsuario}`, {
             data: {
                 comentario: {
                     id_mensagem: id_mensagem
                 }
             }
-        }).then(response => {
+        }).then((response) => {
 
             if (response.data.msg) {
 
                 var ideiaLocal = [...this.state.ideia]
                 var comentarios = ideiaLocal[0].comentarios
+
                 var novosComentarios = []
 
                 comentarios.map((item, index) => {
-                    if (item.id_mensagem !== id_mensagem) {
+                    if (item.id_mensagem != id_mensagem) {
                         novosComentarios.push(item)
                     }
                 })
-
                 ideiaLocal[0].comentarios = novosComentarios
-
+                
                 this.setState({
                     ideia: ideiaLocal
                 })
