@@ -25,7 +25,8 @@ export default class Comentarios extends Component {
             let metade_qtd_comentario = Math.ceil(this.props.comentarios.length / 2)
 
             this.setState({
-                maximo: metade_qtd_comentario
+                maximo: metade_qtd_comentario,
+                verMais: true
             })
         }
     }

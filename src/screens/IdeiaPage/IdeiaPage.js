@@ -195,7 +195,7 @@ export default class IdeiaPage extends Component {
                     }
                 })
                 ideiaLocal[0].comentarios = novosComentarios
-                
+
                 this.setState({
                     ideia: ideiaLocal
                 })
@@ -212,6 +212,41 @@ export default class IdeiaPage extends Component {
         })
 
 
+    }
+
+    alterarDesc = async (data) => {
+        await Api.put('/ideia', {
+            ideia: {
+                id_ideia: this.state.idIdeia,
+                nm_ideia: data[0],
+                ds_ideia: data[1],
+                status_ideia: data[2]
+            },
+            usuario: {
+                id_usuario: this.state.idUsuario
+            }
+        }).then((response) => {
+            this.atualizaIdeia()
+        })
+    }
+
+    /**
+     * Função responsavel por alterar o titulo da ideia
+     */
+    alterarTitulo = async (data) => {
+        await Api.put('/ideia', {
+            ideia: {
+                id_ideia: this.state.idIdeia,
+                nm_ideia: data[0],
+                ds_ideia: data[1],
+                status_ideia: data[2]
+            },
+            usuario: {
+                id_usuario: this.state.idUsuario
+            }
+        }).then((response) => {
+            this.atualizaIdeia()
+        })
     }
 
     /**
@@ -251,6 +286,8 @@ export default class IdeiaPage extends Component {
             onPressInteresse={() => this.interesse(item.id_ideia)}
             adicionarComentario={data => this.adicionarComentario(data, item.id_ideia)}
             apagarComentario={id_mensagem => this.apagarComentario(id_mensagem)}
+            alterarTitulo={data => this.alterarTitulo(data)}
+            alterarDesc={data => this.alterarDesc(data)}
             idIdeia={this.state.idIdeia} />)
 
         return (

@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
     },
-    containerMax:{
+    containerMax: {
         flexDirection: 'column'
     },
     MeContainer: {
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
         marginTop: '3%',
         marginLeft: '1%',
     },
-    MeContainerMax:{
+    MeContainerMax: {
         marginTop: '3%',
         marginLeft: '1%',
     },
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
         color: '#333',
         marginTop: '3%',
     },
-    more:{
+    more: {
         marginTop: '3%',
         marginLeft: '2%',
     },
@@ -37,14 +37,14 @@ const styles = StyleSheet.create({
         marginLeft: '2%',
         fontWeight: 'bold'
     },
-    mostrarMenos:{
+    mostrarMenos: {
         marginTop: 1,
         textAlign: 'center',
         fontSize: 15,
         fontWeight: 'bold',
         color: EstiloComum.cores.fundoWeDo,
     },
-    iconDestaque:{
+    iconDestaque: {
         color: '#FFD700'
     }
 })

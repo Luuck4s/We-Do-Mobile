@@ -18,6 +18,8 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     descricao: {
+        marginRight: 40,
+        textAlign: 'justify',
         marginTop: 5,
         fontSize: 15,
         color: '#000',
@@ -66,31 +68,33 @@ const styles = StyleSheet.create({
     iconeEditar:{
         alignSelf: 'flex-end',
         marginTop: -20,
-        marginRight: 5,
+        marginRight: 10,
     },
     iconeConfirmTitulo:{
         alignSelf: 'flex-end',
-        marginTop: -30,
+        marginTop: -40,
         marginRight: 10,
     },
     input:{
-        width: '80%',
+        width: '85%',
         height: 45,
         backgroundColor: '#FFF',
         borderRadius: 5,
         borderWidth: 0.4,
         fontSize: 15,
-        color: '#000'
+        color: '#000',
+        marginBottom: 10,
     },
     inputDesc:{
-        width: '80%',
+        width: '85%',
         height: 'auto',
         marginTop: 10,
         backgroundColor: '#FFF',
         borderRadius: 5,
         borderWidth: 0.4,
         fontSize: 15,
-        color: '#000'
+        color: '#000',
+        marginBottom: 15,
     },
     containerTec: {
         borderWidth: 0.4,
@@ -127,12 +131,12 @@ const styles = StyleSheet.create({
     },
     iconeEditarDesc:{
         alignSelf: 'flex-end',
-        marginTop: -20,
-        marginRight: 5,
+        marginTop: -30,
+        marginRight: 10,
     },
     iconeConfirmDesc:{
         alignSelf: 'flex-end',
-        marginTop: -30,
+        marginTop: -50,
         marginRight: 10,
     }
 })

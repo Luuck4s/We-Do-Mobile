@@ -27,7 +27,8 @@ export default class Ideia extends Component {
         editTitulo: false,
         editDesc: false,
         novoNome: this.props.nm_ideia,
-        novaDescricao: this.props.ds_ideia
+        novaDescricao: this.props.ds_ideia,
+        novoStatus: 1
     }
 
     componentDidMount = async () => {
@@ -154,6 +155,86 @@ export default class Ideia extends Component {
         this.props.adicionarComentario(data)
     }
 
+    alterarTitulo = () => {
+        let data = [this.state.novoNome]
+        data.push(this.state.novaDescricao)
+        data.push(this.state.novoStatus)
+
+        this.props.alterarTitulo(data)
+
+    }
+
+    alterarDesc = () => {
+        let data = [this.state.novoNome]
+        data.push(this.state.novaDescricao)
+        data.push(this.state.novoStatus)
+
+        this.props.alterarDesc(data)
+
+    }
+
+    verificarAlteracao = () => {
+        if (this.state.novoNome.trim() !== this.props.nm_ideia.trim() && this.state.novaDescricao.trim() !== this.props.ds_ideia.trim()) {
+            Alert.alert(
+                'Confirmação',
+                `Deseja alterar o titulo desta ideia para "${this.state.novoNome}" e alterar a descrição para "${this.state.novaDescricao}"`,
+                [
+                    {
+                        text: 'Cancelar', onPress: () => this.setState(
+                            { editDesc: false, editTitulo: false, novoNome: this.props.nm_ideia, novaDescricao: this.props.ds_ideia })
+                    },
+                    { text: 'Confirmar', onPress: () => this.alterarTitulo() }
+                ]
+            )
+        } else if (this.state.editTitulo && this.state.editDesc) {
+            this.setState({
+                editDesc: false,
+                editTitulo: false
+            })
+        }
+
+        if (this.state.novaDescricao.trim() !== this.props.ds_ideia.trim() && this.state.novoNome.trim() == this.props.nm_ideia.trim()) {
+            Alert.alert(
+                'Confirmação',
+                `Deseja alterar a descrição desta ideia para "${this.state.novaDescricao}"`,
+                [
+                    { text: 'Cancelar', onPress: () => this.setState({ editDesc: false, novaDescricao: this.props.ds_ideia }) },
+                    { text: 'Confirmar', onPress: () => this.alterarDesc() }
+                ]
+            )
+        } else if (this.state.editDesc) {
+            this.setState({ editDesc: false })
+        }
+
+        if (this.state.novoNome.trim() !== this.props.nm_ideia.trim() && this.state.novaDescricao.trim() == this.props.ds_ideia.trim()) {
+            Alert.alert(
+                'Confirmação',
+                `Deseja alterar o titulo desta ideia para "${this.state.novoNome}"`,
+                [
+                    { text: 'Cancelar', onPress: () => this.setState({ editTitulo: false, novoNome: this.props.nm_ideia }) },
+                    { text: 'Confirmar', onPress: () => this.alterarTitulo() }
+                ]
+            )
+        } else if (this.state.editTitulo) {
+            this.setState({ editTitulo: false })
+        }
+    }
+
+
+    /**
+     * Exibe um alerta de confirmação para apagar a mensagem
+    */
+    confirmarApagar = (id_mensagem) => {
+        Alert.alert(
+            'Confirmação',
+            'Deseja apagar este comentário ?',
+            [
+                { text: 'Cancelar', onPress: false },
+                { text: 'Apagar', onPress: () => this.apagarComentario(id_mensagem) }
+            ]
+        )
+    }
+
     /**
      * Diminui o numero de comentarios da ideia e chama uma função por props 
      * para realizar o delete da mensagem
@@ -229,15 +310,14 @@ export default class Ideia extends Component {
                     {this.state.editTitulo &&
                         <TextInput placeholder="Titulo da Ideia" style={StyleIdeia.input}
                             onChangeText={novoNome => this.setState({ novoNome })}
-                            value={this.state.novoNome} maxLength={50} />
+                            value={this.state.novoNome} maxLength={50} onSubmitEditing={() => this.verificarAlteracao()} />
                     }
                     {idCriador == this.state.idUsuarioAtual && !this.state.editTitulo &&
-                        <IconFont5 onPress={() => this.setState({ editTitulo: true, editDesc: false })} name={'pencil-alt'} size={20}
+                        <IconFont5 onPress={() => this.setState({ editTitulo: true })} name={'pencil-alt'} size={20}
                             style={StyleIdeia.iconeEditar} />
                     }
-                    {idCriador == this.state.idUsuarioAtual && this.state.editTitulo && 
-                        //chamar funcao mudar titulo
-                        <IconFont5 onPress={() => this.setState({ editTitulo: false })} name={'check'} size={25}
+                    {idCriador == this.state.idUsuarioAtual && this.state.editTitulo &&
+                        <IconFont5 onPress={() => this.verificarAlteracao()} name={'check'} size={25}
                             style={StyleIdeia.iconeConfirmTitulo} />
                     }
                     <Text style={StyleIdeia.autor} onPress={this.props.onPressAutor}>por {idealizador}</Text>
@@ -247,16 +327,15 @@ export default class Ideia extends Component {
                     }
                     {this.state.editDesc &&
                         <TextInput placeholder="Descrição" style={StyleIdeia.inputDesc}
-                            maxLength={255} onChangeText={novaDescricao => this.setState({ novaDescricao })}
+                            maxLength={255} onChangeText={novaDescricao => this.setState({ novaDescricao })} onSubmitEditing={() => this.verificarAlteracao()}
                             value={this.state.novaDescricao} multiline={true} />
                     }
-                    {idCriador == this.state.idUsuarioAtual &&  !this.state.editDesc &&
-                        <IconFont5 onPress={() => this.setState({ editTitulo: false, editDesc: true })} name={'pencil-alt'} size={20}
+                    {idCriador == this.state.idUsuarioAtual && !this.state.editDesc &&
+                        <IconFont5 onPress={() => this.setState({ editDesc: true })} name={'pencil-alt'} size={20}
                             style={StyleIdeia.iconeEditarDesc} />
                     }
                     {idCriador == this.state.idUsuarioAtual && this.state.editDesc &&
-                        //chamar funcao mudar desc
-                        <IconFont5 onPress={() => this.setState({ editDesc: false})} name={'check'} size={25}
+                        <IconFont5 onPress={() => this.verificarAlteracao()} name={'check'} size={25}
                             style={StyleIdeia.iconeConfirmDesc} />
                     }
                     <MembroIdeia ideiaPage={this.props.ideiaPage} onPressMembros={this.props.onPressMembros}
@@ -278,7 +357,7 @@ export default class Ideia extends Component {
                         </TouchableOpacity>
                     }
                     <AddComentario adicionarComentario={data => this.adicionarComentario(data)} />
-                    <Comentarios apagarComentario={id_mensagem => this.apagarComentario(id_mensagem)} idIdeia={this.props.idIdeia}
+                    <Comentarios apagarComentario={id_mensagem => this.confirmarApagar(id_mensagem)} idIdeia={this.props.idIdeia}
                         donoIdeia={this.state.donoIdeia ? true : false} comentarios={this.props.comentarios} idUsuario={this.state.idUsuarioAtual} />
                 </View>
             )
