@@ -297,9 +297,7 @@ export default class IdeiaPage extends Component {
                         <Icon name={'times-circle'} size={30} style={StyleIdeiaPage.icone} />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('Inicio')}>
-
-                        <Text style={StyleIdeiaPage.tituloIdeia}>Ideia</Text>
-
+                        <Text style={StyleIdeiaPage.tituloIdeia}></Text>
                     </TouchableOpacity>
                 </View>
                 {this.state.carregando &&

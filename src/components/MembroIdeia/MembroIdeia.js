@@ -54,7 +54,7 @@ export default class MembroIdeia extends Component {
         if (this.props.membros) {
             membros = this.props.membros.map((item, index) => {
                 n++
-                if (n <= this.state.maximo) {
+                if (n <= this.state.maximo && item.status_solicitacao == 1) {
                     return (
                         <View style={this.state.maximo >= 1 ? StyleMembroIdeia.MeContainerMax : StyleMembroIdeia.MeContainer} key={index}>
 

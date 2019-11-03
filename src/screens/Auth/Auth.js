@@ -223,7 +223,6 @@ export default class Auth extends Component {
 			validacao.push(this.state.dt_nascimento)
 			validacao.push(this.state.senha_usuario && this.state.senha_usuario.length >= 6)
 			validacao.push(this.state.senha_usuario == this.state.confirmar_senha)
-			validacao.push(this.state.interesses && this.state.interesses.length >= 1)
 		} else {
 			validacao.push(this.state.email_usuario && this.state.email_usuario.includes('@'))
 			validacao.push(this.state.senha_usuario && this.state.senha_usuario.length >= 6)
