@@ -17,12 +17,18 @@ const style = StyleSheet.create({
         fontFamily: EstiloComum.fontFamily,
         fontSize: 18,
     },
-    textPortfolio:{
+    text:{
         borderTopWidth: StyleSheet.hairlineWidth,
         fontFamily: EstiloComum.fontFamily,
         fontSize: 18,
         fontWeight: 'bold',
         textAlign: "center"
+    },
+    subText:{
+        fontFamily: EstiloComum.fontFamily,
+        fontSize: 14,
+        textAlign: "center",
+        color: '#333'
     }
 })
 
