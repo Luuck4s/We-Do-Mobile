@@ -136,7 +136,10 @@ export default class IdeiaPage extends Component {
     adicionarComentario = async (data, idIdeia) => {
         var nmUsuario = await AsyncStorage.getItem('@weDo:userName')
 
-        await Api.post(`/comentario/${this.state.idUsuario}`, {
+        await Api.post(`/comentario`, {
+            usuario:{
+                id_usuario: this.state.idUsuario
+            },
             mensagem: {
                 ct_mensagem: `${data}`
             },
@@ -174,8 +177,11 @@ export default class IdeiaPage extends Component {
      * @param id_mensagem
      */
     apagarComentario = async (id_mensagem) => {
-        await Api.delete(`/comentario/${this.state.idUsuario}`, {
+        await Api.delete(`/comentario`, {
             data: {
+                usuario:{
+                    id_usuario: this.state.idUsuario
+                },
                 comentario: {
                     id_mensagem: id_mensagem
                 }

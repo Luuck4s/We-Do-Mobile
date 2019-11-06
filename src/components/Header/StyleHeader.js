@@ -15,7 +15,6 @@ const styles = StyleSheet.create({
     },
     rowContainer2: {
         width: '100%',
-        height: 30,
         flexDirection: 'row',
         alignItems: 'flex-end',
     },
@@ -32,7 +31,7 @@ const styles = StyleSheet.create({
     },
     icon2: {
         marginLeft: '3%',
-        marginBottom: '1%',
+        marginBottom: '3%',
     },
     iconHeader: {
         marginLeft: 5,
@@ -48,7 +47,6 @@ const styles = StyleSheet.create({
         fontFamily: EstiloComum.fontFamily,
         color: EstiloComum.cores.fundoWeDo,
         fontSize: 20,
-        
     },
     inputPesquisa:{
         fontSize: 15,

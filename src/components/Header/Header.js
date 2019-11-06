@@ -82,7 +82,7 @@ export default class Header extends Component {
                 {!this.props.paginaInicial && !this.props.ScreenPesquisa &&
                     <View style={StyleHeader.rowContainer2}>
                         <TouchableOpacity onPress={this.props.onPress}>
-                            <Icon name={this.props.icon} size={25} color={EstiloComum.cores.fundoWeDo} style={StyleHeader.icon2} />
+                            <Icon name={this.props.icon} size={22} color={EstiloComum.cores.fundoWeDo} style={StyleHeader.icon2} />
                         </TouchableOpacity>
                         <Text style={StyleHeader.title2}>{this.props.texto}</Text>
                     </View>

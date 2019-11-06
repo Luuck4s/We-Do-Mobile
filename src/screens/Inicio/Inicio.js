@@ -202,7 +202,10 @@ export default class Inicio extends Component {
      * Função de adicionar comentarios
     */
     adicionarComentario = (data, idIdeia) => {
-        Api.post(`/comentario/${this.state.idUsuario}`, {
+        Api.post(`/comentario`, {
+            usuario:{
+                id_usuario: this.state.idUsuario
+            },
             mensagem: {
                 ct_mensagem: `${data}`
             },

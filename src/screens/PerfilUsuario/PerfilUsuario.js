@@ -1,10 +1,14 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import Header from '../../components/Header/Header'
-import { View, Text } from 'react-native';
+import { View, Text } from 'react-native'
+import StylePerfilUsuario from './StylePerfilUsuario'
+import Icon from 'react-native-vector-icons/FontAwesome5'
+import InformacoesUsuario from '../../components/InformacoesUsuario/InformacoesUsuario'
 
 export default class PerfilUsuario extends Component {
+
     state = {
-        idUsuario: null
+        idUsuario: null,
     }
 
     componentDidMount() {
@@ -20,11 +24,16 @@ export default class PerfilUsuario extends Component {
         }
     }
 
-
     render() {
         return (
             <View>
-                <Text>{this.state.idUsuario}</Text>
-            </View>)
+                <Header icon={"bars"} onPress={() => this.props.navigation.openDrawer()} />
+                <View style={StylePerfilUsuario.informacaoArea}>
+                    <Icon name={"user-ninja"} size={40} style={StylePerfilUsuario.iconUser} />
+                    <Text style={StylePerfilUsuario.nmUsuario}>Nome usuario</Text>
+                </View>
+                <InformacoesUsuario perfilUsuario descricao={"A vida é bela demais para vivermos a tarde dashjdh"} email={"lucas196078@gmail.com"} />
+            </View>
+        )
     }
 }
