@@ -129,10 +129,14 @@ export default class Inicio extends Component {
         let idCriador = 0
         Membros.map((item, index) => {
             if (item.idealizador == 1) {
-                idCriador = {"idPerfilUsuario" : item.id_usuario}
+                idCriador = {
+                    "idPerfilUsuario": item.id_usuario,
+                    "paginaAnterior": "Inicio"
+                }
             }
         })
-        
+
+
         this.props.navigation.navigate('PerfilUsuario', idCriador)
     }
 
@@ -203,7 +207,7 @@ export default class Inicio extends Component {
     */
     adicionarComentario = (data, idIdeia) => {
         Api.post(`/comentario`, {
-            usuario:{
+            usuario: {
                 id_usuario: this.state.idUsuario
             },
             mensagem: {

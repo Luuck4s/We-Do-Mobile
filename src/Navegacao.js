@@ -1,5 +1,5 @@
 import React from 'react'
-import { createSwitchNavigator, createBottomTabNavigator, createDrawerNavigator, DrawerItems, createAppContainer } from 'react-navigation'
+import { createSwitchNavigator, createBottomTabNavigator, createDrawerNavigator, DrawerItems, createAppContainer, createStackNavigator } from 'react-navigation'
 import BottomTabBar from "react-navigation-selective-tab-bar"
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import EstiloComum from './EstiloComum'
@@ -21,6 +21,44 @@ import PoliticasPrivacidade from './screens/PoliticasPrivacidade/PoliticasPrivac
 import Perfil from './screens/Perfil/Perfil'
 import PerfilUsuario from './screens/PerfilUsuario/PerfilUsuario'
 
+
+
+const InicioStack = createAppContainer(createStackNavigator({
+    Inicio: {
+        name: 'Inicio',
+        screen: Inicio,
+    },
+    IdeiaPage: {
+        name: 'IdeiaPage',
+        screen: IdeiaPage,
+    },
+    PerfilUsuario: {
+        name: 'PerfilUsuario',
+        screen: PerfilUsuario,
+    },
+    Pesquisa: {
+        name: 'Pesquisa',
+        screen: Pesquisa
+    }
+}, {
+    headerMode: 'none',
+    navigationOptions: {
+        headerVisible: false,
+    }
+}
+))
+
+
+InicioStack.navigationOptions = ({ navigation }) => {
+    let tabBarVisible = true
+    if (navigation.state.index != 0) {
+        tabBarVisible = false
+    }
+    return {
+        tabBarVisible,
+    }
+}
+
 /**
  * Menu apresentado na tela inicial e nas outras tela apos o login 
 */
@@ -28,7 +66,7 @@ const MenuRoutes = createAppContainer(createBottomTabNavigator(
     {
         Inicio: {
             name: 'Inicio',
-            screen: Inicio,
+            screen: InicioStack,
             navigationOptions: {
                 title: 'Inicio',
                 tabBarIcon: ({ tintColor }) =>
@@ -61,20 +99,14 @@ const MenuRoutes = createAppContainer(createBottomTabNavigator(
                 tabBarIcon: ({ tintColor }) =>
                     <Icon name='comment-alt' size={30} color={tintColor} />
             }
-        },
-        Pesquisa:{
-            screen: Pesquisa
-        },
-        PerfilUsuario:{
-            screen: PerfilUsuario
         }
     },
     {
         tabBarComponent: props => {
             return (
                 <BottomTabBar
-                    {...props} 
-                    display={["Inicio", "Trends", "Notificacao", "Projetos"]} 
+                    {...props}
+                    display={["Inicio", "Trends", "Notificacao", "Projetos"]}
                 />
             )
         },
@@ -83,6 +115,18 @@ const MenuRoutes = createAppContainer(createBottomTabNavigator(
             showLabel: false,
             activeTintColor: EstiloComum.cores.fundoWeDo,
             keyboardHidesTabBar: true,
+        },
+        defaultNavigationOptions: ({ navigation }) => {
+            let tabBarVisible
+
+            if (navigation.state.index == 1) {
+                tabBarVisible = false
+            }
+
+            return {
+                tabBarVisible
+            }
+
         }
     }
 ))
@@ -100,17 +144,17 @@ const SlideMenu = createAppContainer(createDrawerNavigator({
         screen: MenuRoutes,
         navigationOptions: {
             drawerIcon: ({ tintColor }) =>
-            <Icon name='home' size={20} color={tintColor} />
+                <Icon name='home' size={20} color={tintColor} />
         }
     },
-    IdeiaPage:{
+    IdeiaPage: {
         name: 'IdeiaPage',
         screen: IdeiaPage,
         navigationOptions: {
             drawerLabel: () => null
         }
     },
-    Perfil:{
+    Perfil: {
         name: 'Perfil',
         screen: Perfil,
         navigationOptions: {

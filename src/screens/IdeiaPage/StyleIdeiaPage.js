@@ -17,11 +17,6 @@ const styles = StyleSheet.create({
         marginTop: '3%',
         marginLeft: '5%',
         color: EstiloComum.cores.fundoWeDo
-    },
-    tituloIdeia:{
-        fontFamily: EstiloComum.fontFamily,
-        color: EstiloComum.cores.fundoWeDo,
-        fontSize: 20,
     }
 })
 

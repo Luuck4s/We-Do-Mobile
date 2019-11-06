@@ -115,7 +115,7 @@ export default class IdeiaPage extends Component {
         let idCriador = 0
         Membros.map((item, index) => {
             if (item.idealizador == 1) {
-                idCriador = { "idPerfilUsuario": item.id_usuario }
+                idCriador = { "idPerfilUsuario": item.id_usuario, "paginaAnterior": "IdeiaPage" }
             }
         })
 
@@ -137,7 +137,7 @@ export default class IdeiaPage extends Component {
         var nmUsuario = await AsyncStorage.getItem('@weDo:userName')
 
         await Api.post(`/comentario`, {
-            usuario:{
+            usuario: {
                 id_usuario: this.state.idUsuario
             },
             mensagem: {
@@ -179,7 +179,7 @@ export default class IdeiaPage extends Component {
     apagarComentario = async (id_mensagem) => {
         await Api.delete(`/comentario`, {
             data: {
-                usuario:{
+                usuario: {
                     id_usuario: this.state.idUsuario
                 },
                 comentario: {
@@ -299,11 +299,8 @@ export default class IdeiaPage extends Component {
         return (
             <View style={StyleIdeiaPage.container}>
                 <View style={StyleIdeiaPage.header}>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Inicio')}>
+                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
                         <Icon name={'times-circle'} size={30} style={StyleIdeiaPage.icone} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Inicio')}>
-                        <Text style={StyleIdeiaPage.tituloIdeia}></Text>
                     </TouchableOpacity>
                 </View>
                 {this.state.carregando &&

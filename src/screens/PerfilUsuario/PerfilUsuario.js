@@ -25,27 +25,35 @@ export default class PerfilUsuario extends Component {
 
     state = {
         idUsuario: null,
+        pageAnterior: ''
     }
 
     componentDidMount() {
         let idUsuario = this.props.navigation.getParam('idPerfilUsuario')
+        let pageAnterior = this.props.navigation.getParam('paginaAnterior')
 
-        this.setState({ idUsuario })
+        this.setState({ idUsuario, pageAnterior})
     }
 
     componentDidUpdate(PrevProps, PrevState) {
-        if (this.props.navigation.getParam('idPerfilUsuario') != this.state.idUsuario) {
+        if ((this.props.navigation.getParam('idPerfilUsuario') != this.state.idUsuario) || (this.props.navigation.getParam('paginaAnterior') != PrevProps.navigation.getParam('paginaAnterior'))) {
+            
             let idUsuario = this.props.navigation.getParam('idPerfilUsuario')
-            this.setState({ idUsuario })
+            let pageAnterior = this.props.navigation.getParam('paginaAnterior')
+
+            this.setState({ idUsuario, pageAnterior})
         }
+    }
+
+    voltarPagina = () => {
+        this.props.navigation.navigate(this.state.pageAnterior)
     }
 
     render() {
         return (
             <ScrollView>
                 <View style={StylePerfilUsuario.container}>
-                    <Header icon={"arrow-left"} onPress={() => this.props.navigation.openDrawer()} />
-
+                    <Header icon={"arrow-left"} onPress={() => this.voltarPagina()} />
                     <View style={StylePerfilUsuario.informacaoArea}>
                         <Icon name={"user-ninja"} size={40} style={StylePerfilUsuario.iconUser} />
                         <Text style={StylePerfilUsuario.nmUsuario}>Nome usuario</Text>
