@@ -16,6 +16,13 @@ const style = StyleSheet.create({
         marginTop: '2%',
         fontFamily: EstiloComum.fontFamily,
         fontSize: 18,
+    },
+    textPortfolio:{
+        borderTopWidth: StyleSheet.hairlineWidth,
+        fontFamily: EstiloComum.fontFamily,
+        fontSize: 18,
+        fontWeight: 'bold',
+        textAlign: "center"
     }
 })
 
