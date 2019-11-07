@@ -5,9 +5,8 @@ import StylePerfilUsuario from './StylePerfilUsuario'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import InformacoesUsuario from '../../components/InformacoesUsuario/InformacoesUsuario'
 import Portfolio from '../../components/Portifolio/Portfolio'
-import ProjetosAtuais from '../../components/ProjetosAtuais/ProjetosAtuais'
 
-ideias = [
+let ideias = [
     {
         "id_ideia": 1,
         "nm_ideia": "Sistema de Gerenciamento Escolar (SGE)"
@@ -22,30 +21,10 @@ ideias = [
     }
 ]
 
-tecnologias = [
+let tecnologias = [
     {
         "id_tecnologia": 8,
         "nm_tecnologia": "JavaScript"
-    },
-    {
-        "id_tecnologia": 13,
-        "nm_tecnologia": "PHP"
-    },
-    {
-        "id_tecnologia": 16,
-        "nm_tecnologia": "SQL"
-    },
-    {
-        "id_tecnologia": 81,
-        "nm_tecnologia": "JavaScript"
-    },
-    {
-        "id_tecnologia": 131,
-        "nm_tecnologia": "PHP"
-    },
-    {
-        "id_tecnologia": 161,
-        "nm_tecnologia": "SQL"
     }
 ]
 export default class PerfilUsuario extends Component {
