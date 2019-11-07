@@ -28,7 +28,8 @@ export default class Ideia extends Component {
         editDesc: false,
         novoNome: this.props.nm_ideia,
         novaDescricao: this.props.ds_ideia,
-        novoStatus: 1
+        novoStatus: 1,
+        participante: false
     }
 
     componentDidMount = async () => {
@@ -92,6 +93,10 @@ export default class Ideia extends Component {
                     this.setState({ interesse: true })
                 }
 
+                if (item.status_solicitacao == 1) {
+                    this.setState({ interesse: true, participante: true })
+                }
+
                 if (item.idealizador == 1) {
                     this.setState({ donoIdeia: true })
                 }
@@ -100,16 +105,43 @@ export default class Ideia extends Component {
     }
 
     /**
+     * Caso ja seja um participante da ideia, precisa confirmar que deseja sair
+     */
+    verificarInterrese = () => {
+
+        if (this.state.interesse && this.state.participante) {
+            Alert.alert(
+                'Confirmação',
+                `Tem certeza que deseja sair desta ideia ?`,
+                [
+                    {
+                        text: 'Cancelar', onPress: () => false
+                    },
+                    {
+                        text: 'Confirmar', onPress: () => this.interesse()
+                    }
+                ]
+            )
+        } else {
+            this.interesse()
+        }
+
+    }
+
+    /**
      * Função que muda o state e espera receber uma função pela props
     */
     interesse = () => {
-        if (this.state.interesse) {
-            this.props.onPressInteresse()
-            this.setState({ interesse: false })
-            ToastAndroid.show('Interesse removido', ToastAndroid.SHORT);
-        }
 
-        if (!this.state.interesse) {
+        if(this.state.interesse && this.state.participante){
+            this.props.onPressInteresse()
+            this.setState({ interesse: false, participante: false })
+            ToastAndroid.show('Você saiu da ideia!', ToastAndroid.SHORT);
+        }else if (this.state.interesse) {
+            this.props.onPressInteresse()
+            this.setState({ interesse: false, participante: false })
+            ToastAndroid.show('Interesse removido', ToastAndroid.SHORT);
+        }else if (!this.state.interesse) {
             this.props.onPressInteresse()
             this.setState({ interesse: true })
             ToastAndroid.show('Interesse adicionado', ToastAndroid.SHORT);
@@ -120,7 +152,9 @@ export default class Ideia extends Component {
      * Função responsavel por carregar o botao de interesse de acordo com o state
     */
     renderInteresse = () => {
-        if (this.state.interesse) {
+        if (this.state.interesse && this.state.participante) {
+            return <IconFont5 name='user-check' size={20} style={StyleIdeia.iconInteresse} />
+        } else if (this.state.interesse) {
             return <Icon name='check' size={20} style={StyleIdeia.iconInteresse} />
         } else {
             return <Text style={StyleIdeia.textInteresse}>Interesse</Text>
@@ -294,7 +328,7 @@ export default class Ideia extends Component {
                         </TouchableOpacity>
                     </View>
                     {!this.state.donoIdeia &&
-                        <TouchableOpacity style={StyleIdeia.interesse} onPress={() => this.interesse()}>
+                        <TouchableOpacity style={StyleIdeia.interesse} onPress={() => this.verificarInterrese()}>
                             {this.renderInteresse()}
                         </TouchableOpacity>
                     }
@@ -352,7 +386,7 @@ export default class Ideia extends Component {
                     </View>
 
                     {!this.state.donoIdeia &&
-                        <TouchableOpacity style={StyleIdeia.interesse} onPress={() => this.interesse()}>
+                        <TouchableOpacity style={StyleIdeia.interesse} onPress={() => this.verificarInterrese()}>
                             {this.renderInteresse()}
                         </TouchableOpacity>
                     }
@@ -391,7 +425,7 @@ export default class Ideia extends Component {
                         </TouchableOpacity>
                     </View>
                     {!this.state.donoIdeia &&
-                        <TouchableOpacity style={StyleIdeia.interesse} onPress={() => this.interesse()}>
+                        <TouchableOpacity style={StyleIdeia.interesse} onPress={() => this.verificarInterrese()}>
                             {this.renderInteresse()}
                         </TouchableOpacity>
                     }
