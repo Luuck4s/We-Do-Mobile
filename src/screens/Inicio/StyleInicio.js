@@ -8,6 +8,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    listaIdeias:{
+        width: '100%',
+        height: '95%',
+    },
     textNoFeed:{
         fontSize: 15,
         fontFamily: EstiloComum.fontFamily,

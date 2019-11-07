@@ -171,7 +171,7 @@ export default class Pesquisa extends Component {
         renderItem = ({ item }) => (<IdeiaPesquisa key={item.id_ideia} onPress={() => this.ideia(item.id_ideia)} {...item} />)
 
         return (
-            <View>
+            <View style={StylePesquisa.container}>
                 <Header ScreenPesquisa={true}
                     items={tecnologias}
                     valueText={this.state.textoPesquisa}

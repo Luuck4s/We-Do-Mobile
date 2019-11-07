@@ -22,7 +22,6 @@ import Perfil from './screens/Perfil/Perfil'
 import PerfilUsuario from './screens/PerfilUsuario/PerfilUsuario'
 
 
-
 const InicioStack = createAppContainer(createStackNavigator({
     Inicio: {
         name: 'Inicio',
@@ -59,6 +58,37 @@ InicioStack.navigationOptions = ({ navigation }) => {
     }
 }
 
+const TrendsStack = createAppContainer(createStackNavigator({
+    Trends: {
+        name: 'Trends',
+        screen: Trends,
+    },
+    IdeiaPage: {
+        name: 'IdeiaPage',
+        screen: IdeiaPage,
+    },
+    PerfilUsuario: {
+        name: 'PerfilUsuario',
+        screen: PerfilUsuario,
+    }
+}, {
+    headerMode: 'none',
+    navigationOptions: {
+        headerVisible: false,
+    }
+}
+))
+
+TrendsStack.navigationOptions = ({ navigation }) => {
+    let tabBarVisible = true
+    if (navigation.state.index != 0) {
+        tabBarVisible = false
+    }
+    return {
+        tabBarVisible,
+    }
+}
+
 /**
  * Menu apresentado na tela inicial e nas outras tela apos o login 
 */
@@ -75,7 +105,7 @@ const MenuRoutes = createAppContainer(createBottomTabNavigator(
         },
         Trends: {
             name: 'Trends',
-            screen: Trends,
+            screen: TrendsStack,
             navigationOptions: {
                 title: 'Trends',
                 tabBarIcon: ({ tintColor }) =>

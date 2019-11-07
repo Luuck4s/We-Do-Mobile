@@ -59,21 +59,29 @@ export default class PerfilUsuario extends Component {
         let idUsuario = this.props.navigation.getParam('idPerfilUsuario')
         let pageAnterior = this.props.navigation.getParam('paginaAnterior')
 
-        this.setState({ idUsuario, pageAnterior})
+        this.setState({ idUsuario, pageAnterior })
     }
 
     componentDidUpdate(PrevProps, PrevState) {
-        if ((this.props.navigation.getParam('idPerfilUsuario') != this.state.idUsuario) || (this.props.navigation.getParam('paginaAnterior') != PrevProps.navigation.getParam('paginaAnterior'))) {
-            
+        if ((this.props.navigation.getParam('idPerfilUsuario') != this.state.idUsuario) || 
+            (this.props.navigation.getParam('paginaAnterior') != PrevProps.navigation.getParam('paginaAnterior'))) {
+
             let idUsuario = this.props.navigation.getParam('idPerfilUsuario')
             let pageAnterior = this.props.navigation.getParam('paginaAnterior')
 
-            this.setState({ idUsuario, pageAnterior})
+            this.setState({ idUsuario, pageAnterior })
         }
     }
 
+    /**
+     *  Função que volta para a pagina que o usuario estava 
+    */
     voltarPagina = () => {
-        this.props.navigation.navigate(this.state.pageAnterior)
+        if(this.state.pageAnterior == 'Trends'){
+            this.props.navigation.goBack()    
+        }else{
+            this.props.navigation.navigate(this.state.pageAnterior)
+        }
     }
 
     render() {

@@ -196,7 +196,8 @@ export default class Inicio extends Component {
 
         JSON.stringify(data = {
             id_ideia: idIdeia,
-            id_usuario: this.state.idUsuario
+            id_usuario: this.state.idUsuario,
+            paginaAnteriorIdeia: "Inicio"
         })
 
         this.props.navigation.navigate('IdeiaPage', data)
@@ -273,6 +274,7 @@ export default class Inicio extends Component {
                     <FlatList
                         refreshControl={this.state.carregando ? null : <RefreshControl refreshing={this.state.atualizando} onRefresh={() => this.atualizarFeed()} />}
                         initialNumToRender={3}
+                        style={StyleInicio.listaIdeias}
                         data={this.state.ideias}
                         keyExtractor={item => `${item.id_ideia}`}
                         renderItem={renderItem} />

@@ -281,6 +281,10 @@ export default class IdeiaPage extends Component {
             })
     }
 
+    voltarPagina = () => {
+        this.props.navigation.pop()
+    }
+
 
     render() {
         renderItem = ({ item }) => (<Ideia ideiaPage={true}
@@ -299,7 +303,7 @@ export default class IdeiaPage extends Component {
         return (
             <View style={StyleIdeiaPage.container}>
                 <View style={StyleIdeiaPage.header}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+                    <TouchableOpacity onPress={() => this.voltarPagina()}>
                         <Icon name={'times-circle'} size={30} style={StyleIdeiaPage.icone} />
                     </TouchableOpacity>
                 </View>

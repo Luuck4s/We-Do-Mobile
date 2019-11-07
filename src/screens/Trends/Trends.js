@@ -15,7 +15,6 @@ export default class Trends extends Component {
     }
 
     componentDidMount = async () => {
-        
         let idUsuario = await AsyncStorage.getItem('@weDo:userId')
         this.setState({ idUsuario })
 
@@ -133,7 +132,7 @@ export default class Trends extends Component {
 
         JSON.stringify(data = {
             id_ideia: idIdeia,
-            id_usuario: this.state.idUsuario
+            id_usuario: this.state.idUsuario,
         })
 
         this.props.navigation.navigate('IdeiaPage', data)

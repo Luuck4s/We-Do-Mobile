@@ -2,6 +2,10 @@ import {StyleSheet} from 'react-native'
 import EstiloComum from '../../EstiloComum'
 
 const styles = StyleSheet.create({
+    container:{
+        width: '100%',
+        height: '95%',
+    },
     textoPesquisa: {
         marginTop: 5,
         textAlign: 'center',
