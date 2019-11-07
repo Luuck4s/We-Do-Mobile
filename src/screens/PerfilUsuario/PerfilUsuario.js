@@ -4,7 +4,7 @@ import { View, Text, FlatList, ScrollView } from 'react-native'
 import StylePerfilUsuario from './StylePerfilUsuario'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import InformacoesUsuario from '../../components/InformacoesUsuario/InformacoesUsuario'
-import Portfolio from '../../components/Portifolio/Portfolio'
+import ComponentPortfolio from '../../components/ComponentPortifolio/ComponentPortfolio'
 
 let ideias = [
     {
@@ -78,7 +78,7 @@ export default class PerfilUsuario extends Component {
                     <Text style={StylePerfilUsuario.text}>Portfólio</Text>
                     <Text style={StylePerfilUsuario.subText}>Projetos já concluídos.</Text>
 
-                    <Portfolio ideias={ideias} />
+                    <ComponentPortfolio ideias={ideias} />
 
                 </View>
             </ScrollView>

@@ -4,8 +4,8 @@ import Header from '../../components/Header/Header'
 import AsyncStorage from '@react-native-community/async-storage'
 import StylePerfil from './StylePerfil'
 import Icon from 'react-native-vector-icons/FontAwesome5'
-import InformacoesUsuario from '../../components/InformacoesUsuario/InformacoesUsuario';
-import Portfólio from '../../components/Portifolio/Portfolio'
+import InformacoesUsuario from '../../components/InformacoesUsuario/InformacoesUsuario'
+import ComponetPortfolio from '../../components/ComponentPortifolio/ComponentPortfolio'
 
 let ideias = [
     {
@@ -86,7 +86,7 @@ export default class Perfil extends Component {
                     <Text style={StylePerfil.text}>Portfólio</Text>
                     <Text style={StylePerfil.subText}>Projetos já concluídos.</Text>
 
-                    <Portfólio ideias={ideias} />
+                    <ComponetPortfolio ideias={ideias} />
                 </View>
             </ScrollView>
         )

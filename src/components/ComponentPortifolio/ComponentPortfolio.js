@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import StylePortfolio from './StylePortfolio'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 
-export default class Portifolio extends Component {
+export default class ComponentPortifolio extends Component {
     render() {
         let ideias = null
         if (this.props.ideias) {
