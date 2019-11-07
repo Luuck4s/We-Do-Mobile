@@ -1,28 +1,13 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, Alert } from 'react-native'
 import StyleInformacoes from './StyleInformacoes'
 import Icon from 'react-native-vector-icons/FontAwesome5'
+import TecnologiaPerfil from '../TecnologiaPerfil/TecnologiaPerfil'
 
 export default class InformacoesUsuario extends Component {
 
 
-    /**
-     * Função que recebe atraves de props um array de objetos json e armarzena cada tecnologia
-     * na variavel de tecnolgias
-    */
-    renderTecnologias = () => {
-        tecnologias = this.props.tecnologias.map((item, index) => {
-            return (
-                <View style={StyleInformacoes.TecContainer} key={index}>
-                    <Text style={StyleInformacoes.nomeTecnologia}>{item.nm_tecnologia}</Text>
-                </View>
-            )
-        })
-
-        return tecnologias
-    }
-
-    render() {
+    render(){
         if (this.props.perfilUsuario) {
             return (
                 <View style={StyleInformacoes.container}>
@@ -35,10 +20,13 @@ export default class InformacoesUsuario extends Component {
                         <Icon name={"envelope"} size={20} style={StyleInformacoes.iconEmail} />
                         <Text style={StyleInformacoes.textoEmail}>{this.props.email}</Text>
                     </View>
+
+                    <View style={StyleInformacoes.containerTecnologias}>
+                        <TecnologiaPerfil tecnologias={this.props.tecnologias} />
+                    </View>
                 </View>
             )
         } else {
-
             return (
                 <View style={StyleInformacoes.container}>
                     <View style={StyleInformacoes.containerDesc}>
@@ -51,10 +39,10 @@ export default class InformacoesUsuario extends Component {
                     </View>
                     <View style={StyleInformacoes.containerSenha}>
                         <Icon name={"lock"} size={20} style={StyleInformacoes.iconSenha} />
-                        <Text style={StyleInformacoes.textoSenha}>{this.props.senha}</Text>
+                        <Text style={StyleInformacoes.textoSenha}>********</Text>
                     </View>
                     <View style={StyleInformacoes.containerTecnologias}>
-                        {this.renderTecnologias()}
+                        <TecnologiaPerfil tecnologias={this.props.tecnologias} />
                     </View>
                 </View>
             )

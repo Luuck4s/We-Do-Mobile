@@ -48,25 +48,6 @@ const styles = StyleSheet.create({
         fontSize: 18,
         width: '90%',
         marginRight: '2%',
-    },
-    containerTecnologias:{
-        flexDirection: 'row',
-        marginTop: '2%',
-        flexWrap: 'wrap'
-    },
-    TecContainer: {
-        marginLeft: 3,
-        width: 90,
-        height: 'auto',
-        marginTop: 5,
-        borderRadius: 5,
-        backgroundColor: EstiloComum.cores.fundoWeDo,
-        alignItems: 'center',
-    },
-    nomeTecnologia: {
-        fontSize: 14,
-        color: '#FFF',
-        alignSelf: 'center',
     }
 
 })

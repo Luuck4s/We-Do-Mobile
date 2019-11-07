@@ -18,6 +18,8 @@ const style = StyleSheet.create({
         fontSize: 18,
     },
     text:{
+        marginTop: '2%',
+        paddingTop: '2%',
         borderTopWidth: StyleSheet.hairlineWidth,
         fontFamily: EstiloComum.fontFamily,
         fontSize: 18,

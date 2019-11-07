@@ -21,6 +21,33 @@ ideias = [
         "nm_ideia": "Sistema de Gerenciamento Escolar (SGE)"
     }
 ]
+
+tecnologias = [
+    {
+        "id_tecnologia": 8,
+        "nm_tecnologia": "JavaScript"
+    },
+    {
+        "id_tecnologia": 13,
+        "nm_tecnologia": "PHP"
+    },
+    {
+        "id_tecnologia": 16,
+        "nm_tecnologia": "SQL"
+    },
+    {
+        "id_tecnologia": 81,
+        "nm_tecnologia": "JavaScript"
+    },
+    {
+        "id_tecnologia": 131,
+        "nm_tecnologia": "PHP"
+    },
+    {
+        "id_tecnologia": 161,
+        "nm_tecnologia": "SQL"
+    }
+]
 export default class PerfilUsuario extends Component {
 
     state = {
@@ -59,17 +86,13 @@ export default class PerfilUsuario extends Component {
                         <Text style={StylePerfilUsuario.nmUsuario}>Nome usuario</Text>
                     </View>
 
-                    <InformacoesUsuario perfilUsuario descricao={"A vida é bela demais para vivermos a tarde dashjdh"} email={"lucas196078@gmail.com"} />
+                    <InformacoesUsuario perfilUsuario tecnologias={tecnologias} descricao={"A vida é bela demais para vivermos a tarde dashjdh"} email={"lucas196078@gmail.com"} />
 
                     <Text style={StylePerfilUsuario.text}>Portfólio</Text>
                     <Text style={StylePerfilUsuario.subText}>Projetos já concluídos.</Text>
 
                     <Portfolio ideias={ideias} />
 
-                    <Text style={StylePerfilUsuario.text}>Projetos Atuais</Text>
-                    <Text style={StylePerfilUsuario.subText}>Projetos em andamento.</Text>
-                    
-                    <ProjetosAtuais ideias={ideias} />
                 </View>
             </ScrollView>
         )
