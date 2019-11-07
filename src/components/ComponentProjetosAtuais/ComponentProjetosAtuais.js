@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import StyleProjetosAtuais from './StyleProjetosAtuais'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 
-export default class ProjetosAtuais extends Component {
+export default class ComponentProjetosAtuais extends Component {
     render() {
         let ideias = null
         if (this.props.ideias) {
@@ -11,7 +11,7 @@ export default class ProjetosAtuais extends Component {
                 return (
                     <TouchableOpacity onPress={() => alert(item.id_ideia)} key={index}>
                         <View style={StyleProjetosAtuais.IdeiaContainer}>
-                            <Icon name={"users"} size={50} style={StyleProjetosAtuais.icon} />
+                            <Icon name={"users"} size={60} style={StyleProjetosAtuais.icon} />
                             <Text style={StyleProjetosAtuais.nomeIdeia}>{item.nm_ideia}</Text>
                         </View>
                     </TouchableOpacity>
