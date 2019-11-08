@@ -8,6 +8,10 @@ import NetInfo from "@react-native-community/netinfo"
 
 export default class AuthOrInicio extends Component {
 
+    constructor(props){
+        super(props)
+    }
+
     componentDidMount = async () => {
 
         let conectado = null

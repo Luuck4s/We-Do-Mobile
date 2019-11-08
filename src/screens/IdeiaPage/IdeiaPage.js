@@ -12,6 +12,10 @@ import AsyncStorage from '@react-native-community/async-storage'
 
 export default class IdeiaPage extends Component {
 
+    constructor(props){
+        super(props)
+    }
+
     state = {
         ideia: [],
         idUsuario: '',

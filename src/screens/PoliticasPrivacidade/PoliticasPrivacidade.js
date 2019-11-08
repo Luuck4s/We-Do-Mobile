@@ -4,6 +4,11 @@ import StylePoliticas from './StylePoliticas'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 
 export default class PoliticasPrivacidade extends Component{
+
+    constructor(props){
+        super(props)
+    }
+
     render(){
         let voltarPagina = {"voltarPagina":"true"}
         

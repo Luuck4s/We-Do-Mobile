@@ -10,6 +10,9 @@ const tecnologias = []
 
 export default class Pesquisa extends Component {
 
+    constructor(props){
+        super(props)
+    }
 
     state = {
         textoPesquisa: '',

@@ -7,6 +7,10 @@ import Ideia from '../../components/Ideia/Ideia'
 import AsyncStorage from '@react-native-community/async-storage'
 
 export default class Trends extends Component {
+    
+    constructor(props){
+        super(props)
+    }
 
     state = {
         ideias: [],

@@ -41,6 +41,10 @@ let ideias = [
 
 export default class ProjetosAtuais extends Component {
 
+    constructor(props){
+        super(props)
+    }
+
     state = {
 
     }

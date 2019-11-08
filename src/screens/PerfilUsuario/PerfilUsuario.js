@@ -29,6 +29,10 @@ let tecnologias = [
 ]
 export default class PerfilUsuario extends Component {
 
+    constructor(props){
+        super(props)
+    }
+
     state = {
         idUsuario: null,
         pageAnterior: ''

@@ -4,6 +4,10 @@ import Header from '../../components/Header/Header'
 
 export default class Notificacoes extends Component {
 
+    constructor(props){
+        super(props)
+    }
+
     state = {
 
     }

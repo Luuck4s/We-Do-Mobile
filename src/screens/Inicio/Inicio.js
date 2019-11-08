@@ -13,6 +13,10 @@ import NetInfo from "@react-native-community/netinfo"
 
 export default class Inicio extends Component {
 
+    constructor(props){
+        super(props)
+    }
+
     state = {
         idUsuario: '',
         ideias: [],
@@ -24,7 +28,8 @@ export default class Inicio extends Component {
     }
 
     componentDidMount = async () => {
-        setTimeout(() => this.buscarFeed(), 1500)
+        await this.buscarFeed()
+        setTimeout(() => this.setState({carregando: false }), 1500)
     }
 
     /**
@@ -48,7 +53,7 @@ export default class Inicio extends Component {
                 await Api.get('/feed/' + idUsuario)
                     .then((response) => {
                         Api.defaults.headers.common['Authorization'] = `${response.data.token}`
-                        this.setState({ ideias: response.data.ideias, carregando: false })
+                        this.setState({ ideias: response.data.ideias})
 
                         if (response.data.ideias.length == 0) {
                             this.setState({ semFeed: true })

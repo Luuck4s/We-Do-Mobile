@@ -9,6 +9,11 @@ import EstiloComum from '../../EstiloComum'
 const tecnologias = []
 
 export default class AddIdeia extends Component {
+
+    constructor(props){
+        super(props)
+    }
+
     state = {
         titulo: '',
         desc: '',

@@ -20,6 +20,10 @@ const tecnologias = []
 
 export default class Auth extends Component {
 
+	constructor(props){
+        super(props)
+    }
+
 	state = {
 		criarConta: this.props.navigation.getParam('voltarPagina') || false,
 		email_usuario: '',

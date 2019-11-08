@@ -43,6 +43,10 @@ let tecnologias = [
 
 export default class Perfil extends Component {
 
+    constructor(props){
+        super(props)
+    }
+
     state = {
         idUsuario: null,
         editNome: false,

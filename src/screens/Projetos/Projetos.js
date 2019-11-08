@@ -20,6 +20,10 @@ const ideias = [
 
 export default class Projetos extends Component {
 
+    constructor(props){
+        super(props)
+    }
+
     mudarPagina = (idIdeia) => {
        
 
