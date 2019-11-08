@@ -12,7 +12,6 @@ export default class Header extends Component {
 
     state = {
         tecnologiaSelect: [],
-        textoPesquisa: '',
     }
  
     /**
@@ -24,14 +23,6 @@ export default class Header extends Component {
         this.setState({ pesquisa: true })
         this.props.trocarPagina()
     }
-
-    /**
-     * Verifica se foi passado algum texto ou tecnologia e manda os dados para tela de pesquisa
-    */
-    realizarPesquisa = () => {
-        this.props.trocarPagina()
-    }
-
 
     render() {
         return (
@@ -56,7 +47,7 @@ export default class Header extends Component {
                             autoCorrect={false}
                             placeholder="Escreva algo para pesquisar"
                             onChangeText={this.props.onChangeText}
-                            onSubmitEditing={() => this.realizarPesquisa()}
+                            onSubmitEditing={() => this.props.onSubmitEditing}
                             autoFocus={true} />
                         <View style={StyleHeader.inputTec}>
                             <SectionedMultiSelect

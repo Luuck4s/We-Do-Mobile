@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Alert, FlatList, ActivityIndicator, Text, TouchableOpacity } from 'react-native'
+import { View, Alert, FlatList, ActivityIndicator, Text, TouchableOpacity, ToastAndroid} from 'react-native'
 import Header from '../../components/Header/Header'
 import Api from '../../api/Api'
 import IdeiaPesquisa from '../../components/IdeiaPesquisa/IdeiaPesquisa'
@@ -179,16 +179,17 @@ export default class Pesquisa extends Component {
                     selectedItems={this.state.tecnologiaPesquisa}
                     onChangeText={texto => this.mudarTextoPesquisa(texto)}
                     voltarTela={() => this.props.navigation.navigate('Inicio')}
-                    trocarPagina={() => this.trocarPagina()} />
+                    trocarPagina={() => this.trocarPagina()}
+                    onSubmitEditing={() => this.tipoPesquisa()} />
                 {this.state.pesquisando &&
                     <TouchableOpacity onPress={() => this.tipoPesquisa()}>
-                        {this.state.tecnologiaPesquisa.length >= 1 && this.state.textoPesquisa.length >= 1 &&
+                        {this.state.tecnologiaPesquisa.length >= 1 && this.state.textoPesquisa.trim().length >= 1 &&
                             <Text style={StylePesquisa.textoPesquisa}>Pesquisa por {this.state.textoPesquisa} em {this.capturarNomeTecnologia()}</Text>
                         }
-                        {this.state.textoPesquisa.length >= 1 && !this.state.tecnologiaPesquisa.length >= 1 &&
+                        {this.state.textoPesquisa.trim().length >= 1 && !this.state.tecnologiaPesquisa.length >= 1 &&
                             <Text style={StylePesquisa.textoPesquisa}>Pesquisa por {this.state.textoPesquisa}</Text>
                         }
-                        {this.state.tecnologiaPesquisa.length >= 1 && !this.state.textoPesquisa.length >= 1 &&
+                        {this.state.tecnologiaPesquisa.length >= 1 && !this.state.textoPesquisa.trim().length >= 1 &&
                             <Text style={StylePesquisa.textoPesquisa}>Pesquisar ideias em {this.capturarNomeTecnologia()}</Text>
                         }
                     </TouchableOpacity>

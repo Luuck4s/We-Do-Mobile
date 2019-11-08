@@ -2,7 +2,7 @@
  * Componente que redeinar o campo de adicionar novos comentarios 
  */
 import React, { Component } from 'react'
-import { View, TextInput, TouchableWithoutFeedback, Alert } from 'react-native'
+import { View, TextInput, TouchableWithoutFeedback, Alert,ToastAndroid } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import StyleAddComentario from './StyleAddComentario'
 
@@ -12,12 +12,13 @@ class AddComentario extends Component {
     }
 
     AdicionarComentario = () => {
-        if(this.state.comentario.length != 0){
+        if(this.state.comentario.trim().length != 0){
             let data = this.state.comentario
             this.props.adicionarComentario(data)
             this.setState({comentario: ''})
         }else{
-            return false
+            ToastAndroid.show('Insira um comentário válido', ToastAndroid.SHORT);
+            this.setState({comentario: ''})
         }
     }
 
