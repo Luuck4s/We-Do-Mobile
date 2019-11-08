@@ -20,6 +20,7 @@ import IdeiaPage from './screens/IdeiaPage/IdeiaPage'
 import PoliticasPrivacidade from './screens/PoliticasPrivacidade/PoliticasPrivacidade'
 import Perfil from './screens/Perfil/Perfil'
 import PerfilUsuario from './screens/PerfilUsuario/PerfilUsuario'
+import Chat from './screens/Chat/Chat'
 
 
 const InicioStack = createAppContainer(createStackNavigator({
@@ -89,6 +90,34 @@ TrendsStack.navigationOptions = ({ navigation }) => {
     }
 }
 
+
+const ChatStack = createAppContainer(createStackNavigator({
+    Trends: {
+        name: 'Projetos',
+        screen: Projetos,
+    },
+    Chat: {
+        name: 'Chat',
+        screen: Chat,
+    }
+}, {
+    headerMode: 'none',
+    navigationOptions: {
+        headerVisible: false,
+    }
+}
+))
+
+ChatStack.navigationOptions = ({ navigation }) => {
+    let tabBarVisible = true
+    if (navigation.state.index != 0) {
+        tabBarVisible = false
+    }
+    return {
+        tabBarVisible,
+    }
+}
+
 /**
  * Menu apresentado na tela inicial e nas outras tela apos o login 
 */
@@ -123,7 +152,7 @@ const MenuRoutes = createAppContainer(createBottomTabNavigator(
         },
         Projetos: {
             name: 'Projetos',
-            screen: Projetos,
+            screen: ChatStack,
             navigationOptions: {
                 title: 'Projetos',
                 tabBarIcon: ({ tintColor }) =>
