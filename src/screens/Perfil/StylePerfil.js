@@ -44,7 +44,8 @@ const style = StyleSheet.create({
         fontFamily: EstiloComum.fontFamily,
         fontSize: 14,
         textAlign: "center",
-        color: '#333'
+        color: '#333',
+        marginBottom: 5,
     }
 })
 
