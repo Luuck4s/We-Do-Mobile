@@ -75,7 +75,7 @@ export default class Header extends Component {
                         <TouchableOpacity onPress={this.props.onPress}>
                             <Icon name={this.props.icon} size={22} color={EstiloComum.cores.fundoWeDo} style={StyleHeader.icon2} />
                         </TouchableOpacity>
-                        <Text style={StyleHeader.title2}>{this.props.texto}</Text>
+                        <Text style={this.props.styleTexto || StyleHeader.title2}>{this.props.texto}</Text>
                     </View>
                 }
             </View>

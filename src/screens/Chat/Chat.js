@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { View, TouchableOpacity, Text, Alert, ScrollView, TextInput } from 'react-native'
+import { View  } from 'react-native'
 import Header from '../../components/Header/Header'
 import io from 'socket.io-client'
 import StyleChat from './StyleChat'
 import { GiftedChat } from 'react-native-gifted-chat'
 import AsyncStorage from '@react-native-community/async-storage'
 import Api from '../../api/Api'
+import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 
 var socket
 
@@ -19,18 +20,24 @@ export default class Chat extends Component {
         messages: [],
         idUsuario: '',
         nm_usuario: '',
-        ideiaAtual: 11,
+        ideiaAtual: '',
+        nmIdeia: '',
+        carregando: true,
     }
 
     componentDidMount = async () => {
         let idUser = await AsyncStorage.getItem('@weDo:userId')
         let nmUser = await AsyncStorage.getItem('@weDo:userName')
+        let ideiaAtual = this.props.navigation.getParam("idIdeiaChat")
+        let nmIdeia = this.props.navigation.getParam("nmIdeiaChat")
 
-        this.setState({ idUsuario: idUser, nm_usuario: `${nmUser}` })
+        this.setState({ idUsuario: idUser, nm_usuario: `${nmUser}`, ideiaAtual, nmIdeia })
 
         await this.pegarMensagems()
 
-        socket = io.connect('http://10.0.2.2:8080/')
+        socket = io.connect('http://10.0.2.2:8080/', {
+            timeout: 10000,
+        })
 
         socket.on("chat_message", (dados) => {
 
@@ -56,9 +63,14 @@ export default class Chat extends Component {
 
             let idUser = await AsyncStorage.getItem('@weDo:userId')
             let nmUser = await AsyncStorage.getItem('@weDo:userName')
+            let ideiaAtual = this.props.navigation.getParam("idIdeiaChat")
+            let nmIdeia = this.props.navigation.getParam("nmIdeiaChat")
 
-            this.setState({ idUsuario: idUser, nm_usuario: `${nmUser}` })
-            socket = io.connect('http://10.0.2.2:8080/')
+            this.setState({ idUsuario: idUser, nm_usuario: `${nmUser}`, ideiaAtual, nmIdeia })
+
+            socket = io.connect('http://10.0.2.2:8080/', {
+                timeout: 10000,
+            })
 
             socket.on("chat_message", (dados) => {
 
@@ -86,8 +98,7 @@ export default class Chat extends Component {
     pegarMensagems = async () => {
         let modeloMensagem
 
-        //o numero 1 vai mudar o numero da ideia 
-        Api.get(`/chat/${this.state.idUsuario}&${1}`).then((response) => {
+        Api.get(`/chat/${this.state.idUsuario}&${this.state.ideiaAtual}`).then((response) => {
 
             let mensagens = response.data.chat[0]
 
@@ -105,6 +116,8 @@ export default class Chat extends Component {
                 this.setState(previousState => ({
                     messages: GiftedChat.append(previousState.messages, modeloMensagem),
                 }))
+
+                this.setState({carregando: false})
             })
         })
     }
@@ -121,7 +134,7 @@ export default class Chat extends Component {
 
             dados_mensagens = {
                 id_usuario: `${this.state.idUsuario}`,
-                id_ideia: 1, // fixo para teste
+                id_ideia: this.state.ideiaAtual, // fixo para teste
                 nm_usuario: this.state.nm_usuario,
                 ct_mensagem: item.text
             }
@@ -139,19 +152,39 @@ export default class Chat extends Component {
     render() {
         return (
             <View style={StyleChat.container}>
-                <Header icon={"arrow-left"} texto={"Manoteras"} onPress={() => this.voltarPagina()} />
-                <GiftedChat
+                <Header icon={"arrow-left"} styleTexto={StyleChat.texto} texto={this.state.nmIdeia} onPress={() => this.voltarPagina()} />
+                {this.state.carregando &&
+                    <View style={StyleChat.viewCarregando}>
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemEsquerda}  />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemDireita}  />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemEsquerda}  />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemDireita}  />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemEsquerda} />
 
-                    placeholder={"Escreva sua mensagem"}
-                    locale={"pt-BR"}
-                    messages={this.state.messages}
-                    onSend={messages => this.enviarMensagem(messages)}
-                    user={{
-                        _id: `${this.state.idUsuario}`,
-                        name: this.state.nm_usuario,
-                    }}
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemDireita}  />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemEsquerda}  />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemDireita}  />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemEsquerda} />
 
-                />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemDireita}  />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemEsquerda}  />
+                    </View>
+                }
+                {!this.state.carregando &&
+                    <GiftedChat
+                        placeholder={"Escreva sua mensagem"}
+                        locale="pt-BR"
+                        messages={this.state.messages}
+                        onSend={messages => this.enviarMensagem(messages)}
+                        user={{
+                            _id: `${this.state.idUsuario}`,
+                            name: this.state.nm_usuario,
+                        }}
+
+                    />
+
+                }
+
             </View>
 
         )
