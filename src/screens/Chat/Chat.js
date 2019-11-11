@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
-import { View  } from 'react-native'
+import { View, SafeAreaView, TouchableOpacity, Text, Image } from 'react-native'
 import Header from '../../components/Header/Header'
 import io from 'socket.io-client'
 import StyleChat from './StyleChat'
-import { GiftedChat } from 'react-native-gifted-chat'
+import { GiftedChat, InputToolbar, Bubble, Send, Time } from 'react-native-gifted-chat'
 import AsyncStorage from '@react-native-community/async-storage'
 import Api from '../../api/Api'
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
+import Icon from 'react-native-vector-icons'
+import moment from 'moment'
+import 'moment/locale/pt-br'
 
 var socket
 
@@ -31,7 +34,9 @@ export default class Chat extends Component {
         let ideiaAtual = this.props.navigation.getParam("idIdeiaChat")
         let nmIdeia = this.props.navigation.getParam("nmIdeiaChat")
 
-        this.setState({ idUsuario: idUser, nm_usuario: `${nmUser}`, ideiaAtual, nmIdeia })
+        nmUser = nmUser.replace(/[\\"]/g, '')
+
+        this.setState({ idUsuario: idUser, nm_usuario: nmUser, ideiaAtual, nmIdeia })
 
         await this.pegarMensagems()
 
@@ -66,7 +71,9 @@ export default class Chat extends Component {
             let ideiaAtual = this.props.navigation.getParam("idIdeiaChat")
             let nmIdeia = this.props.navigation.getParam("nmIdeiaChat")
 
-            this.setState({ idUsuario: idUser, nm_usuario: `${nmUser}`, ideiaAtual, nmIdeia })
+            nmUser = nmUser.replace(/[\\"]/g, '')
+
+            this.setState({ idUsuario: idUser, nm_usuario: nmUser, ideiaAtual, nmIdeia })
 
             socket = io.connect('http://10.0.2.2:8080/', {
                 timeout: 10000,
@@ -92,6 +99,10 @@ export default class Chat extends Component {
         }
     }
 
+    componentWillUnmount() {
+        socket.disconnect()
+    }
+
     /**
      * Pega as mensagens antigas para ja colocar no chat
     */
@@ -106,7 +117,7 @@ export default class Chat extends Component {
                 modeloMensagem = {
                     _id: item.id_mensagem,
                     text: item.ct_mensagem,
-                    createdAt: item.hr_mensagem,
+                    createdAt: moment(item.hr_mensagem, 'YYYY-MM-DD hh:mm:ss').format('YYYY-MM-DD hh:mm:ss'),
                     user: {
                         _id: `${item.id_usuario}`,
                         name: item.nm_usuario,
@@ -117,7 +128,7 @@ export default class Chat extends Component {
                     messages: GiftedChat.append(previousState.messages, modeloMensagem),
                 }))
 
-                this.setState({carregando: false})
+                this.setState({ carregando: false })
             })
         })
     }
@@ -134,7 +145,7 @@ export default class Chat extends Component {
 
             dados_mensagens = {
                 id_usuario: `${this.state.idUsuario}`,
-                id_ideia: this.state.ideiaAtual, // fixo para teste
+                id_ideia: this.state.ideiaAtual,
                 nm_usuario: this.state.nm_usuario,
                 ct_mensagem: item.text
             }
@@ -149,33 +160,67 @@ export default class Chat extends Component {
         socket.disconnect()
     }
 
+    renderSend(props) {
+        return (
+            <Send {...props} >
+                <View style={{ marginRight: 10, marginBottom: 10 }}>
+                    <Image source={require('../../../assets/img/send.png')} resizeMode='contain' />
+                </View>
+            </Send>
+        );
+    }
+
+    renderBubble(props) {
+        return (
+            <Bubble
+                {...props}
+                textStyle={{
+                    right: {
+                        
+                    }
+                }}
+            />
+        );
+    }
+
+    renderMessage = props => {
+
+    }
+
     render() {
         return (
             <View style={StyleChat.container}>
                 <Header icon={"arrow-left"} styleTexto={StyleChat.texto} texto={this.state.nmIdeia} onPress={() => this.voltarPagina()} />
                 {this.state.carregando &&
                     <View style={StyleChat.viewCarregando}>
-                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemEsquerda}  />
-                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemDireita}  />
-                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemEsquerda}  />
-                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemDireita}  />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemEsquerda} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemDireita} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemEsquerda} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemDireita} />
                         <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemEsquerda} />
 
-                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemDireita}  />
-                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemEsquerda}  />
-                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemDireita}  />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemDireita} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemEsquerda} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemDireita} />
                         <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemEsquerda} />
 
-                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemDireita}  />
-                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemEsquerda}  />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemDireita} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemEsquerda} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemDireita} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StyleChat.shimmerMensagemEsquerda} />
                     </View>
                 }
                 {!this.state.carregando &&
                     <GiftedChat
                         placeholder={"Escreva sua mensagem"}
-                        locale="pt-BR"
+                        scrollToBottom
                         messages={this.state.messages}
                         onSend={messages => this.enviarMensagem(messages)}
+                        showUserAvatar={true}
+                        dateFormat={"DD [de] MMMM, YYYY"}
+                        timeFormat={"hh:mm"}
+                        renderSend={this.renderSend}
+                        renderBubble={this.renderBubble}
                         user={{
                             _id: `${this.state.idUsuario}`,
                             name: this.state.nm_usuario,
