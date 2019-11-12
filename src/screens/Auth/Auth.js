@@ -1,6 +1,6 @@
 //Screen para redenizar a tela de login/cadastro do usuario 
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, Image, Switch, Alert, ToastAndroid } from 'react-native'
+import { View, Text, TouchableOpacity, Image, Switch, Alert, ToastAndroid, ScrollView } from 'react-native'
 import Api from '../../api/Api'
 import logo from '../../../assets/img/weDo_logo.png'
 import AuthInput from '../../components/AuthInput/AuthInput'
@@ -9,7 +9,6 @@ import AsyncStorage from '@react-native-community/async-storage'
 import SectionedMultiSelect from 'react-native-sectioned-multi-select'
 import StyleAuth from './StyleAuth'
 import { YellowBox } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler'
 import NetInfo from "@react-native-community/netinfo"
 
 YellowBox.ignoreWarnings([
@@ -20,9 +19,9 @@ const tecnologias = []
 
 export default class Auth extends Component {
 
-	constructor(props){
-        super(props)
-    }
+	constructor(props) {
+		super(props)
+	}
 
 	state = {
 		criarConta: this.props.navigation.getParam('voltarPagina') || false,
@@ -38,10 +37,10 @@ export default class Auth extends Component {
 
 	componentDidMount = () => {
 		NetInfo.isConnected.addEventListener('connectionChange', this.verificarConexao)
-		if(this.state.conectado){
+		if (this.state.conectado) {
 			this.buscaTecnologias()
 		}
-		
+
 	}
 
 	/**
@@ -342,9 +341,7 @@ export default class Auth extends Component {
 						</Text>
 					</TouchableOpacity>
 					{this.state.criarConta &&
-						<TouchableOpacity style={{ marginTop: -4 }} onPress={() => this.props.navigation.navigate('Politicas')}>
-							<Text style={StyleAuth.politicas}>Políticas de Privacidade</Text>
-						</TouchableOpacity>
+						<Text onPress={() => this.props.navigation.navigate('Politicas')} style={StyleAuth.politicas}>Políticas de Privacidade</Text>
 					}
 					<View style={StyleAuth.containerBotao}>
 						<TouchableOpacity disabled={!validaFormulario} onPress={this.logarOuCadastrar} >

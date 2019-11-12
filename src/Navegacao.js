@@ -271,17 +271,34 @@ const SlideMenu = createAppContainer(createDrawerNavigator({
     })
 )
 
+const AuthStack = createAppContainer(createStackNavigator({
+    Auth: {
+        name: 'Auth',
+        screen: Auth,
+    },
+    Politicas: {
+        name: "Politicas",
+        screen:PoliticasPrivacidade
+    }
+
+}, {
+    headerMode: 'none',
+    navigationOptions: {
+        headerVisible: false,
+    }
+}
+))
+
 /**
  * Coloca a tela de login primeiro e depois troca de tela logo apos o login
 */
 const authRoutes = createAppContainer(createSwitchNavigator(
     {
         Carregando: AuthOrInicio,
-        Auth: Auth,
-        Politicas: PoliticasPrivacidade,
+        Auth: AuthStack,
         Inicio: SlideMenu
     },
-    { initialRouteName: 'Carregando' }
+    { initialRouteName: 'Inicio' }
 ))
 
 export default authRoutes

@@ -75,6 +75,8 @@ export default class Chat extends Component {
 
             this.setState({ idUsuario: idUser, nm_usuario: nmUser, ideiaAtual, nmIdeia })
 
+            await this.pegarMensagems()
+
             socket = io.connect('http://10.0.2.2:8080/', {
                 timeout: 10000,
             })
@@ -109,7 +111,7 @@ export default class Chat extends Component {
     pegarMensagems = async () => {
         let modeloMensagem
 
-        Api.get(`/chat/${this.state.idUsuario}&${this.state.ideiaAtual}`).then((response) => {
+        await Api.get(`/chat/${this.state.idUsuario}&${this.state.ideiaAtual}`).then((response) => {
 
             let mensagens = response.data.chat[0]
 
@@ -167,24 +169,7 @@ export default class Chat extends Component {
                     <Image source={require('../../../assets/img/send.png')} resizeMode='contain' />
                 </View>
             </Send>
-        );
-    }
-
-    renderBubble(props) {
-        return (
-            <Bubble
-                {...props}
-                textStyle={{
-                    right: {
-                        
-                    }
-                }}
-            />
-        );
-    }
-
-    renderMessage = props => {
-
+        )
     }
 
     render() {
@@ -220,7 +205,6 @@ export default class Chat extends Component {
                         dateFormat={"DD [de] MMMM, YYYY"}
                         timeFormat={"hh:mm"}
                         renderSend={this.renderSend}
-                        renderBubble={this.renderBubble}
                         user={{
                             _id: `${this.state.idUsuario}`,
                             name: this.state.nm_usuario,

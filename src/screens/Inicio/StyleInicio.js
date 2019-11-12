@@ -3,7 +3,7 @@ import EstiloComum from '../../EstiloComum'
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        //flex: 1,
         marginLeft: 0,
         justifyContent: 'center',
         alignItems: 'center',

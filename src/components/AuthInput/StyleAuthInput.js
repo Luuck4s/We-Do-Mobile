@@ -29,7 +29,8 @@ const styles = StyleSheet.create({
     inputMetade: {
         marginLeft: 20,
         width: '100%',
-        fontSize: 15
+        fontSize: 14,
+        
     }
 })
 
