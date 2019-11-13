@@ -264,7 +264,7 @@ const SlideMenu = createAppContainer(createDrawerNavigator({
         overlayColor: 'rgba(0,0,0,0.4)',
         contentComponent: ScreenSlideMenu,
         backBehavior: 'none',
-        drawerWidth: 350,
+        drawerWidth: 320,
         contentOptions: {
             activeTintColor: EstiloComum.cores.fundoWeDo,
         }
@@ -298,7 +298,7 @@ const authRoutes = createAppContainer(createSwitchNavigator(
         Auth: AuthStack,
         Inicio: SlideMenu
     },
-    { initialRouteName: 'Inicio' }
+    { initialRouteName: 'Carregando' }
 ))
 
 export default authRoutes

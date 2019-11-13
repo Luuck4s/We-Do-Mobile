@@ -13,7 +13,7 @@ import NetInfo from "@react-native-community/netinfo"
 
 export default class Inicio extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props)
     }
 
@@ -29,7 +29,7 @@ export default class Inicio extends Component {
 
     componentDidMount = async () => {
         await this.buscarFeed()
-        setTimeout(() => this.setState({carregando: false }), 1500)
+        setTimeout(() => this.setState({ carregando: false }), 1500)
     }
 
     /**
@@ -53,7 +53,7 @@ export default class Inicio extends Component {
                 await Api.get('/feed/' + idUsuario)
                     .then((response) => {
                         Api.defaults.headers.common['Authorization'] = `${response.data.token}`
-                        this.setState({ ideias: response.data.ideias})
+                        this.setState({ ideias: response.data.ideias })
 
                         if (response.data.ideias.length == 0) {
                             this.setState({ semFeed: true })
@@ -108,7 +108,7 @@ export default class Inicio extends Component {
 
         this.setState({ AddIdeia: false })
 
-        Api.post('/ideia', {
+        await Api.post('/ideia', {
             ideia: {
                 nm_ideia: dataIdeia.titulo,
                 ds_ideia: dataIdeia.desc,
@@ -122,8 +122,8 @@ export default class Inicio extends Component {
             Api.defaults.headers.common['Authorization'] = `${response.data.token}`
             ToastAndroid.show('Ideia criada com sucesso', ToastAndroid.SHORT);
         })
-
-        this.atualizarFeed()
+        
+        await this.atualizarFeed()
     }
 
     /**
@@ -149,8 +149,8 @@ export default class Inicio extends Component {
      * Mostra interesse na ideia
      * @param - idIdeia 
     */
-    interesse = (idIdeia) => {
-        Api.post('/interesse', {
+    interesse = async (idIdeia) => {
+        await Api.post('/interesse', {
             usuario: {
                 id_usuario: this.state.idUsuario,
             },
@@ -165,7 +165,7 @@ export default class Inicio extends Component {
      * @param - IdIdeia
      */
     curtirIdeia = async (idIdeia) => {
-        Api.post('/curtida', {
+        await Api.post('/curtida', {
             usuario: {
                 id_usuario: this.state.idUsuario
             },
@@ -211,8 +211,8 @@ export default class Inicio extends Component {
     /**
      * Função de adicionar comentarios
     */
-    adicionarComentario = (data, idIdeia) => {
-        Api.post(`/comentario`, {
+    adicionarComentario = async (data, idIdeia) => {
+        await Api.post(`/comentario`, {
             usuario: {
                 id_usuario: this.state.idUsuario
             },

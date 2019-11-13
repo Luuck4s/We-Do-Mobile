@@ -8,7 +8,7 @@ import NetInfo from "@react-native-community/netinfo"
 
 export default class AuthOrInicio extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props)
     }
 
@@ -17,12 +17,12 @@ export default class AuthOrInicio extends Component {
         let conectado = null
         let veri
 
-        NetInfo.isConnected.fetch().done((isConnected) => { 
-            if(isConnected == true){
-                conectado = {"conectado":"true"}
+        NetInfo.isConnected.fetch().done((isConnected) => {
+            if (isConnected == true) {
+                conectado = { "conectado": "true" }
                 veri = true
-            }else{
-                conectado = {"conectado":"false"}
+            } else {
+                conectado = { "conectado": "false" }
                 veri = false
             }
         })
@@ -30,11 +30,11 @@ export default class AuthOrInicio extends Component {
         const json = await AsyncStorage.getItem('@weDo:userData')
         const userData = JSON.parse(json) || {}
 
-        if (userData.token && veri) {
+        if (userData.token) {
             Api.defaults.headers.common['Authorization'] = `${userData.token}`
             this.props.navigation.navigate('Inicio', userData.usuario)
         } else {
-            this.props.navigation.navigate('Auth',conectado)
+            this.props.navigation.navigate('Auth', conectado)
         }
     }
 
