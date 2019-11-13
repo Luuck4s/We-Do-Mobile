@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     },
     iconRemove:{
         color: '#900',
-        marginLeft: '70%',
+        marginRight: '2%'
     }
 })
 

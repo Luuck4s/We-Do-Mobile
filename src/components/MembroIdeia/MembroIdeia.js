@@ -56,7 +56,7 @@ export default class MembroIdeia extends Component {
                 {
                     text: 'Cancelar', onPress: () => false
                 },
-                { text: 'Confirmar', onPress: () => this.props.removerUsuario(idUsuario)}
+                { text: 'Confirmar', onPress: () => this.props.removerUsuario(idUsuario) }
             ]
         )
     }
@@ -74,7 +74,11 @@ export default class MembroIdeia extends Component {
                             {this.state.mostrarTodos && item.status_solicitacao == 1 &&
                                 <Text style={StyleMembroIdeia.participantes}>{item.nm_usuario}</Text>
                             }
-
+                            {!this.state.mostrarTodos && this.props.criadorIdeia && item.idealizador != 1 &&
+                                <TouchableOpacity onPress={() => this.verificarRemoverDaIdeia(item.nm_usuario, item.id_usuario)}>
+                                    <Icon name={"user-times"} size={17} style={StyleMembroIdeia.iconRemove} />
+                                </TouchableOpacity>
+                            }
                             {!this.state.mostrarTodos && item.idealizador == 1 &&
                                 <Text style={StyleMembroIdeia.participantes}><Icon name={'crown'} size={15} style={StyleMembroIdeia.iconDestaque} /> {item.nm_usuario}</Text>
                             }
@@ -82,11 +86,7 @@ export default class MembroIdeia extends Component {
                                 <Text style={StyleMembroIdeia.participantes}>{item.nm_usuario}</Text>
                             }
 
-                            {!this.state.mostrarTodos && item.idealizador != 1 && item.status_solicitacao == 1 && this.props.criadorIdeia &&
-                                <TouchableOpacity onPress={() => this.verificarRemoverDaIdeia(item.nm_usuario, item.id_usuario)}>
-                                    <Icon name={"user-times"} size={17} style={StyleMembroIdeia.iconRemove} />
-                                </TouchableOpacity>
-                            }
+
                         </View>
                     )
                 }

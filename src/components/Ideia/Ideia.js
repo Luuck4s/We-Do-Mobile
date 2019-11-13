@@ -139,15 +139,15 @@ export default class Ideia extends Component {
         if (this.state.interesse && this.state.participante) {
             this.props.onPressInteresse()
             this.setState({ interesse: false, participante: false })
-            ToastAndroid.show('Você saiu da ideia!', ToastAndroid.SHORT);
+            ToastAndroid.show('Você saiu da ideia!', ToastAndroid.SHORT)
         } else if (this.state.interesse) {
             this.props.onPressInteresse()
             this.setState({ interesse: false, participante: false })
-            ToastAndroid.show('Interesse removido', ToastAndroid.SHORT);
+            ToastAndroid.show('Interesse removido', ToastAndroid.SHORT)
         } else if (!this.state.interesse) {
             this.props.onPressInteresse()
             this.setState({ interesse: true })
-            ToastAndroid.show('Interesse adicionado', ToastAndroid.SHORT);
+            ToastAndroid.show('Interesse adicionado', ToastAndroid.SHORT)
         }
     }
 
@@ -220,48 +220,71 @@ export default class Ideia extends Component {
 
     verificarAlteracao = () => {
         if (this.state.novoNome.trim() !== this.props.nm_ideia.trim() && this.state.novaDescricao.trim() !== this.props.ds_ideia.trim()) {
-            Alert.alert(
-                'Confirmação',
-                `Deseja alterar o titulo desta ideia para "${this.state.novoNome}" e alterar a descrição para "${this.state.novaDescricao}"`,
-                [
-                    {
-                        text: 'Cancelar', onPress: () => this.setState(
-                            { editDesc: false, editTitulo: false, novoNome: this.props.nm_ideia, novaDescricao: this.props.ds_ideia })
-                    },
-                    { text: 'Confirmar', onPress: () => this.alterarTitulo() }
-                ]
-            )
+            if (this.state.novoNome.trim() != "" && this.state.novaDescricao.trim() != "") {
+                Alert.alert(
+                    'Confirmação',
+                    `Deseja alterar o titulo desta ideia para "${this.state.novoNome}" e alterar a descrição para "${this.state.novaDescricao}"`,
+                    [
+                        {
+                            text: 'Cancelar', onPress: () => this.setState(
+                                { editDesc: false, editTitulo: false, novoNome: this.props.nm_ideia, novaDescricao: this.props.ds_ideia })
+                        },
+                        { text: 'Confirmar', onPress: () => this.alterarTitulo() }
+                    ]
+                )
+            } else {
+                ToastAndroid.show('Insira um titulo e descrição válidos!', ToastAndroid.SHORT)
+                this.setState({
+                    editDesc: false,
+                    editTitulo: false,
+                    novaDescricao: this.props.ds_ideia,
+                    novoNome: this.props.nm_ideia
+                })
+            }
         } else if (this.state.editTitulo && this.state.editDesc) {
             this.setState({
                 editDesc: false,
-                editTitulo: false
+                editTitulo: false,
+                novaDescricao: this.props.ds_ideia,
+                novoNome: this.props.nm_ideia
             })
         }
 
         if (this.state.novaDescricao.trim() !== this.props.ds_ideia.trim() && this.state.novoNome.trim() == this.props.nm_ideia.trim()) {
-            Alert.alert(
-                'Confirmação',
-                `Deseja alterar a descrição desta ideia para "${this.state.novaDescricao}"`,
-                [
-                    { text: 'Cancelar', onPress: () => this.setState({ editDesc: false, novaDescricao: this.props.ds_ideia }) },
-                    { text: 'Confirmar', onPress: () => this.alterarDesc() }
-                ]
-            )
+            if (this.state.novaDescricao.trim() != "") {
+                Alert.alert(
+                    'Confirmação',
+                    `Deseja alterar a descrição desta ideia para "${this.state.novaDescricao}"`,
+                    [
+                        { text: 'Cancelar', onPress: () => this.setState({ editDesc: false, novaDescricao: this.props.ds_ideia }) },
+                        { text: 'Confirmar', onPress: () => this.alterarDesc() }
+                    ]
+                )
+            } else {
+                ToastAndroid.show('Insira uma descrição válida!', ToastAndroid.SHORT)
+                this.setState({ editDesc: false, novaDescricao: this.props.ds_ideia })
+            }
+
         } else if (this.state.editDesc) {
-            this.setState({ editDesc: false })
+            this.setState({ editDesc: false, novaDescricao: this.props.ds_ideia })
         }
 
         if (this.state.novoNome.trim() !== this.props.nm_ideia.trim() && this.state.novaDescricao.trim() == this.props.ds_ideia.trim()) {
-            Alert.alert(
-                'Confirmação',
-                `Deseja alterar o titulo desta ideia para "${this.state.novoNome}"`,
-                [
-                    { text: 'Cancelar', onPress: () => this.setState({ editTitulo: false, novoNome: this.props.nm_ideia }) },
-                    { text: 'Confirmar', onPress: () => this.alterarTitulo() }
-                ]
-            )
+            if (this.state.novoNome.trim() != "") {
+                Alert.alert(
+                    'Confirmação',
+                    `Deseja alterar o titulo desta ideia para "${this.state.novoNome}"`,
+                    [
+                        { text: 'Cancelar', onPress: () => this.setState({ editTitulo: false, novoNome: this.props.nm_ideia }) },
+                        { text: 'Confirmar', onPress: () => this.alterarTitulo() }
+                    ]
+                )
+            } else {
+                ToastAndroid.show('Insira um titulo válido!', ToastAndroid.SHORT)
+                this.setState({ editTitulo: false, novoNome: this.props.nm_ideia })
+            }
         } else if (this.state.editTitulo) {
-            this.setState({ editTitulo: false })
+            this.setState({ editTitulo: false, novoNome: this.props.nm_ideia })
         }
     }
 
@@ -313,7 +336,7 @@ export default class Ideia extends Component {
         })
         if (this.props.trends) {
             return (
-                <View style={[StyleIdeia.container, { paddingBottom: 2, borderBottomWidth: StyleSheet.hairlineWidth }]}>
+                <View style={[StyleIdeia.container, { paddingBottom: 2 }]}>
                     <TouchableOpacity onPress={this.props.onPresNomeIdeia}>
                         <Text style={StyleIdeia.titulo}>{this.iconePosicao()} {this.props.nm_ideia}</Text>
                     </TouchableOpacity>
@@ -387,8 +410,8 @@ export default class Ideia extends Component {
                         <IconFont5 onPress={() => this.verificarAlteracao()} name={'check'} size={25}
                             style={StyleIdeia.iconeConfirmDesc} />
                     }
-                    <MembroIdeia criadorIdeia ideiaPage={this.props.ideiaPage} onPressMembros={this.props.onPressMembros}
-                        membros={this.props.membros} removerUsuario={data => this.props.removerUsuario(data)}/>
+                    <MembroIdeia criadorIdeia={this.state.donoIdeia ? true : false} ideiaPage={this.props.ideiaPage} onPressMembros={this.props.onPressMembros}
+                        membros={this.props.membros} removerUsuario={data => this.props.removerUsuario(data)} />
                     <View style={{ flexDirection: 'row' }}>
                         <TouchableOpacity onPress={() => this.curtida()}>
                             <Icon name='heart' style={this.state.curtido ? StyleIdeia.iconCurtido : StyleIdeia.iconCurtida} size={19} >
