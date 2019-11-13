@@ -190,6 +190,24 @@ const MenuRoutes = createAppContainer(createBottomTabNavigator(
     }
 ))
 
+
+const ProjetosAtuaisStack = createAppContainer(createStackNavigator({
+    ProjetosAtuais: {
+        name: 'ProjetosAtuais',
+        screen: ProjetosAtuais,
+    },
+    IdeiaPage: {
+        name: 'IdeiaPage',
+        screen: IdeiaPage,
+    }
+}, {
+    headerMode: 'none',
+    navigationOptions: {
+        headerVisible: false,
+    }
+}
+))
+
 /**
  * Menu Lateral que mostra mais opções de navegação para o usuario
 */
@@ -224,7 +242,7 @@ const SlideMenu = createAppContainer(createDrawerNavigator({
     },
     ProjetosAtuais: {
         name: 'ProjetosAtuais',
-        screen: ProjetosAtuais,
+        screen: ProjetosAtuaisStack,
         navigationOptions: {
             title: 'Projetos Atuais',
             drawerIcon: ({ tintColor }) =>
