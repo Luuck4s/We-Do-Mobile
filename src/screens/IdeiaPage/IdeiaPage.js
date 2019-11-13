@@ -302,6 +302,24 @@ export default class IdeiaPage extends Component {
         })
     }
 
+    removerUsuario = async (data) => {
+
+        await Api.delete(`/ideia/remover`, {
+            data: {
+                ideia: {
+                    id_ideia: this.state.idIdeia,
+                    id_usuario: this.state.idUsuario,
+                },
+                usuario: {
+                    id_usuario: data,
+                }
+            }
+        }).then((response) => {
+            ToastAndroid.show('Usuário removido com sucesso', ToastAndroid.SHORT)
+            this.atualizaIdeia()
+        })
+    }
+
     voltarPagina = () => {
         this.props.navigation.pop()
     }
@@ -320,6 +338,7 @@ export default class IdeiaPage extends Component {
             alterarTitulo={data => this.alterarTitulo(data)}
             alterarDesc={data => this.alterarDesc(data)}
             mudarStatus={data => this.mudarStatus(data)}
+            removerUsuario={data => this.removerUsuario(data)}
             idIdeia={this.state.idIdeia} />)
 
         return (

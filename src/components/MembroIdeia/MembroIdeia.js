@@ -2,7 +2,7 @@
  * Componente que recebe um array de usuario e separa as informações e retorna as imagens 
 */
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, Alert } from 'react-native'
 import StyleMembroIdeia from './StyleMembroIdeia'
 import EstiloComum from '../../EstiloComum';
 import Icon from 'react-native-vector-icons/FontAwesome5'
@@ -48,6 +48,19 @@ export default class MembroIdeia extends Component {
         }
     }
 
+    verificarRemoverDaIdeia = (nmUsuario, idUsuario) => {
+        Alert.alert(
+            'Confirmação',
+            `Deseja realmente remover ${nmUsuario} da ideia ?`,
+            [
+                {
+                    text: 'Cancelar', onPress: () => false
+                },
+                { text: 'Confirmar', onPress: () => this.props.removerUsuario(idUsuario)}
+            ]
+        )
+    }
+
     render() {
         let membros = null
         let n = 0
@@ -67,6 +80,12 @@ export default class MembroIdeia extends Component {
                             }
                             {!this.state.mostrarTodos && item.idealizador != 1 && item.status_solicitacao == 1 &&
                                 <Text style={StyleMembroIdeia.participantes}>{item.nm_usuario}</Text>
+                            }
+
+                            {!this.state.mostrarTodos && item.idealizador != 1 && item.status_solicitacao == 1 && this.props.criadorIdeia &&
+                                <TouchableOpacity onPress={() => this.verificarRemoverDaIdeia(item.nm_usuario, item.id_usuario)}>
+                                    <Icon name={"user-times"} size={17} style={StyleMembroIdeia.iconRemove} />
+                                </TouchableOpacity>
                             }
                         </View>
                     )

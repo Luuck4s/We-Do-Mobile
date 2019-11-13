@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
         marginLeft: '1%',
     },
     MeContainerMax: {
+        flexDirection: 'row',
         marginTop: '3%',
         marginLeft: '1%',
     },
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     mostrarMenos: {
-        marginTop: 1,
+        marginTop: 5,
         textAlign: 'center',
         fontSize: 15,
         fontWeight: 'bold',
@@ -46,6 +47,10 @@ const styles = StyleSheet.create({
     },
     iconDestaque: {
         color: '#FFD700'
+    },
+    iconRemove:{
+        color: '#900',
+        marginLeft: '70%',
     }
 })
 

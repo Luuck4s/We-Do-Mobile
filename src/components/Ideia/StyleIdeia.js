@@ -14,13 +14,15 @@ const styles = StyleSheet.create({
     autor: {
         marginTop: 2,
         fontSize: 14,
+        marginBottom: 2,
         color: '#000',
         fontWeight: 'bold',
     },
     descricao: {
         marginRight: 40,
         textAlign: 'justify',
-        marginTop: 5,
+        marginTop: 10,
+        marginBottom: 2,
         fontSize: 15,
         color: '#000',
     },

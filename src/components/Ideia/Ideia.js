@@ -387,8 +387,8 @@ export default class Ideia extends Component {
                         <IconFont5 onPress={() => this.verificarAlteracao()} name={'check'} size={25}
                             style={StyleIdeia.iconeConfirmDesc} />
                     }
-                    <MembroIdeia ideiaPage={this.props.ideiaPage} onPressMembros={this.props.onPressMembros}
-                        membros={this.props.membros} />
+                    <MembroIdeia criadorIdeia ideiaPage={this.props.ideiaPage} onPressMembros={this.props.onPressMembros}
+                        membros={this.props.membros} removerUsuario={data => this.props.removerUsuario(data)}/>
                     <View style={{ flexDirection: 'row' }}>
                         <TouchableOpacity onPress={() => this.curtida()}>
                             <Icon name='heart' style={this.state.curtido ? StyleIdeia.iconCurtido : StyleIdeia.iconCurtida} size={19} >
