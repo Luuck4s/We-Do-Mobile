@@ -12,7 +12,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 
 export default class IdeiaPage extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props)
     }
 
@@ -40,7 +40,7 @@ export default class IdeiaPage extends Component {
 
             this.setState({ idUsuario, idIdeia })
 
-            Api.get(`/ideia/${idIdeia}&${this.state.idUsuario}`)
+            await Api.get(`/ideia/${idIdeia}&${this.state.idUsuario}`)
                 .then((response) => {
                     Api.defaults.headers.common['Authorization'] = `${response.data.token}`
                     let ideiaArr = []
@@ -85,8 +85,8 @@ export default class IdeiaPage extends Component {
      * Mostra interesse na ideia
      * @param - idIdeia 
     */
-    interesse = (idIdeia) => {
-        Api.post('/interesse', {
+    interesse = async (idIdeia) => {
+        await Api.post('/interesse', {
             usuario: {
                 id_usuario: this.state.idUsuario,
             },
@@ -101,7 +101,7 @@ export default class IdeiaPage extends Component {
      * @param - IdIdeia
      */
     curtirIdeia = async (idIdeia) => {
-        Api.post('/curtida', {
+        await Api.post('/curtida', {
             usuario: {
                 id_usuario: this.state.idUsuario
             },
@@ -285,6 +285,23 @@ export default class IdeiaPage extends Component {
             })
     }
 
+    mudarStatus = async (data) => {
+
+        await Api.put('/ideia', {
+            ideia: {
+                id_ideia: this.state.idIdeia,
+                nm_ideia: data[0],
+                ds_ideia: data[1],
+                status_ideia: data[2]
+            },
+            usuario: {
+                id_usuario: this.state.idUsuario
+            }
+        }).then((response) => {
+            this.atualizaIdeia()
+        })
+    }
+
     voltarPagina = () => {
         this.props.navigation.pop()
     }
@@ -302,6 +319,7 @@ export default class IdeiaPage extends Component {
             apagarComentario={id_mensagem => this.apagarComentario(id_mensagem)}
             alterarTitulo={data => this.alterarTitulo(data)}
             alterarDesc={data => this.alterarDesc(data)}
+            mudarStatus={data => this.mudarStatus(data)}
             idIdeia={this.state.idIdeia} />)
 
         return (

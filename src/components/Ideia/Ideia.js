@@ -14,6 +14,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import IconFont5 from 'react-native-vector-icons/FontAwesome5'
 import AsyncStorage from '@react-native-community/async-storage'
 import SectionedMultiSelect from 'react-native-sectioned-multi-select'
+import ConfigIdeia from '../ConfigIdeia/ConfigIdeia'
 
 export default class Ideia extends Component {
 
@@ -28,8 +29,10 @@ export default class Ideia extends Component {
         editDesc: false,
         novoNome: this.props.nm_ideia,
         novaDescricao: this.props.ds_ideia,
-        novoStatus: 1,
-        participante: false
+        status_ideia: this.props.status_ideia,
+        novoStatus: this.props.status_ideia,
+        participante: false,
+        mostrarConfig: false
     }
 
     componentDidMount = async () => {
@@ -133,15 +136,15 @@ export default class Ideia extends Component {
     */
     interesse = () => {
 
-        if(this.state.interesse && this.state.participante){
+        if (this.state.interesse && this.state.participante) {
             this.props.onPressInteresse()
             this.setState({ interesse: false, participante: false })
             ToastAndroid.show('Você saiu da ideia!', ToastAndroid.SHORT);
-        }else if (this.state.interesse) {
+        } else if (this.state.interesse) {
             this.props.onPressInteresse()
             this.setState({ interesse: false, participante: false })
             ToastAndroid.show('Interesse removido', ToastAndroid.SHORT);
-        }else if (!this.state.interesse) {
+        } else if (!this.state.interesse) {
             this.props.onPressInteresse()
             this.setState({ interesse: true })
             ToastAndroid.show('Interesse adicionado', ToastAndroid.SHORT);
@@ -205,6 +208,14 @@ export default class Ideia extends Component {
 
         this.props.alterarDesc(data)
 
+    }
+
+    mudarStatus = (data) => {
+        let dados = [this.state.novoNome]
+        dados.push(this.state.novaDescricao)
+        dados.push(data)
+
+        this.props.mudarStatus(dados)
     }
 
     verificarAlteracao = () => {
@@ -338,6 +349,10 @@ export default class Ideia extends Component {
         if (this.props.ideiaPage) {
             return (
                 <View style={StyleIdeia.container}>
+                    <ConfigIdeia isVisible={this.state.mostrarConfig}
+                        onCancel={() => this.setState({ mostrarConfig: false })}
+                        status_ideia={this.state.status_ideia}
+                        mudarStatus={data => this.mudarStatus(data)} />
                     {!this.state.editTitulo &&
                         <Text style={StyleIdeia.titulo}>{this.props.nm_ideia}</Text>
                     }
@@ -384,7 +399,11 @@ export default class Ideia extends Component {
                             <Text style={StyleIdeia.numComentCurti}> {this.state.qtdComentario}</Text>
                         </Icon>
                     </View>
-
+                    {this.state.donoIdeia &&
+                        <TouchableOpacity style={StyleIdeia.configuracoes} onPress={() => this.setState({ mostrarConfig: true })}>
+                            <Icon name={"cogs"} size={20} />
+                        </TouchableOpacity>
+                    }
                     {!this.state.donoIdeia &&
                         <TouchableOpacity style={StyleIdeia.interesse} onPress={() => this.verificarInterrese()}>
                             {this.renderInteresse()}

@@ -33,6 +33,15 @@ const styles = StyleSheet.create({
         backgroundColor: EstiloComum.cores.fundoWeDo,
         marginLeft: '70%',
     },
+    configuracoes:{
+        marginTop: -30,
+        borderRadius: 5,
+        alignSelf: 'flex-end',
+        alignItems: 'flex-end',
+        paddingRight: 10,
+        width: 100,
+        height: 30
+    },
     textInteresse: {
         marginTop: '3%',
         color: '#FFF'

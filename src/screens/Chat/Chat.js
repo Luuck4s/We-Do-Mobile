@@ -115,23 +115,28 @@ export default class Chat extends Component {
 
             let mensagens = response.data.chat[0]
 
-            mensagens.map((item, index) => {
-                modeloMensagem = {
-                    _id: item.id_mensagem,
-                    text: item.ct_mensagem,
-                    createdAt: moment(item.hr_mensagem, 'YYYY-MM-DD hh:mm:ss').format('YYYY-MM-DD hh:mm:ss'),
-                    user: {
-                        _id: `${item.id_usuario}`,
-                        name: item.nm_usuario,
+            if (response.data.chat[0].length == 0) {
+                this.setState({ mensagens: [], carregando: false })
+            } else {
+                mensagens.map((item, index) => {
+                    modeloMensagem = {
+                        _id: item.id_mensagem,
+                        text: item.ct_mensagem,
+                        createdAt: moment(item.hr_mensagem, 'YYYY-MM-DD hh:mm:ss').format('YYYY-MM-DD hh:mm:ss'),
+                        user: {
+                            _id: `${item.id_usuario}`,
+                            name: item.nm_usuario,
+                        }
                     }
-                }
 
-                this.setState(previousState => ({
-                    messages: GiftedChat.append(previousState.messages, modeloMensagem),
-                }))
+                    this.setState(previousState => ({
+                        messages: GiftedChat.append(previousState.messages, modeloMensagem),
+                    }))
 
-                this.setState({ carregando: false })
-            })
+                    this.setState({ carregando: false })
+                })
+            }
+
         })
     }
 

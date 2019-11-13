@@ -28,15 +28,13 @@ export default class Inicio extends Component {
     }
 
     componentDidMount = async () => {
-        await this.buscarFeed()
-        setTimeout(() => this.setState({ carregando: false }), 1500)
+        setTimeout(() => this.buscarFeed(), 1500)
     }
 
     /**
      * Função que busca o feed de acordo com o id do usuario
     */
     buscarFeed = async () => {
-
         NetInfo.isConnected.fetch().done((isConnected) => {
             if (isConnected == true) {
                 this.setState({ conectado: true })
@@ -48,15 +46,15 @@ export default class Inicio extends Component {
             try {
                 let idUsuario = await AsyncStorage.getItem('@weDo:userId')
 
-                await this.setState({ idUsuario })
+                this.setState({ idUsuario })
 
                 await Api.get('/feed/' + idUsuario)
                     .then((response) => {
                         Api.defaults.headers.common['Authorization'] = `${response.data.token}`
-                        this.setState({ ideias: response.data.ideias })
+                        this.setState({ ideias: response.data.ideias, carregando: false })
 
                         if (response.data.ideias.length == 0) {
-                            this.setState({ semFeed: true })
+                            this.setState({ semFeed: true, carregando: false})
                         }
                     }).catch((err) => {
                         this.setState({ carregando: false, semFeed: true, titleVisible: true })
@@ -122,7 +120,7 @@ export default class Inicio extends Component {
             Api.defaults.headers.common['Authorization'] = `${response.data.token}`
             ToastAndroid.show('Ideia criada com sucesso', ToastAndroid.SHORT);
         })
-        
+
         await this.atualizarFeed()
     }
 
@@ -233,15 +231,17 @@ export default class Inicio extends Component {
         /**
          * renderItem foi retirado de dentro da FlatList para melhor desenpenho do componente
          */
-        renderItem = ({ item }) => (<Ideia inicio={true} key={item.id_ideia}
-            {...item}
-            onPressAutor={() => this.infoAutor(item.membros)}
-            onPresNomeIdeia={() => this.ideia(item.id_ideia)}
-            onPressMembros={() => this.membros(item.id_ideia)}
-            onPressCurtir={() => this.curtirIdeia(item.id_ideia)}
-            onPressComentario={() => this.comentarios(item.id_ideia)}
-            onPressInteresse={() => this.interesse(item.id_ideia)}
-            adicionarComentario={data => this.adicionarComentario(data, item.id_ideia)} />)
+        renderItem = ({ item }) => {
+
+            return <Ideia inicio={true} key={item.id_ideia} {...item}
+                onPressAutor={() => this.infoAutor(item.membros)}
+                onPresNomeIdeia={() => this.ideia(item.id_ideia)}
+                onPressMembros={() => this.membros(item.id_ideia)}
+                onPressCurtir={() => this.curtirIdeia(item.id_ideia)}
+                onPressComentario={() => this.comentarios(item.id_ideia)}
+                onPressInteresse={() => this.interesse(item.id_ideia)}
+                adicionarComentario={data => this.adicionarComentario(data, item.id_ideia)} />
+        }
 
         return (
             <View style={StyleInicio.container}>
@@ -284,7 +284,6 @@ export default class Inicio extends Component {
                         keyExtractor={item => `${item.id_ideia}`}
                         renderItem={renderItem} />
                 }
-
                 <ActionButton buttonColor={EstiloComum.cores.fundoWeDo}
                     onPress={() => { this.setState({ AddIdeia: true }) }} />
             </View>
