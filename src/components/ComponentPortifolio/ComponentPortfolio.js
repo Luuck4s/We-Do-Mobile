@@ -5,24 +5,15 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
 
 export default class ComponentPortifolio extends Component {
     render() {
-        let ideias = null
-        if (this.props.ideias) {
-            ideias = this.props.ideias.map((item, index) => {
-                return (
-                    <TouchableOpacity onPress={() => alert(item.id_ideia)} key={index}>
-                        <View style={StylePortfolio.IdeiaContainer}>
-                            <Icon name={"users"} size={50} style={StylePortfolio.icon} />
-                            <Text style={StylePortfolio.nomeIdeia}>{item.nm_ideia}</Text>
-                        </View>
-                    </TouchableOpacity>
-                )
-            })
-        }
         return (
             <View style={StylePortfolio.container}>
-                {ideias}
+                <TouchableOpacity onPress={() => this.props.ideia(this.props.id_ideia)}>
+                    <View style={StylePortfolio.IdeiaContainer}>
+                        <Icon name={"users"} size={50} style={StylePortfolio.icon} />
+                        <Text style={StylePortfolio.nomeIdeia}>{this.props.nm_ideia}</Text>
+                    </View>
+                </TouchableOpacity>
             </View >
         )
     }
 }
-

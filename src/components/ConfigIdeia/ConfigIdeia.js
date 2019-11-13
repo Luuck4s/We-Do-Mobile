@@ -56,9 +56,9 @@ export default class ConfigIdeia extends Component {
                         <Picker
                             onValueChange={(itemValue, itemIndex) => this.setState({ novoStatus: itemValue })}
                             selectedValue={this.state.novoStatus}>
-                            <Picker.Item label="Procurando" value={1} />
-                            <Picker.Item label="Desenvolvendo" value={2} />
-                            <Picker.Item label="Concluido" value={3} />
+                            <Picker.Item label="Procurando" value={0} />
+                            <Picker.Item label="Desenvolvendo" value={1} />
+                            <Picker.Item label="Concluido" value={2} />
                         </Picker>
                     </View>
                     <View style={StyleConfigIdeia.containerButton}>

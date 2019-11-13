@@ -208,6 +208,41 @@ const ProjetosAtuaisStack = createAppContainer(createStackNavigator({
 }
 ))
 
+const PerfilStack = createAppContainer(createStackNavigator({
+    Perfil: {
+        name: 'Perfil',
+        screen: Perfil,
+    },
+    IdeiaPage: {
+        name: 'IdeiaPage',
+        screen: IdeiaPage,
+    }
+}, {
+    headerMode: 'none',
+    navigationOptions: {
+        headerVisible: false,
+    }
+}
+))
+
+
+const PortfolioStack = createAppContainer(createStackNavigator({
+    Portfolio: {
+        name: 'Portfolio',
+        screen: Portfolio,
+    },
+    IdeiaPage: {
+        name: 'IdeiaPage',
+        screen: IdeiaPage,
+    }
+}, {
+    headerMode: 'none',
+    navigationOptions: {
+        headerVisible: false,
+    }
+}
+))
+
 /**
  * Menu Lateral que mostra mais opções de navegação para o usuario
 */
@@ -233,7 +268,7 @@ const SlideMenu = createAppContainer(createDrawerNavigator({
     },
     Perfil: {
         name: 'Perfil',
-        screen: Perfil,
+        screen: PerfilStack,
         navigationOptions: {
             title: 'Perfil',
             drawerIcon: ({ tintColor }) =>
@@ -249,9 +284,9 @@ const SlideMenu = createAppContainer(createDrawerNavigator({
                 <Icon name='code' size={20} color={tintColor} />
         }
     },
-    Portifolio: {
-        name: 'Portifolio',
-        screen: Portfolio,
+    Portfolio: {
+        name: 'Portfolio',
+        screen: PortfolioStack,
         navigationOptions: {
             title: 'Seu Portifólio',
             drawerIcon: ({ tintColor }) =>
@@ -296,7 +331,7 @@ const AuthStack = createAppContainer(createStackNavigator({
     },
     Politicas: {
         name: "Politicas",
-        screen:PoliticasPrivacidade
+        screen: PoliticasPrivacidade
     }
 
 }, {
