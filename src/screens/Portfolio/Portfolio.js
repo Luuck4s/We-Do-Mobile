@@ -77,7 +77,7 @@ export default class Portfolio extends Component {
                     <Text style={StylePortfolio.text}>Portfólio</Text>
                     <Text style={StylePortfolio.subText}>Projetos já concluídos.</Text>
                     {this.state.Semportfolio &&
-                        <Text style={StylePortfolio.textNoIdeias}>Você não concluiu de nenhum projeto.</Text>
+                        <Text style={StylePortfolio.textNoIdeias}>Você não concluiu nenhum projeto.</Text>
                     }
                     <FlatList
                         initialNumToRender={3}

@@ -1,98 +1,213 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, TextInput } from 'react-native'
+import { View, Text, ScrollView, TouchableOpacity, TextInput, RefreshControl, FlatList, Alert } from 'react-native'
 import Header from '../../components/Header/Header'
 import AsyncStorage from '@react-native-community/async-storage'
 import StylePerfil from './StylePerfil'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import InformacoesUsuario from '../../components/InformacoesUsuario/InformacoesUsuario'
 import ComponetPortfolio from '../../components/ComponentPortifolio/ComponentPortfolio'
-
-let ideias = [
-    {
-        "id_ideia": 12,
-        "nm_ideia": "Teste"
-    },
-    {
-        "id_ideia": 122,
-        "nm_ideia": "Teste"
-    },
-    {
-        "id_ideia": 122,
-        "nm_ideia": "Teste"
-    },
-    {
-        "id_ideia": 1232,
-        "nm_ideia": "Teste"
-    },
-    {
-        "id_ideia": 312,
-        "nm_ideia": "Teste"
-    },
-    {
-        "id_ideia": 312,
-        "nm_ideia": "Teste"
-    }
-]
-
-let tecnologias = [
-    {
-        "id_tecnologia": 8,
-        "nm_tecnologia": "JavaScript"
-    }
-]
+import ComponentProjetosAtuais from '../../components/ComponentProjetosAtuais/ComponentProjetosAtuais'
+import Api from '../../api/Api'
 
 export default class Perfil extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props)
     }
 
     state = {
         idUsuario: null,
         editNome: false,
-        novoNome: ''
+        novoNome: '',
+        atualizando: false,
+        carregando: true,
+        emailUsuario: null,
+        tecnologias: [],
+        dsBio: null,
+        nmUsuario: null,
+        portfolio: [],
+        projetosAtuais: []
     }
 
     componentDidMount = async () => {
         let idUsuario = await AsyncStorage.getItem('@weDo:userId')
 
         this.setState({ idUsuario })
+
+        await this.pegarInformacoesUsuario()
+    }
+
+    pegarInformacoesUsuario = async () => {
+
+        this.setState({
+            portfolio: [], projetosAtuais: [], emailUsuario: null,
+            tecnologias: [],
+            dsBio: null,
+            nmUsuario: null
+        })
+
+        await Api.get(`/usuario/perfil/${this.state.idUsuario}&${this.state.idUsuario}`).then((response) => {
+
+            this.setState(
+                {
+                    emailUsuario: response.data.perfil_usuario.email_usuario,
+                    tecnologias: response.data.perfil_usuario.tecnologias,
+                    dsBio: response.data.perfil_usuario.ds_bio,
+                    nmUsuario: response.data.perfil_usuario.nm_usuario,
+                    novoNome: response.data.perfil_usuario.nm_usuario
+                }
+            )
+        })
+
+        await this.buscarProjetosEPort()
+
+    }
+
+    buscarProjetosEPort = async () => {
+        await Api.get(`/ideia/portifolio/${this.state.idUsuario}`).then((response) => {
+            if (response.data.ideias == "") {
+                this.setState({ Semportfolio: true, portfolio: [] })
+            } else {
+                this.setState({ portfolio: response.data.ideias })
+            }
+        })
+
+        await Api.get(`/ideia/projetos_atuais/${this.state.idUsuario}`).then((response) => {
+            if (response.data.ideias == null) {
+                this.setState({ semProjetosAtuais: true, projetosAtuais: [] })
+            } else {
+                this.setState({ projetosAtuais: response.data.ideias })
+            }
+
+            this.setState({ carregando: false })
+        })
+    }
+
+    ideia = (idIdeia) => {
+        let data = []
+
+        JSON.stringify(data = {
+            id_ideia: idIdeia,
+            id_usuario: this.state.idUsuario,
+            paginaAnteriorIdeia: "Perfil"
+        })
+
+        this.props.navigation.navigate('IdeiaPage', data)
+
+    }
+
+    atualizar = async () => {
+        this.setState({ semProjetosAtuais: false, Semportfolio: false })
+        await this.pegarInformacoesUsuario()
+        this.setState({ atualizando: false })
+    }
+
+    verificarMudanca = () => {
+        if (this.state.novoNome.trim() != this.state.nmUsuario.trim()) {
+            Alert.alert(
+                'Confirmação',
+                `Deseja realmente alterar o seu nome de usuario ?`,
+                [
+                    {
+                        text: 'Cancelar', onPress: () => this.setState({ novoNome: this.state.nmUsuario, editNome: false })
+                    },
+                    { text: 'Confirmar', onPress: () => this.mudarNome() }
+                ]
+            )
+        } else {
+            this.setState({ editNome: false })
+        }
+    }
+
+    /**
+     * Função para mudar o nome
+     */
+    mudarNome = async () => {
+        await Api.put(`/usuario/alterar/${this.state.idUsuario}`, {
+
+        })
+    }
+
+    /**
+     * Função para mudar a descrição
+     */
+    mudarDesc = async (data) => {
+        alert(data)
+    }
+
+    /**
+     * Função para mudar o Email
+     */
+    mudarEmail = async (data) => {
+        alert(data)
+    }
+
+    mudarSenha = async (data) => {
+        alert(`${data[0]} / ${data[1]}`)
     }
 
     render() {
-        return (
-            <ScrollView>
-                <View>
-                    <Header icon={"bars"} texto={"Perfil"} onPress={() => this.props.navigation.openDrawer()} />
-                    <View style={StylePerfil.informacaoArea}>
-                        <Icon name={"user-astronaut"} size={40} style={StylePerfil.iconUser} />
-                        {this.state.editNome &&
-                            <TextInput placeholder="Digite seu nome" style={StylePerfil.inputNome}
-                                onChangeText={novoNome => this.setState({ novoNome })}
-                                value={this.state.novoNome} maxLength={50} onSubmitEditing={() => alert(this.state.novoNome)} />
-                        }
-                        {!this.state.editNome &&
-                            <Text style={StylePerfil.nmUsuario}>Nome usuario</Text>
-                        }
-                        {!this.state.editNome &&
-                            <TouchableOpacity onPress={() => this.setState({ editNome: true })}>
-                                <Icon name={"edit"} size={20} style={StylePerfil.iconEditName} />
-                            </TouchableOpacity>
-                        }
-                        {this.state.editNome &&
-                            <TouchableOpacity onPress={() => this.setState({ editNome: false })}>
-                                <Icon name={"check"} size={20} style={[StylePerfil.iconEditName,{marginTop: "10%", marginRight: '5%'}]} />
-                            </TouchableOpacity>
-                        }
-                    </View>
-                    <InformacoesUsuario perfil tecnologias={tecnologias} descricao={"A vida é bela demais para vivermos a tarde"} email={"lucas8585@gmail.com"} />
-                    
-                    <Text style={StylePerfil.text}>Portfólio</Text>
-                    <Text style={StylePerfil.subText}>Projetos já concluídos.</Text>
+        renderItemPort = ({ item }) => {
 
-                    <ComponetPortfolio ideias={ideias} />
-                </View>
-            </ScrollView>
+            return <ComponetPortfolio key={item.id_ideia} ideia={data => this.ideia(data)} {...item} />
+        }
+
+        renderItemProj = ({ item }) => {
+
+            return <ComponentProjetosAtuais key={item.id_ideia} ideia={data => this.ideia(data)} {...item} />
+        }
+
+        return (
+            <View>
+                <Header icon={"bars"} texto={"Perfil"} onPress={() => this.props.navigation.openDrawer()} />
+                <ScrollView refreshControl={this.state.carregando ? null : <RefreshControl refreshing={this.state.atualizando} onRefresh={() => this.atualizar()} />}>
+                    <View style={{ paddingBottom: 100 }}>
+                        <View style={StylePerfil.informacaoArea}>
+                            <Icon name={"user-astronaut"} size={40} style={StylePerfil.iconUser} />
+                            {this.state.editNome &&
+                                <TextInput placeholder="Digite seu nome" style={StylePerfil.inputNome}
+                                    onChangeText={novoNome => this.setState({ novoNome })}
+                                    value={this.state.novoNome} maxLength={50} onSubmitEditing={() => this.verificarMudanca()} />
+                            }
+                            {!this.state.editNome &&
+                                <Text style={StylePerfil.nmUsuario}>{this.state.nmUsuario}</Text>
+                            }
+                            {!this.state.editNome &&
+                                <TouchableOpacity onPress={() => this.setState({ editNome: true })}>
+                                    <Icon name={"edit"} size={20} style={StylePerfil.iconEditName} />
+                                </TouchableOpacity>
+                            }
+                            {this.state.editNome &&
+                                <TouchableOpacity onPress={() => this.verificarMudanca()}>
+                                    <Icon name={"check"} size={20} style={[StylePerfil.iconEditName, { marginTop: "10%", marginRight: '5%' }]} />
+                                </TouchableOpacity>
+                            }
+                        </View>
+                        <InformacoesUsuario perfil tecnologias={this.state.tecnologias} descricao={this.state.dsBio} email={this.state.emailUsuario}
+                            mudarDesc={data => this.mudarDesc(data)} mudarEmail={data => this.mudarEmail(data)} mudarSenha={data => this.mudarSenha(data)} />
+                        <Text style={StylePerfil.text}>Portfólio</Text>
+                        <Text style={StylePerfil.subText}>Projetos já concluídos.</Text>
+                        {this.state.Semportfolio &&
+                            <Text style={StylePerfil.textNoIdeias}>Você não concluiu nenhum projeto.</Text>
+                        }
+                        <FlatList
+                            initialNumToRender={3}
+                            data={this.state.portfolio}
+                            keyExtractor={item => `${item.id_ideia}`}
+                            renderItem={renderItemPort} />
+                        <Text style={StylePerfil.text}>Projetos Atuais</Text>
+                        <Text style={StylePerfil.subText}>Projetos em andamento.</Text>
+                        {this.state.semProjetosAtuais &&
+                            <Text style={StylePerfil.textNoIdeias}>Você não participa de nenhum projeto.</Text>
+                        }
+                        <FlatList
+                            initialNumToRender={3}
+                            data={this.state.projetosAtuais}
+                            keyExtractor={item => `${item.id_ideia}`}
+                            renderItem={renderItemProj} />
+                    </View>
+                </ScrollView>
+            </View>
         )
     }
 }

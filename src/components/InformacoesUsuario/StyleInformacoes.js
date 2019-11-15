@@ -82,7 +82,8 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     inputSenha:{
-        width: '80%',
+        width: '45%',
+        marginLeft: 5,
         height: 40,
         backgroundColor: '#FFF',
         borderRadius: 5,

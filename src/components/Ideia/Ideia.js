@@ -350,11 +350,13 @@ export default class Ideia extends Component {
                     <MembroIdeia onPressMembros={this.props.onPressMembros} membros={this.props.membros} />
 
                     <View style={{ flexDirection: 'row' }}>
-                        <TouchableOpacity onPress={() => this.curtida()}>
-                            <Icon name='heart' style={this.state.curtido ? StyleIdeia.iconCurtido : StyleIdeia.iconCurtida} size={19} >
-                                <Text style={StyleIdeia.numComentCurti}> {this.state.qtdCurtidas}</Text>
-                            </Icon>
-                        </TouchableOpacity>
+                        {this.props.status_ideia != 2 &&
+                            <TouchableOpacity onPress={() => this.curtida()}>
+                                <Icon name='heart' style={this.state.curtido ? StyleIdeia.iconCurtido : StyleIdeia.iconCurtida} size={19} >
+                                    <Text style={StyleIdeia.numComentCurti}> {this.state.qtdCurtidas}</Text>
+                                </Icon>
+                            </TouchableOpacity>
+                        }
                         <TouchableOpacity onPress={this.props.onPressComentario}>
                             <Icon name='comment' style={StyleIdeia.iconComentario} size={19} color={EstiloComum.cores.fundoWeDo}>
                                 <Text style={StyleIdeia.numComentCurti}> {this.state.qtdComentario}</Text>
@@ -413,11 +415,13 @@ export default class Ideia extends Component {
                     <MembroIdeia criadorIdeia={this.state.donoIdeia ? true : false} ideiaPage={this.props.ideiaPage} onPressMembros={this.props.onPressMembros}
                         membros={this.props.membros} removerUsuario={data => this.props.removerUsuario(data)} />
                     <View style={{ flexDirection: 'row' }}>
-                        <TouchableOpacity onPress={() => this.curtida()}>
-                            <Icon name='heart' style={this.state.curtido ? StyleIdeia.iconCurtido : StyleIdeia.iconCurtida} size={19} >
-                                <Text style={StyleIdeia.numComentCurti}> {this.state.qtdCurtidas}</Text>
-                            </Icon>
-                        </TouchableOpacity>
+                        {this.props.status_ideia != 2 &&
+                            <TouchableOpacity onPress={() => this.curtida()}>
+                                <Icon name='heart' style={this.state.curtido ? StyleIdeia.iconCurtido : StyleIdeia.iconCurtida} size={19} >
+                                    <Text style={StyleIdeia.numComentCurti}> {this.state.qtdCurtidas}</Text>
+                                </Icon>
+                            </TouchableOpacity>
+                        }
                         <Icon name='comment' style={StyleIdeia.iconComentario} size={19} color={EstiloComum.cores.fundoWeDo}>
                             <Text style={StyleIdeia.numComentCurti}> {this.state.qtdComentario}</Text>
                         </Icon>
@@ -455,11 +459,13 @@ export default class Ideia extends Component {
                     <MembroIdeia onPressMembros={this.props.onPressMembros} membros={this.props.membros} />
 
                     <View style={{ flexDirection: 'row' }}>
-                        <TouchableOpacity onPress={() => this.curtida()}>
-                            <Icon name='heart' style={this.state.curtido ? StyleIdeia.iconCurtido : StyleIdeia.iconCurtida} size={19} >
-                                <Text style={StyleIdeia.numComentCurti}> {this.state.qtdCurtidas}</Text>
-                            </Icon>
-                        </TouchableOpacity>
+                        {this.props.status_ideia != 2 &&
+                            <TouchableOpacity onPress={() => this.curtida()}>
+                                <Icon name='heart' style={this.state.curtido ? StyleIdeia.iconCurtido : StyleIdeia.iconCurtida} size={19} >
+                                    <Text style={StyleIdeia.numComentCurti}> {this.state.qtdCurtidas}</Text>
+                                </Icon>
+                            </TouchableOpacity>
+                        }
                         <TouchableOpacity onPress={this.props.onPressComentario}>
                             <Icon name='comment' style={StyleIdeia.iconComentario} size={19} color={EstiloComum.cores.fundoWeDo}>
                                 <Text style={StyleIdeia.numComentCurti}> {this.state.qtdComentario}</Text>
