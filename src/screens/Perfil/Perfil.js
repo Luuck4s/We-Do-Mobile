@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, TextInput, RefreshControl, FlatList, Alert } from 'react-native'
+import { View, Text, ScrollView, TouchableOpacity, TextInput, RefreshControl, FlatList, Alert, ToastAndroid } from 'react-native'
 import Header from '../../components/Header/Header'
 import AsyncStorage from '@react-native-community/async-storage'
 import StylePerfil from './StylePerfil'
@@ -123,27 +123,76 @@ export default class Perfil extends Component {
      * Função para mudar o nome
      */
     mudarNome = async () => {
-        await Api.put(`/usuario/alterar/${this.state.idUsuario}`, {
 
+        this.setState({ editNome: false })
+
+        await Api.put(`/usuario/alterar/${this.state.idUsuario}`, {
+            usuario: {
+                nm_usuario: this.state.novoNome
+            }
+
+        }).then((response) => {
+            this.storeName(this.state.novoNome)
+            ToastAndroid.show('Nome atualizado', ToastAndroid.SHORT);
         })
+
+        await this.atualizar()
+    }
+
+    storeName = async (name) => {
+        try {
+            await AsyncStorage.setItem('@weDo:userName', JSON.stringify(name))
+        } catch (err) {
+            Alert.alert('Error Interno', `Async Store ID Error:${err}`)
+        }
     }
 
     /**
      * Função para mudar a descrição
      */
     mudarDesc = async (data) => {
-        alert(data)
+        await Api.put(`/usuario/alterar/${this.state.idUsuario}`, {
+            usuario: {
+                ds_bio: data
+            }
+
+        }).then((response) => {
+            ToastAndroid.show('Descrição atualizada', ToastAndroid.SHORT);
+        })
+
+        await this.atualizar()
     }
 
     /**
      * Função para mudar o Email
      */
     mudarEmail = async (data) => {
-        alert(data)
+        await Api.put(`/usuario/alterar/${this.state.idUsuario}`, {
+            usuario: {
+                email_usuario: data
+            }
+
+        }).then((response) => {
+            ToastAndroid.show('E-mail atualizado', ToastAndroid.SHORT);
+        })
+
+        await this.atualizar()
     }
 
     mudarSenha = async (data) => {
-        alert(`${data[0]} / ${data[1]}`)
+        await Api.put(`/usuario/alterar_senha/${this.state.idUsuario}`, {
+            usuario: {
+                senha_atual: data[0],
+                senha_usuario: data[1]
+            }
+
+        }).then((response) => {
+            if(response.data.msg){
+                ToastAndroid.show('Senha atual incorreta', ToastAndroid.SHORT);    
+            }else{
+                ToastAndroid.show('Senha atualizada', ToastAndroid.SHORT);
+            }
+        })
     }
 
     render() {

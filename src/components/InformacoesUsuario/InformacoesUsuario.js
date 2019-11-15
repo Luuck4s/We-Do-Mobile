@@ -28,8 +28,8 @@ export default class InformacoesUsuario extends Component {
                 this.setState({ novoEmail: this.props.email })
             }
 
-            if(this.props.descricao){
-                this.setState({ novaDesc: this.props.descricao})
+            if (this.props.descricao) {
+                this.setState({ novaDesc: this.props.descricao })
             }
         }
     }
@@ -54,16 +54,21 @@ export default class InformacoesUsuario extends Component {
 
     verificarEmail = () => {
         if (this.state.novoEmail.trim() != this.props.email.trim()) {
-            Alert.alert(
-                'Confirmação',
-                `Deseja realmente alterar o seu email ?`,
-                [
-                    {
-                        text: 'Cancelar', onPress: () => this.setState({ novoEmail: this.props.email ? this.props.email : '', editEmail: false })
-                    },
-                    { text: 'Confirmar', onPress: () => this.mudarEmail() }
-                ]
-            )
+            if (this.state.novoEmail.includes('@')) {
+                Alert.alert(
+                    'Confirmação',
+                    `Deseja realmente alterar o seu email ?`,
+                    [
+                        {
+                            text: 'Cancelar', onPress: () => this.setState({ novoEmail: this.props.email ? this.props.email : '', editEmail: false })
+                        },
+                        { text: 'Confirmar', onPress: () => this.mudarEmail() }
+                    ]
+                )
+            }else{
+                ToastAndroid.show('Insira um email válido', ToastAndroid.SHORT)
+            }
+
         } else {
             this.setState({ editEmail: false })
         }
