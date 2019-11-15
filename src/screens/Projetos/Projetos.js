@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { View, ScrollView, FlatList, RefreshControl } from 'react-native'
+import { View, ScrollView, FlatList, RefreshControl, Text } from 'react-native'
 import Header from '../../components/Header/Header'
 import IdeiaChat from '../../components/IdeiaChat/IdeiaChat'
 import Api from '../../api/Api'
 import AsyncStorage from '@react-native-community/async-storage'
+import StyleProjetos from './StyleProjetos'
 
 export default class Projetos extends Component {
 
@@ -16,6 +17,7 @@ export default class Projetos extends Component {
         ideias: [],
         carregando: true,
         atualizando: false,
+        semChat: false,
     }
 
     componentDidMount = async () => {
@@ -28,7 +30,13 @@ export default class Projetos extends Component {
 
     buscarProjetosAtuais = async () => {
         await Api.get(`/ideia/projetos_atuais/${this.state.idUsuario}`).then((response) => {
-            this.setState({ ideias: response.data.ideias, carregando: false})
+
+            if (response.data.ideias == undefined) {
+                this.setState({ ideias: [], semChat: true})
+            } else {
+                this.setState({ ideias: response.data.ideias })
+            }
+            this.setState({ carregando: false })
         })
     }
 
@@ -44,10 +52,15 @@ export default class Projetos extends Component {
 
     atualizarProjetos = async () => {
 
-        this.setState({ atualizando: true, ideias:[]})
-        
+        this.setState({ atualizando: true, ideias: [], semChat: false })
+
         await Api.get(`/ideia/projetos_atuais/${this.state.idUsuario}`).then((response) => {
-            this.setState({ ideias: response.data.ideias })
+            if (response.data.ideias == undefined) {
+                this.setState({ ideias: [], semChat: true})
+            } else {
+                this.setState({ ideias: response.data.ideias })
+            }
+            this.setState({ carregando: false })
         })
 
         this.setState({ atualizando: false })
@@ -62,12 +75,16 @@ export default class Projetos extends Component {
         return (
             <View>
                 <Header paginaInicial={false} texto={"Chat"} icon={"comment-alt"} onPress={() => this.props.navigation.openDrawer()} />
-                <FlatList
-                    refreshControl={this.state.carregando ? null : <RefreshControl refreshing={this.state.atualizando} onRefresh={() => this.atualizarProjetos()} />}
-                    initialNumToRender={3}
-                    data={this.state.ideias}
-                    keyExtractor={item => `${item.id_ideia}`}
-                    renderItem={renderItem} />
+                <ScrollView refreshControl={this.state.carregando ? null : <RefreshControl refreshing={this.state.atualizando} onRefresh={() => this.atualizarProjetos()} />}>
+                    {this.state.semChat &&
+                        <Text style={StyleProjetos.textNoIdeias}>Você não participa de nenhuma ideia para ter chats.</Text>
+                    }
+                    <FlatList
+                        initialNumToRender={3}
+                        data={this.state.ideias}
+                        keyExtractor={item => `${item.id_ideia}`}
+                        renderItem={renderItem} />
+                </ScrollView>
             </View>
 
         )

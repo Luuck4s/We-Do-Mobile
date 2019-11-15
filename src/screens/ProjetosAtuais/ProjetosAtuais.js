@@ -17,6 +17,7 @@ export default class ProjetosAtuais extends Component {
         ideias: [],
         carregando: true,
         atualizando: false,
+        semProjetosAtuais: false
     }
 
     componentDidMount = async () => {
@@ -26,15 +27,25 @@ export default class ProjetosAtuais extends Component {
 
 
         await Api.get(`/ideia/projetos_atuais/${this.state.idUsuario}`).then((response) => {
-            this.setState({ ideias: response.data.ideias, carregando: false })
+            if (response.data.ideias == null) {
+                this.setState({ semProjetosAtuais: true, ideias: [] })
+            } else {
+                this.setState({ ideias: response.data.ideias })
+            }
+            this.setState({ carregando: false, atualizando: false })
         })
     }
 
     atualizarProjetos = async () => {
-        this.setState({ atualizando: true, ideias: [] })
+        this.setState({ atualizando: true, ideias: [], semProjetosAtuais: false })
 
         await Api.get(`/ideia/projetos_atuais/${this.state.idUsuario}`).then((response) => {
-            this.setState({ ideias: response.data.ideias, carregando: false, atualizando: false })
+            if (response.data.ideias == null) {
+                this.setState({ semProjetosAtuais: true, ideias: [] })
+            } else {
+                this.setState({ ideias: response.data.ideias })
+            }
+            this.setState({ carregando: false, atualizando: false })
         })
     }
 
@@ -57,19 +68,23 @@ export default class ProjetosAtuais extends Component {
             return <ComponentProjetosAtuais key={item.id_ideia} ideia={data => this.ideia(data)} {...item} />
         }
         return (
-            <ScrollView>
-                <View>
-                    <Header paginaInicial={false} texto={"Projetos Atuais"} icon={"code"} onPress={() => this.props.navigation.openDrawer()} />
-                    <Text style={StyleProjetosAtuais.text}>Projetos Atuais</Text>
-                    <Text style={StyleProjetosAtuais.subText}>Projetos em andamento.</Text>
-                    <FlatList
-                        refreshControl={this.state.carregando ? null : <RefreshControl refreshing={this.state.atualizando} onRefresh={() => this.atualizarProjetos()} />}
-                        initialNumToRender={3}
-                        data={this.state.ideias}
-                        keyExtractor={item => `${item.id_ideia}`}
-                        renderItem={renderItem} />
-                </View>
-            </ScrollView>
+            <View>
+                <Header paginaInicial={false} texto={"Projetos Atuais"} icon={"code"} onPress={() => this.props.navigation.openDrawer()} />
+                <ScrollView refreshControl={this.state.carregando ? null : <RefreshControl refreshing={this.state.atualizando} onRefresh={() => this.atualizarProjetos()} />}>
+                    <View>
+                        <Text style={StyleProjetosAtuais.text}>Projetos Atuais</Text>
+                        <Text style={StyleProjetosAtuais.subText}>Projetos em andamento.</Text>
+                        {this.state.semProjetosAtuais &&
+                            <Text style={StyleProjetosAtuais.textNoIdeias}>Você não participa de nenhum projeto.</Text>
+                        }
+                        <FlatList
+                            initialNumToRender={3}
+                            data={this.state.ideias}
+                            keyExtractor={item => `${item.id_ideia}`}
+                            renderItem={renderItem} />
+                    </View>
+                </ScrollView>
+            </View>
         )
     }
 }

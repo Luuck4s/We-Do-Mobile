@@ -25,7 +25,7 @@ const style = StyleSheet.create({
         marginBottom: 5,
     },
     scrollPoliticas:{
-        margin: 8,
+        padding: 15,
     },
     politicas:{
         fontSize: 15,

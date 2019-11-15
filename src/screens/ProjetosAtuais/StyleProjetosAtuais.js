@@ -15,6 +15,13 @@ const style = StyleSheet.create({
         fontSize: 14,
         textAlign: "center",
         color: '#333'
+    },
+    textNoIdeias:{
+        fontFamily: EstiloComum.fontFamily,
+        marginTop: 5,
+        fontSize: 16,
+        textAlign: "center",
+        color: EstiloComum.cores.fundoWeDo
     }
 })
 

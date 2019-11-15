@@ -341,7 +341,7 @@ export default class Auth extends Component {
 						</Text>
 					</TouchableOpacity>
 					{this.state.criarConta &&
-						<Text onPress={() => this.props.navigation.navigate('Politicas')} style={StyleAuth.politicas}>Políticas de Privacidade</Text>
+						<Text onPress={() => this.props.navigation.navigate('Politicas')} style={StyleAuth.politicas}>Termos de uso</Text>
 					}
 					<View style={StyleAuth.containerBotao}>
 						<TouchableOpacity disabled={!validaFormulario} onPress={this.logarOuCadastrar} >

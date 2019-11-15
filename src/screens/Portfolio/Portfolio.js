@@ -17,6 +17,7 @@ export default class Portfolio extends Component {
         ideias: [],
         carregando: true,
         atualizando: false,
+        Semportfolio: false,
     }
 
     componentDidMount = async () => {
@@ -27,7 +28,12 @@ export default class Portfolio extends Component {
 
         await Api.get(`/ideia/portifolio/${this.state.idUsuario}`).then((response) => {
 
-            this.setState({ ideias: response.data.ideias, carregando: false })
+            if (response.data.ideias == "") {
+                this.setState({ Semportfolio: true, ideas: [] })
+            } else {
+                this.setState({ ideias: response.data.ideias })
+            }
+            this.setState({ carregando: false, atualizando: false })
         })
     }
 
@@ -35,12 +41,12 @@ export default class Portfolio extends Component {
         this.setState({ atualizando: true, ideias: [] })
 
         await Api.get(`/ideia/portifolio/${this.state.idUsuario}`).then((response) => {
-
-            this.setState({ ideias: response.data.ideias, carregando: false, atualizando: false})
-
-            if(response.data.ideias.length == 0){
-                this.setState({ideias: [],carregando: false, atualizando: false})
+            if (response.data.ideias == "") {
+                this.setState({ Semportfolio: true, ideas: [] })
+            } else {
+                this.setState({ ideias: response.data.ideias })
             }
+            this.setState({ carregando: false, atualizando: false })
         })
     }
 
@@ -67,16 +73,18 @@ export default class Portfolio extends Component {
         return (
             <View>
                 <Header paginaInicial={false} texto={"Portifólio"} icon={"chart-bar"} onPress={() => this.props.navigation.openDrawer()} />
-
-                <Text style={StylePortfolio.text}>Portfólio</Text>
-                <Text style={StylePortfolio.subText}>Projetos já concluídos.</Text>
-                <FlatList
-                    refreshControl={this.state.carregando ? null : <RefreshControl refreshing={this.state.atualizando} onRefresh={() => this.atualizarPortfolio()} />}
-                    initialNumToRender={3}
-                    data={this.state.ideias}
-                    keyExtractor={item => `${item.id_ideia}`}
-                    renderItem={renderItem} />
-
+                <ScrollView refreshControl={this.state.carregando ? null : <RefreshControl refreshing={this.state.atualizando} onRefresh={() => this.atualizarPortfolio()} />}>
+                    <Text style={StylePortfolio.text}>Portfólio</Text>
+                    <Text style={StylePortfolio.subText}>Projetos já concluídos.</Text>
+                    {this.state.Semportfolio &&
+                        <Text style={StylePortfolio.textNoIdeias}>Você não concluiu de nenhum projeto.</Text>
+                    }
+                    <FlatList
+                        initialNumToRender={3}
+                        data={this.state.ideias}
+                        keyExtractor={item => `${item.id_ideia}`}
+                        renderItem={renderItem} />
+                </ScrollView>
             </View>
         )
     }
