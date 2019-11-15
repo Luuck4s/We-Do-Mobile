@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import {View} from 'react-native'
+import {View, Text} from 'react-native'
 import Header from '../../components/Header/Header'
+import AsyncStorage from '@react-native-community/async-storage'
 
 export default class Notificacoes extends Component {
 

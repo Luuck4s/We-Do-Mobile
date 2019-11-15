@@ -194,16 +194,15 @@ export default class Ideia extends Component {
 
     alterarTitulo = () => {
         let data = [this.state.novoNome]
-        data.push(this.state.novaDescricao)
+        data.push(this.state.novaDescricao.trim())
         data.push(this.state.novoStatus)
 
         this.props.alterarTitulo(data)
-
     }
 
     alterarDesc = () => {
         let data = [this.state.novoNome]
-        data.push(this.state.novaDescricao)
+        data.push(this.state.novaDescricao.trim())
         data.push(this.state.novoStatus)
 
         this.props.alterarDesc(data)
