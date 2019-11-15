@@ -7,8 +7,8 @@ import Ideia from '../../components/Ideia/Ideia'
 import AsyncStorage from '@react-native-community/async-storage'
 
 export default class Trends extends Component {
-    
-    constructor(props){
+
+    constructor(props) {
         super(props)
     }
 
@@ -78,13 +78,19 @@ export default class Trends extends Component {
      */
     infoAutor = (Membros) => {
         let idCriador = 0
+        let veri
         Membros.map((item, index) => {
             if (item.idealizador == 1) {
+                veri = item.id_usuario
                 idCriador = { "idPerfilUsuario": item.id_usuario, "paginaAnterior": "Trends" }
             }
         })
 
-        this.props.navigation.navigate('PerfilUsuario', idCriador)
+        if (veri == this.state.idUsuario) {
+            this.props.navigation.navigate('Perfil')
+        } else {
+            this.props.navigation.navigate('PerfilUsuario', idCriador)
+        }
     }
 
     /**

@@ -78,7 +78,7 @@ export default class Inicio extends Component {
         })
 
         if (this.state.conectado) {
-            this.setState({ atualizando: true, carregando: true, ideias: [] })
+            this.setState({ atualizando: true, carregando: true, ideias: [], semFeed: false})
 
             try {
                 await Api.get('/feed/' + this.state.idUsuario)
@@ -130,8 +130,10 @@ export default class Inicio extends Component {
      */
     infoAutor = (Membros) => {
         let idCriador = 0
+        let veri
         Membros.map((item, index) => {
             if (item.idealizador == 1) {
+                veri = item.id_usuario
                 idCriador = {
                     "idPerfilUsuario": item.id_usuario,
                     "paginaAnterior": "Inicio"
@@ -139,8 +141,11 @@ export default class Inicio extends Component {
             }
         })
 
-
-        this.props.navigation.navigate('PerfilUsuario', idCriador)
+        if(veri == this.state.idUsuario){
+            this.props.navigation.navigate('Perfil')
+        }else{
+            this.props.navigation.navigate('PerfilUsuario', idCriador)
+        }
     }
 
     /**

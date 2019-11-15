@@ -11,6 +11,11 @@ const style = StyleSheet.create({
         marginRight: '2%',
         color: EstiloComum.cores.fundoWeDo
     },
+    iconDenuncia:{
+        alignSelf: 'flex-end',
+        color: '#900',
+        marginRight: '2%',
+    },
     nmUsuario:{
         marginLeft: '2%',
         marginTop: '2%',
@@ -32,6 +37,13 @@ const style = StyleSheet.create({
         textAlign: "center",
         color: '#333',
         marginBottom: 5,
+    },
+    textNoIdeias:{
+        fontFamily: EstiloComum.fontFamily,
+        marginTop: 5,
+        fontSize: 16,
+        textAlign: "center",
+        color: EstiloComum.cores.fundoWeDo
     }
 })
 
