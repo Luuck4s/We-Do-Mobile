@@ -46,8 +46,8 @@ export default class Trends extends Component {
      * Mostra interesse na ideia
      * @param - idIdeia 
     */
-    interesse = (idIdeia) => {
-        Api.post('/interesse', {
+    interesse = async (idIdeia) => {
+        await Api.post('/interesse', {
             usuario: {
                 id_usuario: this.state.idUsuario,
             },
@@ -62,7 +62,7 @@ export default class Trends extends Component {
      * @param - IdIdeia
      */
     curtirIdeia = async (idIdeia) => {
-        Api.post('/curtida', {
+        await Api.post('/curtida', {
             usuario: {
                 id_usuario: this.state.idUsuario
             },
