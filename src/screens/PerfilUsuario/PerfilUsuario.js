@@ -8,6 +8,7 @@ import ComponentPortfolio from '../../components/ComponentPortifolio/ComponentPo
 import ComponentProjetosAtuais from '../../components/ComponentProjetosAtuais/ComponentProjetosAtuais'
 import Api from '../../api/Api'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import AsyncStorage from '@react-native-community/async-storage'
 
 export default class PerfilUsuario extends Component {
 
@@ -23,14 +24,16 @@ export default class PerfilUsuario extends Component {
         dsBio: null,
         nmUsuario: null,
         portfolio: [],
-        projetosAtuais: []
+        projetosAtuais: [],
+        idUsuarioLogado: ''
     }
 
     componentDidMount = async () => {
+        let idUsuarioLogado = await AsyncStorage.getItem('@weDo:userId')
         let idUser = await this.props.navigation.getParam('idPerfilUsuario')
         let pageAnterior = await this.props.navigation.getParam('paginaAnterior')
 
-        this.setState({ idUsuario: idUser, pageAnterior })
+        this.setState({ idUsuario: idUser, pageAnterior, idUsuarioLogado })
 
         await this.buscarInformacoesUsuario()
     }
@@ -38,11 +41,11 @@ export default class PerfilUsuario extends Component {
     componentDidUpdate = async (PrevProps, PrevState) => {
         if ((this.props.navigation.getParam('idPerfilUsuario') != this.state.idUsuario) ||
             (this.props.navigation.getParam('paginaAnterior') != PrevProps.navigation.getParam('paginaAnterior'))) {
-
+            let idUsuarioLogado = await AsyncStorage.getItem('@weDo:userId')
             let idUser = await this.props.navigation.getParam('idPerfilUsuario')
             let pageAnterior = await this.props.navigation.getParam('paginaAnterior')
 
-            this.setState({ idUsuario: idUser, pageAnterior })
+            this.setState({ idUsuario: idUser, pageAnterior, idUsuarioLogado })
 
             await this.buscarInformacoesUsuario()
         }
@@ -130,9 +133,11 @@ export default class PerfilUsuario extends Component {
                             <Text style={StylePerfilUsuario.nmUsuario}>{this.state.nmUsuario}</Text>
                         </View>
                         <InformacoesUsuario perfilUsuario tecnologias={this.state.tecnologias} descricao={this.state.dsBio} email={this.state.emailUsuario} />
-                        <TouchableOpacity onPress={() => alert(this.state.idUsuario)}>
-                            <Icon name={"exclamation-circle"} size={25} style={StylePerfilUsuario.iconDenuncia} />
-                        </TouchableOpacity>
+                        {this.state.idUsuario != this.state.idUsuarioLogado &&
+                            <TouchableOpacity onPress={() => alert(this.state.idUsuario)}>
+                                <Icon name={"exclamation-circle"} size={25} style={StylePerfilUsuario.iconDenuncia} />
+                            </TouchableOpacity>
+                        }
                         <Text style={StylePerfilUsuario.text}>Portfólio</Text>
                         <Text style={StylePerfilUsuario.subText}>Projetos já concluídos.</Text>
                         {this.state.Semportfolio &&

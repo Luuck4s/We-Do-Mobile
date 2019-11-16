@@ -127,6 +127,10 @@ const NotificacaoStack = createAppContainer(createStackNavigator({
     IdeiaPage: {
         name: 'IdeiaPage',
         screen: IdeiaPage,
+    },
+    PerfilUsuario: {
+        name: 'PerfilUsuario',
+        screen: PerfilUsuario,
     }
 }, {
     headerMode: 'none',
@@ -244,6 +248,10 @@ const PerfilStack = createAppContainer(createStackNavigator({
     IdeiaPage: {
         name: 'IdeiaPage',
         screen: IdeiaPage,
+    },
+    PerfilUsuario: {
+        name: 'PerfilUsuario',
+        screen: PerfilUsuario,
     }
 }, {
     headerMode: 'none',
@@ -262,6 +270,10 @@ const PortfolioStack = createAppContainer(createStackNavigator({
     IdeiaPage: {
         name: 'IdeiaPage',
         screen: IdeiaPage,
+    },
+    PerfilUsuario: {
+        name: 'PerfilUsuario',
+        screen: PerfilUsuario,
     }
 }, {
     headerMode: 'none',

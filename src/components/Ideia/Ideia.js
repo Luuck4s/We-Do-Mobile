@@ -75,12 +75,10 @@ export default class Ideia extends Component {
     /**
      * Função que verifica se o usuario ja curtiu previamente a ideia
     */
-    ideiaCurtidaBanco = () => {
-        this.props.curtidas.map((item, index) => {
+    ideiaCurtidaBanco = async () => {
+        await this.props.curtidas.map((item, index) => {
             if (this.state.idUsuarioAtual == item.id_usuario) {
-                this.setState({ curtido: true })
-            } else {
-                this.setState({ curtido: false })
+                return this.setState({ curtido: true })
             }
         })
     }

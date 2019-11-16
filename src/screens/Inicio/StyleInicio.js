@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     },
     listaIdeias:{
         width: '100%',
-        height: '95%',
+        height: '90%',
     },
     textNoFeed:{
         fontSize: 15,
