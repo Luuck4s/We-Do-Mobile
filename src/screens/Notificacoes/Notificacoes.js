@@ -5,6 +5,9 @@ import AsyncStorage from '@react-native-community/async-storage'
 import Notificacao from '../../components/Notificacao/Notificacao'
 import Api from '../../api/Api'
 import StyleNotificacoes from './StyleNotificacoes'
+import io from 'socket.io-client'
+
+var socket
 
 export default class Notificacoes extends Component {
 
@@ -29,6 +32,9 @@ export default class Notificacoes extends Component {
         await Api.put(`/notificacoes/${this.state.idUsuario}`).then((response) => {})
         
         await this.pegarNotificacoes()
+
+        socket = io.connect('http://10.0.2.2:8080/')
+        
     }
 
     pegarNotificacoes = async () => {
