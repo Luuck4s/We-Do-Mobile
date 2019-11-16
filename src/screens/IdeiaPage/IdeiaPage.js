@@ -236,8 +236,10 @@ export default class IdeiaPage extends Component {
                 id_usuario: this.state.idUsuario
             }
         }).then((response) => {
-            this.atualizaIdeia()
+            ToastAndroid.show('Descrição da ideia alterada com sucesso', ToastAndroid.SHORT) 
         })
+
+        await this.atualizaIdeia()
     }
 
     /**
@@ -255,8 +257,10 @@ export default class IdeiaPage extends Component {
                 id_usuario: this.state.idUsuario
             }
         }).then((response) => {
-            this.atualizaIdeia()
+            ToastAndroid.show('Titulo da ideia alterado com sucesso', ToastAndroid.SHORT)  
         })
+
+        await this.atualizaIdeia()
     }
 
     /**
@@ -298,8 +302,10 @@ export default class IdeiaPage extends Component {
                 id_usuario: this.state.idUsuario
             }
         }).then((response) => {
-            this.atualizaIdeia()
+            ToastAndroid.show('Status da ideia foi alterado com sucesso', ToastAndroid.SHORT)  
         })
+
+        await this.atualizaIdeia()
     }
 
     removerUsuario = async (data) => {
@@ -315,9 +321,30 @@ export default class IdeiaPage extends Component {
                 }
             }
         }).then((response) => {
-            ToastAndroid.show('Usuário removido com sucesso', ToastAndroid.SHORT)
-            this.atualizaIdeia()
+            ToastAndroid.show('Usuário removido com sucesso', ToastAndroid.SHORT)  
         })
+        await this.atualizaIdeia()
+    }
+
+    removerTecnologia = async (data) => {
+
+        let idIdeia = await this.props.navigation.getParam('id_ideia')
+
+        await Api.post(`/tecnologia/ideia`,{
+            ideia:{
+                id_ideia: idIdeia
+            },
+            usuario:{
+                id_usuario: this.state.idUsuario
+            },
+            tecnologia:{
+                id_tecnologia: data
+            }
+        }).then((response) =>{
+            ToastAndroid.show('Tecnologia removida com sucesso', ToastAndroid.SHORT)  
+        })
+
+        await this.atualizaIdeia()
     }
 
     voltarPagina = () => {
@@ -339,6 +366,7 @@ export default class IdeiaPage extends Component {
             alterarDesc={data => this.alterarDesc(data)}
             mudarStatus={data => this.mudarStatus(data)}
             removerUsuario={data => this.removerUsuario(data)}
+            removerTecnologia={data => this.removerTecnologia(data)}
             idIdeia={this.state.idIdeia} />)
 
         return (

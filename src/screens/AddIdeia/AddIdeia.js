@@ -58,7 +58,7 @@ export default class AddIdeia extends Component {
             return 
         }
         
-        if (!this.state.tecnologiasIdeia){
+        if (this.state.tecnologiasIdeia.length == 0){
             ToastAndroid.show(`Insira tecnologias na sua ideia!`, ToastAndroid.SHORT) 
             return 
         }

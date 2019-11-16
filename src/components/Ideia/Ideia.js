@@ -392,7 +392,7 @@ export default class Ideia extends Component {
                             style={StyleIdeia.iconeConfirmTitulo} />
                     }
                     <Text style={StyleIdeia.autor} onPress={this.props.onPressAutor}>por {idealizador}</Text>
-                    <TecnologiaIdeia tecnologias={this.props.tecnologias} />
+                    <TecnologiaIdeia ideiaPage removerTecnologia={data => this.props.removerTecnologia(data)} donoIdeia={this.state.donoIdeia ? true : false} tecnologias={this.props.tecnologias} />
                     {!this.state.editDesc &&
                         <Text style={StyleIdeia.descricao}>{this.props.ds_ideia}</Text>
                     }

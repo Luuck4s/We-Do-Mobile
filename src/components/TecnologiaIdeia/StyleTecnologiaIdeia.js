@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: EstiloComum.cores.fundoWeDo,
         alignItems: 'center',
+        padding: 2,
     },
     container: {
         flex: 1,
@@ -20,6 +21,11 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#FFF',
         alignSelf: 'center',
+    },
+    iconRemove:{
+        alignSelf: 'flex-end',
+        color: '#FFF',
+        marginRight: '5%',
     }
 })
 
