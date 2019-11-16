@@ -8,7 +8,14 @@ import 'moment/locale/pt-br'
 export default class Notificacao extends Component {
 
     state = {
-        visualizado: false
+        visualizado: false,
+        idUsuario: ''
+    }
+
+    componentDidMount(){
+        if(this.props.visualizada == 1){
+            this.setState({visualizado: true})
+        }
     }
 
     mostrarPefil = (id_usuario) => {

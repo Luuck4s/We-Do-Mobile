@@ -17,7 +17,8 @@ export default class Notificacoes extends Component {
         notificacoes: [],
         semNotificacoes: false,
         atualizando: false,
-        carregando: true
+        carregando: true,
+        numNotificacoes: 0,
     }
 
     componentDidMount = async () => {
@@ -25,6 +26,8 @@ export default class Notificacoes extends Component {
 
         this.setState({ idUsuario })
 
+        await Api.put(`/notificacoes/${this.state.idUsuario}`).then((response) => {})
+        
         await this.pegarNotificacoes()
     }
 
@@ -52,6 +55,8 @@ export default class Notificacoes extends Component {
 
             this.setState({ carregando: false, atualizando: false })
         })
+
+        await Api.put(`/notificacoes/${this.state.idUsuario}`).then((response) => {})
     }
 
     ideia = (idIdeia) => {

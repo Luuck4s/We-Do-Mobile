@@ -10,6 +10,7 @@ export default class ConfigIdeia extends Component {
         status_antigo: this.props.status_ideia,
         novoStatus: this.props.status_ideia,
         membros: [],
+        novoDonoIdeia: 0
     }
 
 
@@ -37,14 +38,35 @@ export default class ConfigIdeia extends Component {
                 `Tem certeza que deseja mudar o status da ideia ?`,
                 [
                     {
-                        text: 'Cancelar', onPress: () => false
+                        text: 'Cancelar', onPress: () => this.setState({novoStatus: this.props.status_ideia})
                     },
                     {
                         text: 'Confirmar', onPress: () => this.save()
                     }
                 ]
             )
+        }else if(this.state.novoDonoIdeia != 0){
+            Alert.alert(
+                'Confirmação',
+                `Tem certeza que deseja passar a ideia para outro usuário ?`,
+                [
+                    {
+                        text: 'Cancelar', onPress: () => this.setState({novoDonoIdeia: 0})
+                    },
+                    {
+                        text: 'Confirmar', onPress: () => this.passarIdeia()
+                    }
+                ]
+            )
+        }else{
+            this.props.onCancel()
         }
+    }
+
+    passarIdeia = () => {
+        this.props.passarIdeia(this.state.novoDonoIdeia)
+        this.setState({ novoDonoIdeia: 0})
+        this.props.onCancel()
     }
 
     save = () => {
@@ -86,8 +108,8 @@ export default class ConfigIdeia extends Component {
                         <Text style={StyleConfigIdeia.titleStatus}>Passar a ideia</Text>
                         {this.state.membros &&
                             <Picker
-                                onValueChange={(itemValue, itemIndex) => this.setState({ novoStatus: itemValue })}
-                                selectedValue={this.state.novoStatus}>
+                                onValueChange={(itemValue, itemIndex) => this.setState({ novoDonoIdeia: itemValue })}
+                                selectedValue={this.state.novoDonoIdeia}>
                                 <Picker.Item label="Selecione alguem" value={0} />
                                 {this.state.membros}
                             </Picker>

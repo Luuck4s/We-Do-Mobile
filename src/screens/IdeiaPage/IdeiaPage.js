@@ -236,7 +236,7 @@ export default class IdeiaPage extends Component {
                 id_usuario: this.state.idUsuario
             }
         }).then((response) => {
-            ToastAndroid.show('Descrição da ideia alterada com sucesso', ToastAndroid.SHORT) 
+            ToastAndroid.show('Descrição da ideia alterada com sucesso', ToastAndroid.SHORT)
         })
 
         await this.atualizaIdeia()
@@ -257,7 +257,7 @@ export default class IdeiaPage extends Component {
                 id_usuario: this.state.idUsuario
             }
         }).then((response) => {
-            ToastAndroid.show('Titulo da ideia alterado com sucesso', ToastAndroid.SHORT)  
+            ToastAndroid.show('Titulo da ideia alterado com sucesso', ToastAndroid.SHORT)
         })
 
         await this.atualizaIdeia()
@@ -302,7 +302,7 @@ export default class IdeiaPage extends Component {
                 id_usuario: this.state.idUsuario
             }
         }).then((response) => {
-            ToastAndroid.show('Status da ideia foi alterado com sucesso', ToastAndroid.SHORT)  
+            ToastAndroid.show('Status da ideia foi alterado com sucesso', ToastAndroid.SHORT)
         })
 
         await this.atualizaIdeia()
@@ -321,7 +321,7 @@ export default class IdeiaPage extends Component {
                 }
             }
         }).then((response) => {
-            ToastAndroid.show('Usuário removido com sucesso', ToastAndroid.SHORT)  
+            ToastAndroid.show('Usuário removido com sucesso', ToastAndroid.SHORT)
         })
         await this.atualizaIdeia()
     }
@@ -330,18 +330,37 @@ export default class IdeiaPage extends Component {
 
         let idIdeia = await this.props.navigation.getParam('id_ideia')
 
-        await Api.post(`/tecnologia/ideia`,{
-            ideia:{
+        await Api.post(`/tecnologia/ideia`, {
+            ideia: {
                 id_ideia: idIdeia
             },
-            usuario:{
+            usuario: {
                 id_usuario: this.state.idUsuario
             },
-            tecnologia:{
+            tecnologia: {
                 id_tecnologia: data
             }
-        }).then((response) =>{
-            ToastAndroid.show('Tecnologia removida com sucesso', ToastAndroid.SHORT)  
+        }).then((response) => {
+            ToastAndroid.show('Tecnologia removida com sucesso', ToastAndroid.SHORT)
+        })
+
+        await this.atualizaIdeia()
+    }
+
+    passarIdeia = async (data) => {
+
+        let idIdeia = await this.props.navigation.getParam('id_ideia')
+
+        await Api.put(`/ideia/passar`, {
+            ideia: {
+                id_ideia: idIdeia,
+                id_criador: this.state.idUsuario
+            },
+            usuario: {
+                id_usuario: data
+            }
+        }).then((response) => {
+            ToastAndroid.show('A posse da ideia foi passada com sucesso!', ToastAndroid.SHORT)
         })
 
         await this.atualizaIdeia()
@@ -367,6 +386,7 @@ export default class IdeiaPage extends Component {
             mudarStatus={data => this.mudarStatus(data)}
             removerUsuario={data => this.removerUsuario(data)}
             removerTecnologia={data => this.removerTecnologia(data)}
+            passarIdeia={data => this.passarIdeia(data)}
             idIdeia={this.state.idIdeia} />)
 
         return (

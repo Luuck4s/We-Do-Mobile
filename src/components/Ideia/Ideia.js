@@ -373,7 +373,7 @@ export default class Ideia extends Component {
                     <ConfigIdeia membros={this.props.membros} isVisible={this.state.mostrarConfig}
                         onCancel={() => this.setState({ mostrarConfig: false })}
                         status_ideia={this.state.status_ideia}
-                        mudarStatus={data => this.mudarStatus(data)} />
+                        mudarStatus={data => this.mudarStatus(data)} passarIdeia={data => this.props.passarIdeia(data)} />
                     {!this.state.editTitulo &&
                         <Text style={StyleIdeia.titulo}>{this.props.nm_ideia}</Text>
                     }
