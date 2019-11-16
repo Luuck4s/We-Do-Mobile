@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, ScrollView, FlatList, RefreshControl } from 'react-native'
+import { View, Text, ScrollView, FlatList, RefreshControl, Alert, ToastAndroid} from 'react-native'
 import Header from '../../components/Header/Header'
 import AsyncStorage from '@react-native-community/async-storage'
 import Notificacao from '../../components/Notificacao/Notificacao'
@@ -37,12 +37,12 @@ export default class Notificacoes extends Component {
                 this.setState({ notificacoes: response.data.notificacoes })
             }
 
-            this.setState({carregando: false})
+            this.setState({ carregando: false })
         })
     }
 
     atualizarNotificacoes = async () => {
-        this.setState({notificacoes: [], atualizando: true})
+        this.setState({ notificacoes: [], atualizando: true })
         await Api.get(`/notificacoes/${this.state.idUsuario}`).then((response) => {
             if (response.data.notificacoes == "") {
                 this.setState({ notificacoes: [], semNotificacoes: true })
@@ -50,7 +50,7 @@ export default class Notificacoes extends Component {
                 this.setState({ notificacoes: response.data.notificacoes })
             }
 
-            this.setState({carregando: false, atualizando: false})
+            this.setState({ carregando: false, atualizando: false })
         })
     }
 
@@ -67,11 +67,51 @@ export default class Notificacoes extends Component {
         this.props.navigation.navigate('IdeiaPage', data)
     }
 
+    mostrarPerfil = (data) => {
+        let idCriador = 0
+
+        idCriador = {
+            "idPerfilUsuario": data,
+            "paginaAnterior": "Notificacao"
+        }
+
+        this.props.navigation.navigate('PerfilUsuario', idCriador)
+    }
+
+    aceitar = async (data) => {
+        await Api.put(`/ideia/interesse`,{
+            ideia:{
+                id_usuario: this.state.idUsuario,
+                id_ideia: data[1]
+            },
+            usuario:{
+                id_usuario: data[0]
+            }
+        }).then((response) =>{
+            ToastAndroid.show('Usuário aceito na ideia.', ToastAndroid.SHORT);
+        })
+    }
+
+    recusar = async (data) => {
+        await Api.put(`/ideia/interesse`,{
+            ideia:{
+                id_usuario: this.state.idUsuario,
+                id_ideia: data[1]
+            },
+            usuario:{
+                id_usuario: data[0]
+            }
+        }).then((response) =>{
+            ToastAndroid.show('Usuário recusado na ideia.', ToastAndroid.SHORT);
+        })
+    }
+
     render() {
 
         renderItem = ({ item }) => {
 
-            return <Notificacao key={item.id_evento} ideia={data => this.ideia(item.id_ideia)} {...item} />
+            return <Notificacao key={item.id_evento} ideia={data => this.ideia(item.id_ideia)} 
+            mostrarPefil={data => this.mostrarPerfil(data)} aceitar={data => this.aceitar(data)} recusar={data => this.recusar(data)} {...item} />
         }
 
         return (
@@ -84,7 +124,7 @@ export default class Notificacoes extends Component {
                     refreshControl={this.state.carregando ? null : <RefreshControl refreshing={this.state.atualizando} onRefresh={() => this.atualizarNotificacoes()} />}
                     initialNumToRender={5}
                     data={this.state.notificacoes}
-                    style={{ width: '100%', height: '90%'}}
+                    style={{ width: '100%', height: '90%' }}
                     keyExtractor={item => `${item.id_evento}`}
                     renderItem={renderItem} />
             </View>

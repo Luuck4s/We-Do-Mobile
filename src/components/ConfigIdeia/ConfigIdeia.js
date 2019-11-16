@@ -2,18 +2,31 @@ import React, { Component } from 'react'
 import { View, Text, Picker, TouchableOpacity, Alert, ToastAndroid, TouchableWithoutFeedback, Modal } from 'react-native'
 import StyleConfigIdeia from './StyleConfigIdeia'
 import Icon from 'react-native-vector-icons/FontAwesome5'
+import SectionedMultiSelect from 'react-native-sectioned-multi-select'
 
 export default class ConfigIdeia extends Component {
 
     state = {
         status_antigo: this.props.status_ideia,
-        novoStatus: this.props.status_ideia
+        novoStatus: this.props.status_ideia,
+        membros: [],
+    }
+
+
+    componentDidMount() {
+        if (this.props.membros) {
+            this.separarMembros()
+        }
     }
 
     componentDidUpdate(PrevProps, PrevStates) {
         if (this.props.status_ideia != PrevProps.status_ideia) {
 
             this.setState({ status_antigo: this.props.status_ideia, novoStatus: this.props.status_ideia })
+
+            if (this.props.membros) {
+                this.separarMembros()
+            }
         }
     }
 
@@ -41,14 +54,22 @@ export default class ConfigIdeia extends Component {
         this.props.onCancel()
     }
 
+    separarMembros = () => {
+        let membros = []
+        this.props.membros.map((item, index) => {
+            if (item.idealizador != 1) {
+                membros.push(<Picker.Item key={index} label={`${item.nm_usuario}`} value={item.id_usuario} />)
+            }
+        })
+
+        this.setState({ membros })
+    }
+
     render() {
         return (
             <Modal onRequestClose={this.props.onCancel}
                 visible={this.props.isVisible}
                 animationType='slide' transparent={true}>
-                <TouchableWithoutFeedback onPress={this.props.onCancel}>
-                    <View style={StyleConfigIdeia.offset}></View>
-                </TouchableWithoutFeedback>
                 <View style={StyleConfigIdeia.container}>
                     <Text style={StyleConfigIdeia.title}>Configurações da Ideia</Text>
                     <View style={StyleConfigIdeia.containerStatus}>
@@ -61,6 +82,17 @@ export default class ConfigIdeia extends Component {
                             <Picker.Item label="Ideia concluida" value={2} />
                         </Picker>
                     </View>
+                    <View style={StyleConfigIdeia.containerStatus}>
+                        <Text style={StyleConfigIdeia.titleStatus}>Passar a ideia</Text>
+                        {this.state.membros &&
+                            <Picker
+                                onValueChange={(itemValue, itemIndex) => this.setState({ novoStatus: itemValue })}
+                                selectedValue={this.state.novoStatus}>
+                                <Picker.Item label="Selecione alguem" value={0} />
+                                {this.state.membros}
+                            </Picker>
+                        }
+                    </View>
                     <View style={StyleConfigIdeia.containerButton}>
                         <TouchableOpacity style={StyleConfigIdeia.buttonCancelar} onPress={() => this.props.onCancel()}>
                             <Text style={StyleConfigIdeia.textButton}>Cancelar</Text>
@@ -72,9 +104,6 @@ export default class ConfigIdeia extends Component {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <TouchableWithoutFeedback onPress={this.props.onCancel}>
-                    <View style={StyleConfigIdeia.offset}></View>
-                </TouchableWithoutFeedback>
             </Modal>
         )
     }

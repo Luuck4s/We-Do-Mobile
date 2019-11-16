@@ -13,7 +13,6 @@ import Comentarios from '../Comentarios/Comentarios'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import IconFont5 from 'react-native-vector-icons/FontAwesome5'
 import AsyncStorage from '@react-native-community/async-storage'
-import SectionedMultiSelect from 'react-native-sectioned-multi-select'
 import ConfigIdeia from '../ConfigIdeia/ConfigIdeia'
 
 export default class Ideia extends Component {
@@ -371,7 +370,7 @@ export default class Ideia extends Component {
         if (this.props.ideiaPage) {
             return (
                 <View style={StyleIdeia.container}>
-                    <ConfigIdeia isVisible={this.state.mostrarConfig}
+                    <ConfigIdeia membros={this.props.membros} isVisible={this.state.mostrarConfig}
                         onCancel={() => this.setState({ mostrarConfig: false })}
                         status_ideia={this.state.status_ideia}
                         mudarStatus={data => this.mudarStatus(data)} />
@@ -410,7 +409,7 @@ export default class Ideia extends Component {
                             style={StyleIdeia.iconeConfirmDesc} />
                     }
                     <MembroIdeia criadorIdeia={this.state.donoIdeia ? true : false} ideiaPage={this.props.ideiaPage} onPressMembros={this.props.onPressMembros}
-                        membros={this.props.membros} removerUsuario={data => this.props.removerUsuario(data)} />
+                        membros={this.props.membros} removerUsuario={data => this.props.removerUsuario(data)} />           
                     <View style={{ flexDirection: 'row' }}>
                         {this.props.status_ideia != 2 &&
                             <TouchableOpacity onPress={() => this.curtida()}>

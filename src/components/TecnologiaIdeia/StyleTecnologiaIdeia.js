@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: EstiloComum.cores.fundoWeDo,
         alignItems: 'center',
-        padding: 2,
+        padding: 1,
     },
     container: {
         flex: 1,

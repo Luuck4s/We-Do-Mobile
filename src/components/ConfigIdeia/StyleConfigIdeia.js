@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
     title: {
         fontFamily: EstiloComum.fontFamily,
         fontSize: 20,
+        marginBottom: 10,
         marginTop: '2%',
         borderBottomWidth: StyleSheet.hairlineWidth
     },
