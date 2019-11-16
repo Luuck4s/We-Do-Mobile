@@ -15,7 +15,7 @@ export default class Notificacao extends Component {
                         <Icon name={"heart"} size={20} style={StyleNotificacao.iconCurtida} />
                     </View>
                     <View style={StyleNotificacao.container}>
-                        <TouchableOpacity onPress={() => alert(this.props.id_ideia)}>
+                        <TouchableOpacity onPress={data => this.props.ideia(data)}>
                             <View style={{ marginRight: '6%' }}>
                                 <Text style={StyleNotificacao.text}>{this.props.msg_notificacao}</Text>
                                 <Text style={StyleNotificacao.tempoNotificacao}>{moment(`${this.props.momento_notificacao}`, 'YYYY-MM-DD hh:mm:ss').calendar()}</Text>
@@ -32,7 +32,7 @@ export default class Notificacao extends Component {
                         <Icon name={"comment"} size={20} style={StyleNotificacao.iconComentario} />
                     </View>
                     <View style={StyleNotificacao.container}>
-                        <TouchableOpacity onPress={() => alert(this.props.id_ideia)}>
+                        <TouchableOpacity onPress={data => this.props.ideia(data)}>
                             <View style={{ marginRight: '6%' }}>
                                 <Text style={StyleNotificacao.text}>{this.props.msg_notificacao}</Text>
                                 <Text style={StyleNotificacao.tempoNotificacao}>{moment(`${this.props.momento_notificacao}`, 'YYYY-MM-DD hh:mm:ss').calendar()}</Text>
@@ -44,7 +44,6 @@ export default class Notificacao extends Component {
             )
         } else {
             return (
-                //interesse
                 <View style={StyleNotificacao.containerPai}>
                     <View>
                         <Icon name={"users"} size={21} style={StyleNotificacao.iconInteresse} />

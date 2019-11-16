@@ -52,10 +52,17 @@ export default class AddIdeia extends Component {
             ToastAndroid.show(`Informe um Titulo para a ideia!`, ToastAndroid.SHORT) 
             return 
         } 
+        
         if (!this.state.desc.trim()) { 
             ToastAndroid.show(`Informe uma descrição para a ideia!`, ToastAndroid.SHORT) 
             return 
-        } 
+        }
+        
+        if (!this.state.tecnologiasIdeia){
+            ToastAndroid.show(`Insira tecnologias na sua ideia!`, ToastAndroid.SHORT) 
+            return 
+        }
+
         await this.criarTagsTitulo() 
         const data = { ...this.state } 
         this.props.adicionarIdeia(data) 

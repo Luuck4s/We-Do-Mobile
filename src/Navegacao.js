@@ -118,6 +118,34 @@ ChatStack.navigationOptions = ({ navigation }) => {
     }
 }
 
+
+const NotificacaoStack = createAppContainer(createStackNavigator({
+    Notificacao: {
+        name: 'Notificacao',
+        screen: Notificacoes,
+    },
+    IdeiaPage: {
+        name: 'IdeiaPage',
+        screen: IdeiaPage,
+    }
+}, {
+    headerMode: 'none',
+    navigationOptions: {
+        headerVisible: false,
+    }
+}
+))
+
+NotificacaoStack.navigationOptions = ({ navigation }) => {
+    let tabBarVisible = true
+    if (navigation.state.index != 0) {
+        tabBarVisible = false
+    }
+    return {
+        tabBarVisible,
+    }
+}
+
 /**
  * Menu apresentado na tela inicial e nas outras tela apos o login 
 */
@@ -143,7 +171,7 @@ const MenuRoutes = createAppContainer(createBottomTabNavigator(
         },
         Notificacao: {
             name: 'Notificacao',
-            screen: Notificacoes,
+            screen: NotificacaoStack,
             navigationOptions: {
                 title: 'Notificação',
                 tabBarIcon: ({ tintColor }) =>
