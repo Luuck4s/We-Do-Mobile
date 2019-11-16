@@ -21,7 +21,7 @@ import PoliticasPrivacidade from './screens/PoliticasPrivacidade/PoliticasPrivac
 import Perfil from './screens/Perfil/Perfil'
 import PerfilUsuario from './screens/PerfilUsuario/PerfilUsuario'
 import Chat from './screens/Chat/Chat'
-
+import Splash from './screens/SplashScreen/Splash'
 
 const InicioStack = createAppContainer(createStackNavigator({
     Inicio: {
@@ -389,9 +389,10 @@ const authRoutes = createAppContainer(createSwitchNavigator(
     {
         Carregando: AuthOrInicio,
         Auth: AuthStack,
-        Inicio: SlideMenu
+        Inicio: SlideMenu,
+        Splash: Splash
     },
-    { initialRouteName: 'Carregando' }
+    { initialRouteName: 'Splash' }
 ))
 
 export default authRoutes
