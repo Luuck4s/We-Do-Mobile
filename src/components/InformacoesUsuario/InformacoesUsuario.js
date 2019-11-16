@@ -65,7 +65,7 @@ export default class InformacoesUsuario extends Component {
                         { text: 'Confirmar', onPress: () => this.mudarEmail() }
                     ]
                 )
-            }else{
+            } else {
                 ToastAndroid.show('Insira um email válido', ToastAndroid.SHORT)
             }
 
@@ -77,16 +77,20 @@ export default class InformacoesUsuario extends Component {
     verificarSenha = () => {
         if (this.state.senhaAtual.trim() != '') {
             if (this.state.novaSenha.trim() != this.state.senhaAtual.trim()) {
-                Alert.alert(
-                    'Confirmação',
-                    `Deseja realmente alterar a sua senha ?`,
-                    [
-                        {
-                            text: 'Cancelar', onPress: () => this.setState({ senhaAtual: '', novaSenha: '', editSenha: false })
-                        },
-                        { text: 'Confirmar', onPress: () => this.mudarSenha() }
-                    ]
-                )
+                if (this.state.novaSenha.length >= 6) {
+                    Alert.alert(
+                        'Confirmação',
+                        `Deseja realmente alterar a sua senha ?`,
+                        [
+                            {
+                                text: 'Cancelar', onPress: () => this.setState({ senhaAtual: '', novaSenha: '', editSenha: false })
+                            },
+                            { text: 'Confirmar', onPress: () => this.mudarSenha() }
+                        ]
+                    )
+                } else {
+                    ToastAndroid.show('Sua nova senha precisa ser maior que 6 caracteres', ToastAndroid.SHORT)
+                }
             } else {
                 ToastAndroid.show('Sua nova senha precisa ser diferente da atual', ToastAndroid.SHORT)
             }

@@ -4,6 +4,7 @@ import Header from '../../components/Header/Header'
 import AsyncStorage from '@react-native-community/async-storage'
 import Notificacao from '../../components/Notificacao/Notificacao'
 import Api from '../../api/Api'
+import StyleNotificacoes from './StyleNotificacoes'
 
 export default class Notificacoes extends Component {
 
@@ -76,10 +77,14 @@ export default class Notificacoes extends Component {
         return (
             <View>
                 <Header paginaInicial={false} texto={"Notificações"} icon={"medapps"} onPress={() => this.props.navigation.openDrawer()} />
+                {this.state.semNotificacoes &&
+                    <Text style={StyleNotificacoes.textNoIdeias}>Você não tem nenhuma notificação.</Text>
+                }
                 <FlatList
                     refreshControl={this.state.carregando ? null : <RefreshControl refreshing={this.state.atualizando} onRefresh={() => this.atualizarNotificacoes()} />}
                     initialNumToRender={5}
                     data={this.state.notificacoes}
+                    style={{ width: '100%', height: '90%'}}
                     keyExtractor={item => `${item.id_evento}`}
                     renderItem={renderItem} />
             </View>
