@@ -114,7 +114,8 @@ export default class InformacoesUsuario extends Component {
     mudarSenha = () => {
         this.setState({ editSenha: false })
         let dadosUsuario = []
-        dadosUsuario.push(this.state.novaSenha, this.state.senhaAtual)
+        dadosUsuario.push(this.state.senhaAtual)
+        dadosUsuario.push(this.state.novaSenha)
 
         this.props.mudarSenha(dadosUsuario)
     }

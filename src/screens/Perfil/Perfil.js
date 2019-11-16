@@ -182,8 +182,8 @@ export default class Perfil extends Component {
     mudarSenha = async (data) => {
         await Api.put(`/usuario/alterar_senha/${this.state.idUsuario}`, {
             usuario: {
-                senha_atual: data[0],
-                senha_usuario: data[1]
+                senha_antiga: data[0],
+                senha_nova: data[1]
             }
 
         }).then((response) => {
@@ -193,6 +193,8 @@ export default class Perfil extends Component {
                 ToastAndroid.show('Senha atualizada', ToastAndroid.SHORT);
             }
         })
+
+        await this.atualizar()
     }
 
     render() {
