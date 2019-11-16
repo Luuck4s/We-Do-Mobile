@@ -187,13 +187,27 @@ export default class Perfil extends Component {
             }
 
         }).then((response) => {
-            if(response.data.msg){
-                ToastAndroid.show('Senha atual incorreta', ToastAndroid.SHORT);    
-            }else{
+            if (response.data.msg) {
+                ToastAndroid.show('Senha atual incorreta', ToastAndroid.SHORT);
+            } else {
                 ToastAndroid.show('Senha atualizada', ToastAndroid.SHORT);
             }
         })
 
+        await this.atualizar()
+    }
+
+    removerTecnologia = async (data) => {
+        Api.post(`/tecnologia/usuario`, {
+            usuario: {
+                id_usuario: this.state.idUsuario
+            },
+            tecnologia: {
+                id_tecnologia: data
+            }
+        }).then((repsonse) => {
+            ToastAndroid.show('Tecnologia removida com sucesso', ToastAndroid.SHORT);
+        })
         await this.atualizar()
     }
 
@@ -234,7 +248,7 @@ export default class Perfil extends Component {
                                 </TouchableOpacity>
                             }
                         </View>
-                        <InformacoesUsuario perfil tecnologias={this.state.tecnologias} descricao={this.state.dsBio} email={this.state.emailUsuario}
+                        <InformacoesUsuario perfil removerTecnologia={data => this.removerTecnologia(data)} tecnologias={this.state.tecnologias} descricao={this.state.dsBio} email={this.state.emailUsuario}
                             mudarDesc={data => this.mudarDesc(data)} mudarEmail={data => this.mudarEmail(data)} mudarSenha={data => this.mudarSenha(data)} />
                         <Text style={StylePerfil.text}>Portfólio</Text>
                         <Text style={StylePerfil.subText}>Projetos já concluídos.</Text>

@@ -45,7 +45,9 @@ export default class Notificacoes extends Component {
     }
 
     atualizarNotificacoes = async () => {
-        this.setState({ notificacoes: [], atualizando: true })
+        
+        this.setState({ notificacoes: [], atualizando: true, semNotificacoes: false })
+
         await Api.get(`/notificacoes/${this.state.idUsuario}`).then((response) => {
             if (response.data.notificacoes == "") {
                 this.setState({ notificacoes: [], semNotificacoes: true })

@@ -20,6 +20,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginTop: '2%',
         flexWrap: 'wrap'
+    },
+    iconRemove:{
+        alignSelf: 'flex-end',
+        color: '#FFF',
+        marginRight: '5%',
     }
 })
 

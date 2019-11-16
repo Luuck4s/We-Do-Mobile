@@ -223,7 +223,7 @@ export default class InformacoesUsuario extends Component {
                         }
                     </View>
                     <View style={StyleInformacoes.containerTecnologias}>
-                        <TecnologiaPerfil tecnologias={this.props.tecnologias} />
+                        <TecnologiaPerfil perfil removerTecnologia={data => this.props.removerTecnologia(data)} tecnologias={this.props.tecnologias} />
                     </View>
                 </View>
             )
