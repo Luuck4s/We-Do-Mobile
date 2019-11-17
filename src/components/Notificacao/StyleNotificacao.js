@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     },
     container:{
         padding: 1,
+        marginRight: 15,
         flexWrap: 'wrap',
         alignSelf: 'center',
         alignItems: 'center',

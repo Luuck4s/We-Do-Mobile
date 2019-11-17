@@ -70,7 +70,7 @@ export default class ProjetosAtuais extends Component {
         return (
             <View>
                 <Header paginaInicial={false} texto={"Projetos Atuais"} icon={"code"} onPress={() => this.props.navigation.openDrawer()} />
-                <ScrollView refreshControl={this.state.carregando ? null : <RefreshControl refreshing={this.state.atualizando} onRefresh={() => this.atualizarProjetos()} />}>
+                <ScrollView  refreshControl={this.state.carregando ? null : <RefreshControl refreshing={this.state.atualizando} onRefresh={() => this.atualizarProjetos()} />}>
                     <View>
                         <Text style={StyleProjetosAtuais.text}>Projetos Atuais</Text>
                         <Text style={StyleProjetosAtuais.subText}>Projetos em andamento.</Text>

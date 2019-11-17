@@ -33,6 +33,7 @@ export default class Auth extends Component {
 		interesses: [],
 		manterConectado: true,
 		conectado: this.props.navigation.getParam('conectado') || true,
+		esconderSenha: true
 	}
 
 	componentDidMount = () => {
@@ -287,7 +288,10 @@ export default class Auth extends Component {
 					}
 					{!this.state.criarConta &&
 						<AuthInput icon='asterisk' placeholder='Senha'
-							secureTextEntry={true}
+							senha={true}
+							secureTextEntry={this.state.esconderSenha}
+							esconderSenha={this.state.esconderSenha}
+							onPressEye={() => this.setState({esconderSenha: !this.state.esconderSenha})}
 							maxLength={80}
 							style={StyleAuth.input}
 							value={this.state.senha_usuario}

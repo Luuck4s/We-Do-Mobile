@@ -196,7 +196,7 @@ export default class PoliticasPrivacidade extends Component {
                         termos citados.
                     </Text>
                     <Text style={[StylePoliticas.politicas, { fontWeight: "bold", marginBottom: 5, marginTop: 5 }]}>SEÇÃO 16 - INFORMAÇÕES DE CONTATO</Text>
-                    <Text style={StylePoliticas.politicas}>
+                    <Text style={[StylePoliticas.politicas,{marginBottom: '10%'}]}>
                         As perguntas sobre os Termos de serviço devem ser enviadas para nós através do wedo.suporte@gmail.com.
                     </Text>
                 </ScrollView>

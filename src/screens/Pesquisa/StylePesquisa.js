@@ -4,7 +4,7 @@ import EstiloComum from '../../EstiloComum'
 const styles = StyleSheet.create({
     container:{
         width: '100%',
-        height: '95%',
+        height: '98%',
     },
     textoPesquisa: {
         marginTop: 5,

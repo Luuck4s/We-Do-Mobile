@@ -126,7 +126,7 @@ export default class PerfilUsuario extends Component {
         return (
             <View>
                 <Header icon={"arrow-left"} onPress={() => this.voltarPagina()} />
-                <ScrollView>
+                <ScrollView style={{height: '92%'}}>
                     <View style={StylePerfilUsuario.container}>
                         <View style={StylePerfilUsuario.informacaoArea}>
                             <Icon name={"user-ninja"} size={40} style={StylePerfilUsuario.iconUser} />

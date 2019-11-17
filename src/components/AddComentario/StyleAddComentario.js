@@ -6,10 +6,10 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: 25,
-        borderWidth: StyleSheet.hairlineWidth,
+        marginTop: 30,
+        borderWidth: 0.5,
         borderColor: '#000',
-        borderRadius: 7,
+        borderRadius: 7, 
     },
     legenda: {
         marginLeft: 10,

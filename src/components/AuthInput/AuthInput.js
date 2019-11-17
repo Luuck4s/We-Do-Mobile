@@ -2,7 +2,7 @@
  * Componente que redeniza os inputs de acordo com os valores recebidos no props.
  */
 import React from 'react'
-import { View, TextInput } from 'react-native'
+import { View, TextInput, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { TextInputMask } from 'react-native-masked-text'
 import StyleAuthInput from './StyleAuthInput'
@@ -20,10 +20,21 @@ export default props => {
             {!props.metade &&
                 <View style={[StyleAuthInput.container, props.style]}>
                     <Icon name={props.icon} size={20} style={StyleAuthInput.icones} />
-
                     {!props.date && !props.interesses && !props.telefone && !props.metade &&
-                        <TextInput {...props} style={StyleAuthInput.input} />}
-
+                        <View style={{ flexDirection: 'row' }}>
+                            {!props.senha &&
+                                <TextInput {...props} style={StyleAuthInput.input} />
+                            }
+                            {props.senha &&
+                                <TextInput {...props} style={[StyleAuthInput.input, { width: '84%' }]} />
+                            }
+                            {props.senha &&
+                                <TouchableOpacity onPress={() => props.onPressEye()} style={{ alignSelf: 'center' }} >
+                                    <Icon name={props.esconderSenha ? "eye" :"eye-slash"} size={20} />
+                                </TouchableOpacity>
+                            }
+                        </View>
+                    }
                     {props.date && !props.interesses && !props.telefone &&
                         <TextInputMask style={StyleAuthInput.input}
                             placeholder={props.placeholder}

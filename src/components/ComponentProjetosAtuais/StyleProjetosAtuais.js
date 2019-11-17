@@ -4,7 +4,7 @@ import EstiloComum from '../../EstiloComum'
 const style = StyleSheet.create({
     container: {
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     IdeiaContainer: {
         padding: 5
