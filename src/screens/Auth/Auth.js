@@ -254,6 +254,11 @@ export default class Auth extends Component {
 							maxLength={80}
 							onChangeText={nm_usuario => this.setState({ nm_usuario })} />
 					}
+					{!this.state.criarConta &&
+						<TouchableOpacity onPress={() => this.props.navigation.navigate('RecuperarSenha')} style={{width: '36%', height: 'auto', flexDirection: 'row', alignItems: 'flex-end', alignSelf: "flex-end"}}>
+							<Text style={StyleAuth.textEsqueceu}>Esqueceu a senha ?</Text>
+						</TouchableOpacity>
+					}
 					<AuthInput style={StyleAuth.input}
 						icon='envelope'
 						autoFocus={false}
@@ -332,9 +337,9 @@ export default class Auth extends Component {
 							<Text style={StyleAuth.textManterConectado}>Manter-se Conectado</Text>
 						</View>
 					}
-					<TouchableOpacity
+					<TouchableOpacity style={{width: '36%', height: 'auto', flexDirection: 'row', alignItems: 'flex-end', alignSelf: "flex-end"}}
 						onPress={() => this.setState({ criarConta: !this.state.criarConta })}>
-						<Text style={[this.state.criarConta ? [StyleAuth.textLink, { marginTop: 12 }] : StyleAuth.textLink]}>
+						<Text style={[this.state.criarConta ? [StyleAuth.textLink, { marginTop: 12, marginLeft: '0%'}] : StyleAuth.textLink]}>
 							{this.state.criarConta
 								? 'Já possui conta ?'
 								: 'Cadastre-se'}

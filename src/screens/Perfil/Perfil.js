@@ -182,7 +182,7 @@ export default class Perfil extends Component {
     }
 
     removerTecnologia = async (data) => {
-        Api.post(`/tecnologia/usuario`, {
+        await Api.post(`/tecnologia/usuario`, {
             usuario: {
                 id_usuario: this.state.idUsuario
             },

@@ -22,6 +22,7 @@ import Perfil from './screens/Perfil/Perfil'
 import PerfilUsuario from './screens/PerfilUsuario/PerfilUsuario'
 import Chat from './screens/Chat/Chat'
 import Splash from './screens/SplashScreen/Splash'
+import RecuperarSenha from './screens/RecuperarSenha/RecuperarSenha'
 
 const InicioStack = createAppContainer(createStackNavigator({
     Inicio: {
@@ -372,8 +373,11 @@ const AuthStack = createAppContainer(createStackNavigator({
     Politicas: {
         name: "Politicas",
         screen: PoliticasPrivacidade
+    },
+    RecuperarSenha:{
+        name: "RecuperarSenha",
+        screen: RecuperarSenha
     }
-
 }, {
     headerMode: 'none',
     navigationOptions: {

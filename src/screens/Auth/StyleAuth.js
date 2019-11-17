@@ -79,9 +79,8 @@ const styles = StyleSheet.create({
 	},
 	textLink: {
 		fontSize: 16,
-		marginRight: 8,
 		color: '#FFF',
-		textAlign: 'right'
+		marginLeft: '20%'
 	},
 	textButton: {
 		fontSize: 18,
@@ -94,6 +93,7 @@ const styles = StyleSheet.create({
 		marginTop: 5,
 		fontSize: 15,
 		color: '#FFF',
+		width: '36%'
 	},
 	conectado: {
 		width: '50%',
@@ -111,6 +111,10 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		backgroundColor: '#900',
 		width: '100%',
+		color: '#FFF'
+	},
+	textEsqueceu:{
+		fontSize: 14,
 		color: '#FFF'
 	}
 })
