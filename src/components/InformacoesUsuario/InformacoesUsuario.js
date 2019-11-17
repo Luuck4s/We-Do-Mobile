@@ -9,8 +9,6 @@ export default class InformacoesUsuario extends Component {
     state = {
         editDesc: false,
         novaDesc: this.props.descricao ? this.props.descricao : '',
-        editEmail: false,
-        novoEmail: this.props.email ? this.props.email : '',
         editSenha: false,
         senhaAtual: '',
         novaSenha: '',
@@ -49,28 +47,6 @@ export default class InformacoesUsuario extends Component {
             )
         } else {
             this.setState({ editDesc: false })
-        }
-    }
-
-    verificarEmail = () => {
-        if (this.state.novoEmail.trim() != this.props.email.trim()) {
-            if (this.state.novoEmail.includes('@')) {
-                Alert.alert(
-                    'Confirmação',
-                    `Deseja realmente alterar o seu email ?`,
-                    [
-                        {
-                            text: 'Cancelar', onPress: () => this.setState({ novoEmail: this.props.email ? this.props.email : '', editEmail: false })
-                        },
-                        { text: 'Confirmar', onPress: () => this.mudarEmail() }
-                    ]
-                )
-            } else {
-                ToastAndroid.show('Insira um email válido', ToastAndroid.SHORT)
-            }
-
-        } else {
-            this.setState({ editEmail: false })
         }
     }
 
@@ -170,27 +146,8 @@ export default class InformacoesUsuario extends Component {
                         }
                     </View>
                     <View style={StyleInformacoes.containerEmail}>
-                        {!this.state.editEmail &&
-                            <Icon name={"envelope"} size={20} style={StyleInformacoes.iconEmail} />
-                        }
-                        {!this.state.editEmail &&
-                            <Text style={StyleInformacoes.textoEmail}>{this.props.email}</Text>
-                        }
-                        {!this.state.editEmail &&
-                            <TouchableOpacity onPress={() => this.setState({ editEmail: true })}>
-                                <Icon name={"edit"} size={20} style={StyleInformacoes.iconEditEmail} />
-                            </TouchableOpacity>
-                        }
-                        {this.state.editEmail &&
-                            <TextInput placeholder="Digite seu novo email" style={StyleInformacoes.inputEmail}
-                                onChangeText={novoEmail => this.setState({ novoEmail })}
-                                value={this.state.novoEmail} maxLength={50} onSubmitEditing={() => this.verificarEmail()} />
-                        }
-                        {this.state.editEmail &&
-                            <TouchableOpacity onPress={() => this.verificarEmail()}>
-                                <Icon name={"check"} size={20} style={StyleInformacoes.iconEditEmail} />
-                            </TouchableOpacity>
-                        }
+                        <Icon name={"envelope"} size={20} style={StyleInformacoes.iconEmail} />
+                        <Text style={StyleInformacoes.textoEmail}>{this.props.email}</Text>
                     </View>
                     <View style={StyleInformacoes.containerSenha}>
                         {!this.state.editSenha &&

@@ -103,6 +103,8 @@ export default class Notificacoes extends Component {
         }).then((response) =>{
             ToastAndroid.show('Usuário aceito na ideia.', ToastAndroid.SHORT);
         })
+
+        await this.atualizarNotificacoes()
     }
 
     recusar = async (data) => {
@@ -117,6 +119,8 @@ export default class Notificacoes extends Component {
         }).then((response) =>{
             ToastAndroid.show('Usuário recusado na ideia.', ToastAndroid.SHORT);
         })
+
+        await this.atualizarNotificacoes()
     }
 
     render() {

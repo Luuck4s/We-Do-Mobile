@@ -163,22 +163,6 @@ export default class Perfil extends Component {
         await this.atualizar()
     }
 
-    /**
-     * Função para mudar o Email
-     */
-    mudarEmail = async (data) => {
-        await Api.put(`/usuario/alterar/${this.state.idUsuario}`, {
-            usuario: {
-                email_usuario: data
-            }
-
-        }).then((response) => {
-            ToastAndroid.show('E-mail atualizado', ToastAndroid.SHORT);
-        })
-
-        await this.atualizar()
-    }
-
     mudarSenha = async (data) => {
         await Api.put(`/usuario/alterar_senha/${this.state.idUsuario}`, {
             usuario: {
@@ -249,7 +233,7 @@ export default class Perfil extends Component {
                             }
                         </View>
                         <InformacoesUsuario perfil removerTecnologia={data => this.removerTecnologia(data)} tecnologias={this.state.tecnologias} descricao={this.state.dsBio} email={this.state.emailUsuario}
-                            mudarDesc={data => this.mudarDesc(data)} mudarEmail={data => this.mudarEmail(data)} mudarSenha={data => this.mudarSenha(data)} />
+                            mudarDesc={data => this.mudarDesc(data)} mudarSenha={data => this.mudarSenha(data)} />
                         <Text style={StylePerfil.text}>Portfólio</Text>
                         <Text style={StylePerfil.subText}>Projetos já concluídos.</Text>
                         {this.state.Semportfolio &&

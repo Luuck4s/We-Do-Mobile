@@ -62,6 +62,11 @@ const styles = StyleSheet.create({
         padding: 5,
         alignItems: 'center',
         backgroundColor: '#900',
+    },
+    textNotificationAcepetd:{
+        fontFamily: EstiloComum.fontFamily,
+        fontSize: 15,
+        color: '#090'
     }
 })
 

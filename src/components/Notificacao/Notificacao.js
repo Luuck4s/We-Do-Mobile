@@ -8,23 +8,18 @@ import 'moment/locale/pt-br'
 export default class Notificacao extends Component {
 
     state = {
-        visualizado: false,
         idUsuario: ''
     }
 
-    componentDidMount(){
-        if(this.props.visualizada == 1){
-            this.setState({visualizado: true})
-        }
+    componentDidMount() {
     }
 
     mostrarPefil = (id_usuario) => {
-        
+
         this.props.mostrarPefil(id_usuario)
     }
 
     aceitar = (id_usuario, idIdeia) => {
-        this.setState({visualizado: true})
         let data = []
         data.push(id_usuario)
         data.push(idIdeia)
@@ -32,7 +27,6 @@ export default class Notificacao extends Component {
     }
 
     recusar = (id_usuario, idIdeia) => {
-        this.setState({visualizado: true})
         let data = []
         data.push(id_usuario)
         data.push(idIdeia)
@@ -74,6 +68,30 @@ export default class Notificacao extends Component {
                     </View>
                 </View>
             )
+        } else if (this.props.tp_notificacao == 3) {
+            return (
+                <View style={StyleNotificacao.containerPai}>
+                    <View>
+                        <Icon name={"users"} size={21} style={StyleNotificacao.iconInteresse} />
+                    </View>
+                    <View style={[StyleNotificacao.container]}>
+                        <View style={{ marginRight: '6%' }}>
+                            <Text style={StyleNotificacao.text}>{this.props.msg_notificacao}</Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: '9%' }}>
+                                <TouchableOpacity style={StyleNotificacao.verPerfil} onPress={() => this.mostrarPefil(this.props.id_usuario_acao)}>
+                                    <Text style={StyleNotificacao.textNotification}>Ver Perfil</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={StyleNotificacao.aceitar} onPress={() => this.aceitar(this.props.id_usuario_acao, this.props.id_ideia)}>
+                                    <Text style={StyleNotificacao.textNotification}>Aceitar</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={StyleNotificacao.recusar} onPress={() => this.recusar(this.props.id_usuario_acao, this.props.id_ideia)}>
+                                    <Text style={StyleNotificacao.textNotification}>Recusar</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            )
         } else {
             return (
                 <View style={StyleNotificacao.containerPai}>
@@ -87,12 +105,7 @@ export default class Notificacao extends Component {
                                 <TouchableOpacity style={StyleNotificacao.verPerfil} onPress={() => this.mostrarPefil(this.props.id_usuario_acao)}>
                                     <Text style={StyleNotificacao.textNotification}>Ver Perfil</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity disabled={this.state.visualizado} style={StyleNotificacao.aceitar} onPress={() => this.aceitar(this.props.id_usuario_acao, this.props.id_ideia)}>
-                                    <Text style={StyleNotificacao.textNotification}>Aceitar</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity disabled={this.state.visualizado} style={StyleNotificacao.recusar} onPress={() => this.recusar(this.props.id_usuario_acao, this.props.id_ideia)}>
-                                    <Text style={StyleNotificacao.textNotification}>Recusar</Text>
-                                </TouchableOpacity>
+                                <Text style={StyleNotificacao.textNotificationAcepetd}>Está solicitação foi aceita</Text>
                             </View>
                         </View>
                     </View>
