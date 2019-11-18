@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, ScrollView, Image, Text, TouchableOpacity } from 'react-native'
+import { View, ScrollView, Image, Text, TouchableOpacity, Alert } from 'react-native'
 import StyleRecuperarSenha from './StyleRecuperarSenha'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import logo from '../../../assets/img/weDo_logo.png'
@@ -13,8 +13,20 @@ export default class RecuperarSenha extends Component {
         email_usuario: ''
     }
 
-    recuperarSenha = async() => {
-        alert(this.state.email_usuario)
+    recuperarSenha = async () => {
+        await Api.get(`/usuario/recuperar_senha`, {
+            data: {
+                usuario: {
+                    email_usuario: this.state.email_usuario
+                }
+            }
+        }).then((response) =>{
+            if(response.msg){
+                Alert.alert(`Confirmação`,`${response.msg}`)
+            }else{
+                Alert.alert(`Confirmação`,`${response.msg}`)
+            }
+        })
     }
 
     render() {

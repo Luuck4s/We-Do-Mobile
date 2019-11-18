@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { View, Text, Picker, TouchableOpacity, Alert, ToastAndroid, TouchableWithoutFeedback, Modal } from 'react-native'
+import { View, Text, Picker, TouchableOpacity, Alert, ToastAndroid, TouchableWithoutFeedback, Modal, ScrollView, TextInput } from 'react-native'
 import StyleConfigIdeia from './StyleConfigIdeia'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import SectionedMultiSelect from 'react-native-sectioned-multi-select'
+import Tags from '../../components/Tags/Tags'
 
 export default class ConfigIdeia extends Component {
 
@@ -10,7 +11,8 @@ export default class ConfigIdeia extends Component {
         status_antigo: this.props.status_ideia,
         novoStatus: this.props.status_ideia,
         membros: [],
-        novoDonoIdeia: 0
+        novoDonoIdeia: 0,
+        textTag: ''
     }
 
 
@@ -38,34 +40,56 @@ export default class ConfigIdeia extends Component {
                 `Tem certeza que deseja mudar o status da ideia ?`,
                 [
                     {
-                        text: 'Cancelar', onPress: () => this.setState({novoStatus: this.props.status_ideia})
+                        text: 'Cancelar', onPress: () => this.setState({ novoStatus: this.props.status_ideia })
                     },
                     {
                         text: 'Confirmar', onPress: () => this.save()
                     }
                 ]
             )
-        }else if(this.state.novoDonoIdeia != 0){
+        } else if (this.state.novoDonoIdeia != 0) {
             Alert.alert(
                 'Confirmação',
                 `Tem certeza que deseja passar a ideia para outro usuário ?`,
                 [
                     {
-                        text: 'Cancelar', onPress: () => this.setState({novoDonoIdeia: 0})
+                        text: 'Cancelar', onPress: () => this.setState({ novoDonoIdeia: 0 })
                     },
                     {
                         text: 'Confirmar', onPress: () => this.passarIdeia()
                     }
                 ]
             )
-        }else{
+        } else {
             this.props.onCancel()
         }
     }
 
+    criarTag = () => {
+        if (this.state.textTag.trim().length > 0) {
+            Alert.alert(
+                'Confirmação',
+                `Deseja adicionar a tag ${this.state.textTag}`,
+                [
+                    {
+                        text: 'Cancelar', onPress: () => this.setState({ textTag: '' })
+                    },
+                    {
+                        text: 'Confirmar', onPress: () => this.adicionarTag()
+                    }
+                ]
+            )
+        }
+    }
+
+    adicionarTag = () => {
+        alert(this.state.textTag)
+        this.setState({ textTag: '' })
+    }
+
     passarIdeia = () => {
         this.props.passarIdeia(this.state.novoDonoIdeia)
-        this.setState({ novoDonoIdeia: 0})
+        this.setState({ novoDonoIdeia: 0 })
         this.props.onCancel()
     }
 
@@ -115,6 +139,21 @@ export default class ConfigIdeia extends Component {
                             </Picker>
                         }
                     </View>
+                    <View style={StyleConfigIdeia.containerTags}>
+                        <Text style={StyleConfigIdeia.titleTags}>Tags da ideia</Text>
+                        <ScrollView>
+                            <Tags tags={this.props.tags} />
+                        </ScrollView>
+                    </View>
+                    <TextInput style={StyleConfigIdeia.inputTag} value={this.state.textTag}
+                        autoCorrect={false}
+                        placeholder="Adicione mais tags"
+                        autoFocus={false} onChangeText={textTag => this.setState({ textTag })}
+                        onKeyPress={(event) => {
+                            if (event.nativeEvent.key == " ") {
+                                this.criarTag()
+                            }
+                        }} />
                     <View style={StyleConfigIdeia.containerButton}>
                         <TouchableOpacity style={StyleConfigIdeia.buttonCancelar} onPress={() => this.props.onCancel()}>
                             <Text style={StyleConfigIdeia.textButton}>Cancelar</Text>

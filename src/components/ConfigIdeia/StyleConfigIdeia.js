@@ -58,6 +58,24 @@ const styles = StyleSheet.create({
     iconeButton: {
         marginTop: '9%',
         color: '#FFF'
+    },
+    containerTags:{
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 100,
+        width: '90%'
+    },
+    titleTags:{
+        fontFamily: EstiloComum.fontFamily,
+        color: '#000',
+        fontSize: 20,
+        marginBottom: 10,
+    },
+    inputTag:{
+        borderWidth: StyleSheet.hairlineWidth,
+        borderRadius: 10,
+        fontSize: 15,
+        width: '90%',
     }
 })
 

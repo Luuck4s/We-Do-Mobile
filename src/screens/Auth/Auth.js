@@ -253,6 +253,7 @@ export default class Auth extends Component {
 							autoFocus={false}
 							value={this.state.nm_usuario}
 							maxLength={80}
+							returnKeyType="next" 
 							onChangeText={nm_usuario => this.setState({ nm_usuario })} />
 					}
 					{!this.state.criarConta &&
@@ -267,12 +268,15 @@ export default class Auth extends Component {
 						placeholder='Email'
 						maxLength={80}
 						value={this.state.email_usuario}
-						onChangeText={email_usuario => this.setState({ email_usuario })} />
+						autoCorrect={false}
+						onChangeText={email_usuario => this.setState({ email_usuario })}
+						returnKeyType="next" />
 					{this.state.criarConta &&
 						<AuthInput style={StyleAuth.input}
 							icon='calendar'
 							date={true}
 							placeholder="Data Nascimento"
+							returnKeyType="next" 
 							value={this.state.dt_nascimento}
 							onChangeText={dt_nascimento => this.setState({ dt_nascimento })} />
 					}
@@ -282,6 +286,7 @@ export default class Auth extends Component {
 							maxLength={80}
 							autoFocus={false}
 							secureTextEntry={true}
+							returnKeyType="next" 
 							style={StyleAuth.inputMetadeSenha}
 							value={this.state.senha_usuario}
 							onChangeText={senha_usuario => this.setState({ senha_usuario })} />
@@ -307,6 +312,7 @@ export default class Auth extends Component {
 							placeholder='Confirmar Senha'
 							autoFocus={false}
 							secureTextEntry={true}
+							returnKeyType="next" 
 							value={this.state.confirmar_senha}
 							onChangeText={confirmar_senha => this.setState({ confirmar_senha })} />
 					}
