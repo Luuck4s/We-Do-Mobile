@@ -397,7 +397,7 @@ export default class IdeiaPage extends Component {
     adicionarNovasTags = async (data) => {
 
         let idIdeia = await this.props.navigation.getParam('id_ideia')
-        
+
         await Api.post(`/ideia/tags`, {
             usuario: {
                 id_usuario: this.state.idUsuario
@@ -419,8 +419,24 @@ export default class IdeiaPage extends Component {
         await this.atualizaIdeia()
     }
 
-    adicionarNovaTec = (data) => {
-        alert(data)
+    adicionarNovaTec = async (data) => {
+        let idIdeia = await this.props.navigation.getParam('id_ideia')
+
+        await Api.post(`/tecnologia/ideia`, {
+            ideia: {
+                id_ideia: idIdeia
+            },
+            usuario: {
+                id_usuario: this.state.idUsuario
+            },
+            tecnologia: {
+                id_tecnologia: data
+            }
+        }).then((response) => {
+            ToastAndroid.show(`${response.msg}`, ToastAndroid.SHORT)
+        })
+
+        await this.atualizaIdeia()
     }
 
     voltarPagina = () => {
@@ -445,7 +461,7 @@ export default class IdeiaPage extends Component {
             removerTecnologia={data => this.removerTecnologia(data)}
             passarIdeia={data => this.passarIdeia(data)}
             adicionarNovasTags={data => this.adicionarNovasTags(data)}
-            adicionarnovaTec = {data => this.adicionarNovaTec(data)}
+            adicionarnovaTec={data => this.adicionarNovaTec(data)}
             idIdeia={this.state.idIdeia} />)
 
         return (

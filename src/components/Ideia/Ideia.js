@@ -387,13 +387,12 @@ export default class Ideia extends Component {
                             style={StyleIdeia.iconeConfirmTitulo} />
                     }
                     <Text style={StyleIdeia.autor} onPress={this.props.onPressAutor}>por {idealizador}</Text>
-                    <TecnologiaIdeia ideiaPage removerTecnologia={data => this.props.removerTecnologia(data)} donoIdeia={this.state.donoIdeia ? true : false} tecnologias={this.props.tecnologias} />
                     {this.state.donoIdeia &&
                         <TouchableOpacity onPress={() => this.setState({ mostrarAddTec: true })}>
                             <Icon name={"plus"} size={25} style={StyleIdeia.iconAddTec} />
                         </TouchableOpacity>
                     }
-
+                    <TecnologiaIdeia ideiaPage removerTecnologia={data => this.props.removerTecnologia(data)} donoIdeia={this.state.donoIdeia ? true : false} tecnologias={this.props.tecnologias} />
                     {!this.state.editDesc &&
                         <Text style={StyleIdeia.descricao}>{this.props.ds_ideia}</Text>
                     }

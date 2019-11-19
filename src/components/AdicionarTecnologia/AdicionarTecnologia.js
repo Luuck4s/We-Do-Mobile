@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, TextInput, TouchableWithoutFeedback, Alert, ToastAndroid, Modal, ScrollView } from 'react-native'
+import { View, Text, TouchableWithoutFeedback, Alert, ToastAndroid, Modal, ScrollView, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import StyleAdicionarTecnologia from './StyleAdicionarTecnologia'
 import SectionedMultiSelect from 'react-native-sectioned-multi-select'
@@ -20,33 +20,38 @@ export default class AdicionarTecnologia extends Component {
 
     buscaTecnologias = async () => {
         if (tecnologias.length == 0) {
-            try {
-                await Api.get('/tecnologia')
-                    .then((response) => {
-                        tecnologias.push(response.data)
-                    })
-            } catch (error) { }
+            await Api.get('/tecnologia')
+                .then((response) => {
+                    tecnologias.push(response.data)
+                })
         }
     }
 
     confirmarAddTec = () => {
-        Alert.alert(
-            'Confirmação',
-            `Tem certeza que deseja adicionar a tecnologia a ideia ?`,
-            [
-                {
-                    text: 'Cancelar', onPress: () => this.setState({ novoStatus: this.props.status_ideia })
-                },
-                {
-                    text: 'Confirmar', onPress: () => this.adicionarnovaTec()
-                }
-            ]
-        )
+        if (this.state.novaTec.length > 0) {
+            Alert.alert(
+                'Confirmação',
+                `Tem certeza que deseja adicionar a tecnologia a ideia ?`,
+                [
+                    {
+                        text: 'Cancelar', onPress: () => this.setState({ novoStatus: this.props.status_ideia })
+                    },
+                    {
+                        text: 'Confirmar', onPress: () => this.adicionarnovaTec()
+                    }
+                ]
+            )
+        }
     }
 
-    adicionarnovaTec = ()  =>{
+    cancelar = () => {
+        this.setState({ novaTec: [] })
+        this.props.onCancel()
+    }
+
+    adicionarnovaTec = () => {
         this.props.adicionarnovaTec(this.state.novaTec)
-        this.setState({novaTec: []})
+        this.setState({ novaTec: [] })
         this.props.onCancel()
     }
 
@@ -59,6 +64,9 @@ export default class AdicionarTecnologia extends Component {
             <Modal onRequestClose={this.props.onCancel}
                 visible={this.props.isVisible}
                 animationType='slide' transparent={true}>
+                <TouchableWithoutFeedback onPress={this.props.onCancel}>
+                    <View style={StyleAdicionarTecnologia.offset}></View>
+                </TouchableWithoutFeedback>
                 <View style={StyleAdicionarTecnologia.container}>
                     <View style={StyleAdicionarTecnologia.containerTecnologias}>
                         <ScrollView>
@@ -80,7 +88,20 @@ export default class AdicionarTecnologia extends Component {
                                 selectedItems={this.state.novaTec} />
                         </ScrollView>
                     </View>
+                    <View style={StyleAdicionarTecnologia.containerButton}>
+                        <TouchableOpacity style={StyleAdicionarTecnologia.buttonCancelar} onPress={() => this.cancelar()}>
+                            <Text style={StyleAdicionarTecnologia.textButton}>Cancelar</Text>
+                            <Icon name='times' size={20} style={StyleAdicionarTecnologia.iconeButton} />
+                        </TouchableOpacity>
+                        <TouchableOpacity style={StyleAdicionarTecnologia.button} onPress={() => this.confirmarAddTec()}>
+                            <Text style={StyleAdicionarTecnologia.textButton}>Pronto</Text>
+                            <Icon name='check' size={20} style={StyleAdicionarTecnologia.iconeButton} />
+                        </TouchableOpacity>
+                    </View>
                 </View>
+                <TouchableWithoutFeedback onPress={this.props.onCancel}>
+                    <View style={StyleAdicionarTecnologia.offset}></View>
+                </TouchableWithoutFeedback>
             </Modal>
         )
     }
