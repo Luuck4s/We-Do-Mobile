@@ -3,14 +3,14 @@ import EstiloComum from '../../EstiloComum'
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 2,
         backgroundColor: 'white',
     }, 
     containerTecnologias: {
         backgroundColor: '#EEE',
         borderRadius: 10,
         marginTop: 10,
-        height: 100,
+        height: 200,
         marginLeft: "5%",
         width: '90%'
     },

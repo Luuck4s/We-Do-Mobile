@@ -36,13 +36,9 @@ const styles = StyleSheet.create({
         marginLeft: '70%',
     },
     configuracoes:{
-        marginTop: -30,
         borderRadius: 5,
         alignSelf: 'flex-end',
         alignItems: 'flex-end',
-        paddingRight: 10,
-        width: 100,
-        height: 30
     },
     textInteresse: {
         marginTop: '3%',
@@ -142,7 +138,7 @@ const styles = StyleSheet.create({
     },
     iconeEditarDesc:{
         alignSelf: 'flex-end',
-        marginTop: -30,
+        marginTop: -20,
         marginRight: 10,
     },
     iconeConfirmDesc:{
@@ -151,9 +147,7 @@ const styles = StyleSheet.create({
         marginRight: 10,
     },
     iconAddTec:{
-        alignSelf: 'flex-end',
-        marginRight: '2%',
-        marginBottom: '2%'
+        alignSelf: 'flex-end'
     }
 })
 

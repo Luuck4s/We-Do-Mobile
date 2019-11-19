@@ -8,6 +8,7 @@ import InformacoesUsuario from '../../components/InformacoesUsuario/InformacoesU
 import ComponetPortfolio from '../../components/ComponentPortifolio/ComponentPortfolio'
 import ComponentProjetosAtuais from '../../components/ComponentProjetosAtuais/ComponentProjetosAtuais'
 import Api from '../../api/Api'
+import AdicionarTecnologiaPerfil from '../../components/AdicionarTecnologiaPerfil/AdicionarTecnologiaPerfil'
 
 export default class Perfil extends Component {
 
@@ -26,7 +27,8 @@ export default class Perfil extends Component {
         dsBio: null,
         nmUsuario: null,
         portfolio: [],
-        projetosAtuais: []
+        projetosAtuais: [],
+        mostrarAddTec: false
     }
 
     componentDidMount = async () => {
@@ -43,7 +45,8 @@ export default class Perfil extends Component {
             portfolio: [], projetosAtuais: [], emailUsuario: null,
             tecnologias: [],
             dsBio: null,
-            nmUsuario: null
+            nmUsuario: null,
+            mostrarAddTec: false
         })
 
         await Api.get(`/usuario/perfil/${this.state.idUsuario}&${this.state.idUsuario}`).then((response) => {
@@ -195,6 +198,17 @@ export default class Perfil extends Component {
         await this.atualizar()
     }
 
+    adicionarnovaTec = async (data) => {
+        await Api.put(`/usuario/alterar/${this.state.idUsuario}`, {
+            usuario:{
+
+            },
+            tecnologias: data
+        }).then((response) => {
+            Alert.alert(`SDa`,JSON.stringify(response))
+        })
+    }
+
     render() {
         renderItemPort = ({ item }) => {
 
@@ -210,6 +224,7 @@ export default class Perfil extends Component {
             <View>
                 <Header icon={"bars"} texto={"Perfil"} onPress={() => this.props.navigation.openDrawer()} />
                 <ScrollView refreshControl={this.state.carregando ? null : <RefreshControl refreshing={this.state.atualizando} onRefresh={() => this.atualizar()} />}>
+                    <AdicionarTecnologiaPerfil tecnologias={this.state.tecnologias} isVisible={this.state.mostrarAddTec} adicionarnovaTec={data => this.adicionarnovaTec(data)} onCancel={() => this.setState({ mostrarAddTec: false })} />
                     <View style={{ paddingBottom: 100 }}>
                         <View style={StylePerfil.informacaoArea}>
                             <Icon name={"user-astronaut"} size={40} style={StylePerfil.iconUser} />
@@ -234,6 +249,9 @@ export default class Perfil extends Component {
                         </View>
                         <InformacoesUsuario perfil removerTecnologia={data => this.removerTecnologia(data)} tecnologias={this.state.tecnologias} descricao={this.state.dsBio} email={this.state.emailUsuario}
                             mudarDesc={data => this.mudarDesc(data)} mudarSenha={data => this.mudarSenha(data)} />
+                        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'flex-end' }} onPress={() => this.setState({ mostrarAddTec: true })}>
+                            <Icon name={"plus"} size={23} style={{ marginRight: 10 }} />
+                        </TouchableOpacity>
                         <Text style={StylePerfil.text}>Portfólio</Text>
                         <Text style={StylePerfil.subText}>Projetos já concluídos.</Text>
                         {this.state.Semportfolio &&

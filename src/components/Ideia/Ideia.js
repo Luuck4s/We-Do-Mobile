@@ -387,11 +387,6 @@ export default class Ideia extends Component {
                             style={StyleIdeia.iconeConfirmTitulo} />
                     }
                     <Text style={StyleIdeia.autor} onPress={this.props.onPressAutor}>por {idealizador}</Text>
-                    {this.state.donoIdeia &&
-                        <TouchableOpacity onPress={() => this.setState({ mostrarAddTec: true })}>
-                            <Icon name={"plus"} size={25} style={StyleIdeia.iconAddTec} />
-                        </TouchableOpacity>
-                    }
                     <TecnologiaIdeia ideiaPage removerTecnologia={data => this.props.removerTecnologia(data)} donoIdeia={this.state.donoIdeia ? true : false} tecnologias={this.props.tecnologias} />
                     {!this.state.editDesc &&
                         <Text style={StyleIdeia.descricao}>{this.props.ds_ideia}</Text>
@@ -424,9 +419,14 @@ export default class Ideia extends Component {
                         </Icon>
                     </View>
                     {this.state.donoIdeia &&
-                        <TouchableOpacity style={StyleIdeia.configuracoes} onPress={() => this.setState({ mostrarConfig: true })}>
-                            <Icon name={"cogs"} size={20} />
-                        </TouchableOpacity>
+                        <View style={{flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'flex-end', marginTop: -10}}>
+                            <TouchableOpacity onPress={() => this.setState({ mostrarAddTec: true })}>
+                                <Icon name={"plus"} size={23} style={StyleIdeia.iconAddTec} />
+                            </TouchableOpacity>
+                            <TouchableOpacity style={StyleIdeia.configuracoes} onPress={() => this.setState({ mostrarConfig: true })}>
+                                <Icon name={"cogs"} size={23} style={{marginLeft: 15, marginRight: 15}} />
+                            </TouchableOpacity>
+                        </View>
                     }
                     {!this.state.donoIdeia &&
                         <TouchableOpacity style={StyleIdeia.interesse} onPress={() => this.verificarInterrese()}>

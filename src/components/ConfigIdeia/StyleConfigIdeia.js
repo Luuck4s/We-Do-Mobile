@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     containerButton: {
+        marginTop: 20,
         flexDirection: 'row',
         justifyContent: 'center',
     },
