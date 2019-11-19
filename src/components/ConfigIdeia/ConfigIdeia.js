@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { View, Text, Picker, TouchableOpacity, Alert, ToastAndroid, Modal, ScrollView, TextInput, KeyboardAvoidingView } from 'react-native'
 import StyleConfigIdeia from './StyleConfigIdeia'
 import Icon from 'react-native-vector-icons/FontAwesome5'
-import SectionedMultiSelect from 'react-native-sectioned-multi-select'
 import Tags from '../../components/Tags/Tags'
 
 export default class ConfigIdeia extends Component {

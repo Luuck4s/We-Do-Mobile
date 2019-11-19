@@ -149,6 +149,11 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
         marginTop: -50,
         marginRight: 10,
+    },
+    iconAddTec:{
+        alignSelf: 'flex-end',
+        marginRight: '2%',
+        marginBottom: '2%'
     }
 })
 

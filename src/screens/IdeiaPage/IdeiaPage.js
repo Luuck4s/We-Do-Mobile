@@ -419,6 +419,10 @@ export default class IdeiaPage extends Component {
         await this.atualizaIdeia()
     }
 
+    adicionarNovaTec = (data) => {
+        alert(data)
+    }
+
     voltarPagina = () => {
         this.props.navigation.pop()
     }
@@ -441,6 +445,7 @@ export default class IdeiaPage extends Component {
             removerTecnologia={data => this.removerTecnologia(data)}
             passarIdeia={data => this.passarIdeia(data)}
             adicionarNovasTags={data => this.adicionarNovasTags(data)}
+            adicionarnovaTec = {data => this.adicionarNovaTec(data)}
             idIdeia={this.state.idIdeia} />)
 
         return (

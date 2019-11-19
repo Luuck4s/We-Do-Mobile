@@ -14,6 +14,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import IconFont5 from 'react-native-vector-icons/FontAwesome5'
 import AsyncStorage from '@react-native-community/async-storage'
 import ConfigIdeia from '../ConfigIdeia/ConfigIdeia'
+import AdicionarTecnologia from '../AdicionarTecnologia/AdicionarTecnologia'
 
 export default class Ideia extends Component {
 
@@ -31,23 +32,18 @@ export default class Ideia extends Component {
         status_ideia: this.props.status_ideia,
         novoStatus: this.props.status_ideia,
         participante: false,
-        mostrarConfig: false
+        mostrarConfig: false,
+        mostrarAddTec: false
     }
 
     componentDidMount = async () => {
-        await this.getIdUsuario()
+        let idUsuario = await AsyncStorage.getItem('@weDo:userId')
+        this.setState({ idUsuarioAtual: idUsuario })
+
         await this.ideiaCurtidaBanco()
         await this.interesseBanco()
         await this.quantidadeCurtida()
         await this.quantidadeComentario()
-    }
-
-    /**
-     * Função responsavel por buscar o Id do usuario no storage
-    */
-    getIdUsuario = async () => {
-        let idUsuario = await AsyncStorage.getItem('@weDo:userId')
-        this.setState({ idUsuarioAtual: idUsuario })
     }
 
     /**
@@ -91,14 +87,15 @@ export default class Ideia extends Component {
 
         await membros.map((item, index) => {
             if (this.state.idUsuarioAtual == item.id_usuario && item.idealizador == 1) {
-                this.setState({ donoIdeia: true })
-            }
-            if (`${this.state.idUsuarioAtual}` == `${item.id_usuario}` && `${item.status_solicitacao == 0}`) {
-                this.setState({ interesse: true })
+                return this.setState({ donoIdeia: true })
             }
             if (this.state.idUsuarioAtual == item.id_usuario && item.status_solicitacao == 1) {
-                this.setState({ interesse: true, participante: true })
+                return this.setState({ interesse: true, participante: true })
             }
+            if (this.state.idUsuarioAtual == item.id_usuario && item.status_solicitacao == 0) {
+                return this.setState({ interesse: true })
+            }
+
         })
     }
 
@@ -129,18 +126,18 @@ export default class Ideia extends Component {
     /**
      * Função que muda o state e espera receber uma função pela props
     */
-    interesse = () => {
+    interesse = async () => {
 
         if (this.state.interesse && this.state.participante) {
-            this.props.onPressInteresse()
+            await this.props.onPressInteresse()
             this.setState({ interesse: false, participante: false })
             ToastAndroid.show('Você saiu da ideia!', ToastAndroid.SHORT)
         } else if (this.state.interesse) {
-            this.props.onPressInteresse()
+            await this.props.onPressInteresse()
             this.setState({ interesse: false, participante: false })
             ToastAndroid.show('Interesse removido', ToastAndroid.SHORT)
         } else if (!this.state.interesse) {
-            this.props.onPressInteresse()
+            await this.props.onPressInteresse()
             this.setState({ interesse: true })
             ToastAndroid.show('Interesse adicionado', ToastAndroid.SHORT)
         }
@@ -372,6 +369,7 @@ export default class Ideia extends Component {
                         onCancel={() => this.setState({ mostrarConfig: false })}
                         status_ideia={this.state.status_ideia} tags={this.props.tags} adicionarNovasTags={data => this.props.adicionarNovasTags(data)}
                         mudarStatus={data => this.mudarStatus(data)} passarIdeia={data => this.props.passarIdeia(data)} />
+                    <AdicionarTecnologia tecnologias={this.props.tecnologias} isVisible={this.state.mostrarAddTec} adicionarnovaTec={data => this.props.adicionarnovaTec(data)} onCancel={() => this.setState({ mostrarAddTec: false })} />
                     {!this.state.editTitulo &&
                         <Text style={StyleIdeia.titulo}>{this.props.nm_ideia}</Text>
                     }
@@ -390,6 +388,12 @@ export default class Ideia extends Component {
                     }
                     <Text style={StyleIdeia.autor} onPress={this.props.onPressAutor}>por {idealizador}</Text>
                     <TecnologiaIdeia ideiaPage removerTecnologia={data => this.props.removerTecnologia(data)} donoIdeia={this.state.donoIdeia ? true : false} tecnologias={this.props.tecnologias} />
+                    {this.state.donoIdeia &&
+                        <TouchableOpacity onPress={() => this.setState({ mostrarAddTec: true })}>
+                            <Icon name={"plus"} size={25} style={StyleIdeia.iconAddTec} />
+                        </TouchableOpacity>
+                    }
+
                     {!this.state.editDesc &&
                         <Text style={StyleIdeia.descricao}>{this.props.ds_ideia}</Text>
                     }
