@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Header from '../../components/Header/Header'
-import { View, Text, FlatList, ScrollView } from 'react-native'
+import { View, Text, FlatList, ScrollView, ToastAndroid } from 'react-native'
 import StylePerfilUsuario from './StylePerfilUsuario'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import InformacoesUsuario from '../../components/InformacoesUsuario/InformacoesUsuario'
@@ -9,6 +9,7 @@ import ComponentProjetosAtuais from '../../components/ComponentProjetosAtuais/Co
 import Api from '../../api/Api'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import AsyncStorage from '@react-native-community/async-storage'
+import Denuncia from '../../components/Denuncia/Denuncia'
 
 export default class PerfilUsuario extends Component {
 
@@ -25,7 +26,8 @@ export default class PerfilUsuario extends Component {
         nmUsuario: null,
         portfolio: [],
         projetosAtuais: [],
-        idUsuarioLogado: ''
+        idUsuarioLogado: '',
+        mostrarDenuncia: false
     }
 
     componentDidMount = async () => {
@@ -100,6 +102,18 @@ export default class PerfilUsuario extends Component {
 
     }
 
+    denunciar = async (data) => {
+        await Api.post(`/usuario/denuncia`, {
+            denuncia: {
+                descricao_denuncia: data,
+                id_usuario_acusador: this.state.idUsuarioLogado,
+                id_usuario_denunciado: this.state.idUsuario
+            }
+        }).then((response) => {
+            ToastAndroid.show('Denuncia realizada com sucesso', ToastAndroid.SHORT)
+        })
+    }
+
 
     /**
      *  Função que volta para a pagina que o usuario estava 
@@ -126,7 +140,8 @@ export default class PerfilUsuario extends Component {
         return (
             <View>
                 <Header icon={"arrow-left"} onPress={() => this.voltarPagina()} />
-                <ScrollView style={{height: '92%'}}>
+                <ScrollView style={{ height: '92%' }}>
+                    <Denuncia isVisible={this.state.mostrarDenuncia} onCancel={() => this.setState({ mostrarDenuncia: false })} denunciar={data => this.denunciar(data)} />
                     <View style={StylePerfilUsuario.container}>
                         <View style={StylePerfilUsuario.informacaoArea}>
                             <Icon name={"user-ninja"} size={40} style={StylePerfilUsuario.iconUser} />
@@ -134,7 +149,7 @@ export default class PerfilUsuario extends Component {
                         </View>
                         <InformacoesUsuario perfilUsuario tecnologias={this.state.tecnologias} descricao={this.state.dsBio} email={this.state.emailUsuario} />
                         {this.state.idUsuario != this.state.idUsuarioLogado &&
-                            <TouchableOpacity onPress={() => alert(this.state.idUsuario)}>
+                            <TouchableOpacity onPress={() => this.setState({ mostrarDenuncia: true })}>
                                 <Icon name={"exclamation-circle"} size={25} style={StylePerfilUsuario.iconDenuncia} />
                             </TouchableOpacity>
                         }

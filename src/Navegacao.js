@@ -12,7 +12,6 @@ import Notificacoes from './screens/Notificacoes/Notificacoes'
 import Projetos from './screens/Projetos/Projetos'
 import ProjetosAtuais from './screens/ProjetosAtuais/ProjetosAtuais'
 import Portfolio from './screens/Portfolio/Portfolio'
-import Configuracoes from './screens/Configuracoes/Configuracoes'
 import Ajuda from './screens/Ajuda/Ajuda'
 import ScreenSlideMenu from './screens/ScreenSlideMenu/ScreenSlideMenu';
 import Pesquisa from './screens/Pesquisa/Pesquisa'
@@ -332,15 +331,6 @@ const SlideMenu = createAppContainer(createDrawerNavigator({
             title: 'Seu Portifólio',
             drawerIcon: ({ tintColor }) =>
                 <Icon name='chart-bar' size={20} color={tintColor} />
-        }
-    },
-    Configuracoes: {
-        name: 'Configuracoes',
-        screen: Configuracoes,
-        navigationOptions: {
-            title: 'Configurações',
-            drawerIcon: ({ tintColor }) =>
-                <Icon name='cog' size={20} color={tintColor} />
         }
     },
     Ajuda: {

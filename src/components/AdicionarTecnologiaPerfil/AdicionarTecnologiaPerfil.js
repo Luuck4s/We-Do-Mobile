@@ -77,8 +77,6 @@ export default class AdicionarTecnologiaPerfil extends Component {
                     }
                 ]
             )
-        } else {
-            this.props.onCancel()
         }
     }
 

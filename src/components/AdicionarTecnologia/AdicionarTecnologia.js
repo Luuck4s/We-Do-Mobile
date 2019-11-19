@@ -54,8 +54,6 @@ export default class AdicionarTecnologia extends Component {
                     }
                 ]
             )
-        }else{
-            this.props.onCancel()
         }
     }
 
