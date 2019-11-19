@@ -5,6 +5,9 @@ import StyleTrends from './StyleTrends'
 import Api from '../../api/Api'
 import Ideia from '../../components/Ideia/Ideia'
 import AsyncStorage from '@react-native-community/async-storage'
+import io from 'socket.io-client'
+
+var socket
 
 export default class Trends extends Component {
 
@@ -21,6 +24,8 @@ export default class Trends extends Component {
     componentDidMount = async () => {
         let idUsuario = await AsyncStorage.getItem('@weDo:userId')
         this.setState({ idUsuario })
+
+        socket = io.connect('http://10.0.2.2:8080/')
 
         await this.buscarTrends()
     }
@@ -54,6 +59,14 @@ export default class Trends extends Component {
             ideia: {
                 id_ideia: idIdeia
             }
+        }).then((response) => {
+
+            let dados_notificacao = {
+                id_usuario: this.state.idUsuario,
+                id_ideia: idIdeia,
+                acao: 3
+            }
+            socket.emit('notification', dados_notificacao)
         })
     }
 
@@ -69,6 +82,14 @@ export default class Trends extends Component {
             ideia: {
                 id_ideia: idIdeia
             }
+        }).then((response) => {
+
+            let dados_notificacao = {
+                id_usuario: this.state.idUsuario,
+                id_ideia: idIdeia,
+                acao: 1
+            }
+            socket.emit('notification', dados_notificacao)
         })
     }
 

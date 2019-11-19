@@ -10,6 +10,9 @@ import ActionButton from 'react-native-action-button'
 import AddIdeia from '../AddIdeia/AddIdeia'
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 import NetInfo from "@react-native-community/netinfo"
+import io from 'socket.io-client'
+
+var socket
 
 export default class Inicio extends Component {
 
@@ -28,6 +31,7 @@ export default class Inicio extends Component {
     }
 
     componentDidMount = async () => {
+        socket = io.connect('http://10.0.2.2:8080/')
         setTimeout(() => this.buscarFeed(), 1500)
     }
 
@@ -54,7 +58,7 @@ export default class Inicio extends Component {
                         this.setState({ ideias: response.data.ideias, carregando: false })
 
                         if (response.data.ideias.length == 0) {
-                            this.setState({ semFeed: true, carregando: false})
+                            this.setState({ semFeed: true, carregando: false })
                         }
                     }).catch((err) => {
                         this.setState({ carregando: false, semFeed: true, titleVisible: true })
@@ -78,7 +82,7 @@ export default class Inicio extends Component {
         })
 
         if (this.state.conectado) {
-            this.setState({ atualizando: true, carregando: true, ideias: [], semFeed: false})
+            this.setState({ atualizando: true, carregando: true, ideias: [], semFeed: false })
 
             try {
                 await Api.get('/feed/' + this.state.idUsuario)
@@ -141,9 +145,9 @@ export default class Inicio extends Component {
             }
         })
 
-        if(veri == this.state.idUsuario){
+        if (veri == this.state.idUsuario) {
             this.props.navigation.navigate('Perfil')
-        }else{
+        } else {
             this.props.navigation.navigate('PerfilUsuario', idCriador)
         }
     }
@@ -160,6 +164,14 @@ export default class Inicio extends Component {
             ideia: {
                 id_ideia: idIdeia
             }
+        }).then((response) => {
+
+            let dados_notificacao = {
+                id_usuario: this.state.idUsuario,
+                id_ideia: idIdeia,
+                acao: 3
+            }
+            socket.emit('notification', dados_notificacao)
         })
     }
 
@@ -175,6 +187,13 @@ export default class Inicio extends Component {
             ideia: {
                 id_ideia: idIdeia
             }
+        }).then((response) => {
+            let dados_notificacao = {
+                id_usuario: this.state.idUsuario,
+                id_ideia: idIdeia,
+                acao: 1
+            }
+            socket.emit('notification', dados_notificacao)
         })
     }
 
@@ -227,6 +246,15 @@ export default class Inicio extends Component {
             }
         }).then((response) => {
             Api.defaults.headers.common['Authorization'] = `${response.data.token}`
+
+            let dados_notificacao = {
+                id_usuario: this.state.idUsuario,
+                id_ideia: idIdeia,
+                acao: 2
+            }
+
+            socket.emit('notification', dados_notificacao)
+
             ToastAndroid.show('Comentario enviado', ToastAndroid.SHORT);
         })
 

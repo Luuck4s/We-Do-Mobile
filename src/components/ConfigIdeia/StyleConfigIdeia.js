@@ -76,6 +76,26 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         fontSize: 15,
         width: '90%',
+    },
+    textTagsNovas:{
+        fontFamily: EstiloComum.fontFamily,
+        fontSize: 18,
+        marginTop: 8,
+        marginBottom: 8,
+    },
+    tagsNovas:{
+        flexDirection: 'row',
+    },
+    tagNova: {
+        fontFamily: EstiloComum.fontFamily,
+        color: EstiloComum.cores.fundoWeDo,
+        fontSize: 16,
+    },
+    containerTags2:{
+        flexDirection: 'row',
+    },
+    iconTag:{
+        marginLeft: 4,
     }
 })
 

@@ -37,9 +37,9 @@ export default class Ideia extends Component {
     componentDidMount = async () => {
         await this.getIdUsuario()
         await this.ideiaCurtidaBanco()
+        await this.interesseBanco()
         await this.quantidadeCurtida()
         await this.quantidadeComentario()
-        await this.interesseBanco()
     }
 
     /**
@@ -53,7 +53,7 @@ export default class Ideia extends Component {
     /**
      * Captura a quantidade de comentarios da ideia
     */
-    quantidadeComentario = () => {
+    quantidadeComentario = async () => {
         if (this.props.trends) {
             let qtd = this.props.qt_comentarios
             this.setState({ qtdComentario: qtd })
@@ -67,8 +67,8 @@ export default class Ideia extends Component {
     /**
      * Captura a qunatidade de curtidas da ideia
     */
-    quantidadeCurtida = () => {
-        this.setState({ qtdCurtidas: this.props.curtidas.length })
+    quantidadeCurtida = async () => {
+        await this.setState({ qtdCurtidas: this.props.curtidas.length })
     }
 
     /**
@@ -86,20 +86,18 @@ export default class Ideia extends Component {
      * Função que verifica se o usuario ja tem interesse ou se é dono da ideia e 
      * muda o estado do componente
     */
-    interesseBanco = () => {
-        this.props.membros.map((item, index) => {
-            if (this.state.idUsuarioAtual == item.id_usuario) {
-                if (item.status_solicitacao == 0) {
-                    this.setState({ interesse: true })
-                }
+    interesseBanco = async () => {
+        let membros = this.props.membros
 
-                if (item.status_solicitacao == 1) {
-                    this.setState({ interesse: true, participante: true })
-                }
-
-                if (item.idealizador == 1) {
-                    this.setState({ donoIdeia: true })
-                }
+        await membros.map((item, index) => {
+            if (this.state.idUsuarioAtual == item.id_usuario && item.idealizador == 1) {
+                this.setState({ donoIdeia: true })
+            }
+            if (`${this.state.idUsuarioAtual}` == `${item.id_usuario}` && `${item.status_solicitacao == 0}`) {
+                this.setState({ interesse: true })
+            }
+            if (this.state.idUsuarioAtual == item.id_usuario && item.status_solicitacao == 1) {
+                this.setState({ interesse: true, participante: true })
             }
         })
     }
@@ -372,7 +370,7 @@ export default class Ideia extends Component {
                 <View style={StyleIdeia.container}>
                     <ConfigIdeia membros={this.props.membros} isVisible={this.state.mostrarConfig}
                         onCancel={() => this.setState({ mostrarConfig: false })}
-                        status_ideia={this.state.status_ideia} tags={this.props.tags}
+                        status_ideia={this.state.status_ideia} tags={this.props.tags} adicionarNovasTags={data => this.props.adicionarNovasTags(data)}
                         mudarStatus={data => this.mudarStatus(data)} passarIdeia={data => this.props.passarIdeia(data)} />
                     {!this.state.editTitulo &&
                         <Text style={StyleIdeia.titulo}>{this.props.nm_ideia}</Text>
@@ -409,7 +407,7 @@ export default class Ideia extends Component {
                             style={StyleIdeia.iconeConfirmDesc} />
                     }
                     <MembroIdeia criadorIdeia={this.state.donoIdeia ? true : false} ideiaPage={this.props.ideiaPage} onPressMembros={this.props.onPressMembros}
-                        membros={this.props.membros} removerUsuario={data => this.props.removerUsuario(data)} />           
+                        membros={this.props.membros} removerUsuario={data => this.props.removerUsuario(data)} />
                     <View style={{ flexDirection: 'row' }}>
                         {this.props.status_ideia != 2 &&
                             <TouchableOpacity onPress={() => this.curtida()}>

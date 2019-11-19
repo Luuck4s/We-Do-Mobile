@@ -14,17 +14,16 @@ export default class RecuperarSenha extends Component {
     }
 
     recuperarSenha = async () => {
-        await Api.get(`/usuario/recuperar_senha`, {
-            data: {
-                usuario: {
-                    email_usuario: this.state.email_usuario
-                }
+        await Api.post(`/usuario/recuperar_senha`, {
+            usuario: {
+                email_usuario: this.state.email_usuario
             }
-        }).then((response) =>{
-            if(response.msg){
-                Alert.alert(`Confirmação`,`${response.msg}`)
-            }else{
-                Alert.alert(`Confirmação`,`${response.msg}`)
+        }).then((response) => {
+            if (response.msg) {
+                Alert.alert(`Houve um erro`, `${response.data.msg}`)
+            } else {
+                Alert.alert(`Confirmação`, `${response.data.msg}`)
+                this.props.navigation.navigate('Auth')
             }
         })
     }

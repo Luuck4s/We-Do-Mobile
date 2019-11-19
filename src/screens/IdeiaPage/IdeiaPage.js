@@ -9,6 +9,9 @@ import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 import moment from 'moment'
 import 'moment/locale/pt-br'
 import AsyncStorage from '@react-native-community/async-storage'
+import io from 'socket.io-client'
+
+var socket
 
 export default class IdeiaPage extends Component {
 
@@ -28,6 +31,8 @@ export default class IdeiaPage extends Component {
         let idUsuario = await this.props.navigation.getParam('id_usuario')
         let idIdeia = await this.props.navigation.getParam('id_ideia')
         this.setState({ idUsuario: idUsuario, idIdeia })
+
+        socket = io.connect('http://10.0.2.2:8080/')
 
         setTimeout(() => this.getInfoIdeia(), 1500)
     }
@@ -93,6 +98,14 @@ export default class IdeiaPage extends Component {
             ideia: {
                 id_ideia: idIdeia
             }
+        }).then((response) => {
+
+            let dados_notificacao = {
+                id_usuario: this.state.idUsuario,
+                id_ideia: idIdeia,
+                acao: 3
+            }
+            socket.emit('notification', dados_notificacao)
         })
     }
 
@@ -108,6 +121,13 @@ export default class IdeiaPage extends Component {
             ideia: {
                 id_ideia: idIdeia
             }
+        }).then((response) => {
+            let dados_notificacao = {
+                id_usuario: this.state.idUsuario,
+                id_ideia: idIdeia,
+                acao: 1
+            }
+            socket.emit('notification', dados_notificacao)
         })
     }
 
@@ -170,6 +190,14 @@ export default class IdeiaPage extends Component {
             this.setState({
                 ideia: ideiaLocal
             })
+
+            let dados_notificacao = {
+                id_usuario: this.state.idUsuario,
+                id_ideia: idIdeia,
+                acao: 2
+            }
+
+            socket.emit('notification', dados_notificacao)
 
             Api.defaults.headers.common['Authorization'] = `${response.data.token}`
             ToastAndroid.show('Comentario enviado', ToastAndroid.SHORT)
@@ -366,6 +394,31 @@ export default class IdeiaPage extends Component {
         await this.atualizaIdeia()
     }
 
+    adicionarNovasTags = async (data) => {
+
+        let idIdeia = await this.props.navigation.getParam('id_ideia')
+        
+        await Api.post(`/ideia/tags`, {
+            usuario: {
+                id_usuario: this.state.idUsuario
+            },
+            ideia: {
+                id_ideia: idIdeia,
+                tags_ideia: data
+            }
+        }).then((response) => {
+            if (response.err) {
+                ToastAndroid.show('Erro ao adicionar novas Tags!', ToastAndroid.SHORT)
+            } else {
+                ToastAndroid.show('Tags adicionadas com sucesso!', ToastAndroid.SHORT)
+            }
+        }).catch((err) => {
+            alert(err)
+        })
+
+        await this.atualizaIdeia()
+    }
+
     voltarPagina = () => {
         this.props.navigation.pop()
     }
@@ -387,6 +440,7 @@ export default class IdeiaPage extends Component {
             removerUsuario={data => this.removerUsuario(data)}
             removerTecnologia={data => this.removerTecnologia(data)}
             passarIdeia={data => this.passarIdeia(data)}
+            adicionarNovasTags={data => this.adicionarNovasTags(data)}
             idIdeia={this.state.idIdeia} />)
 
         return (
