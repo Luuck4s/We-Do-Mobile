@@ -25,6 +25,7 @@ import PerfilUsuario from './screens/PerfilUsuario/PerfilUsuario'
 import Chat from './screens/Chat/Chat'
 import Splash from './screens/SplashScreen/Splash'
 import RecuperarSenha from './screens/RecuperarSenha/RecuperarSenha'
+import BottomNotification from './BottomNotification'
 
 const InicioStack = createAppContainer(createStackNavigator({
     Inicio: {
@@ -185,12 +186,7 @@ const MenuRoutes = createAppContainer(createBottomTabNavigator(
             screen: NotificacaoStack,
             navigationOptions: {
                 title: 'Notificação',
-                tabBarIcon: ({ tintColor }) =>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Icon name='medapps' size={30} color={tintColor} />
-                        <Badge value={`10`} status="error" />
-                    </View>
-
+                tabBarIcon: ({ tintColor }) => <BottomNotification color={tintColor}/>
             }
         },
         Projetos: {

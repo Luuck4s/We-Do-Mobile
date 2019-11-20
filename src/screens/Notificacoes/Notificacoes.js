@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, ScrollView, FlatList, RefreshControl, Alert, ToastAndroid} from 'react-native'
+import { View, Text, ScrollView, FlatList, RefreshControl, Alert, ToastAndroid } from 'react-native'
 import Header from '../../components/Header/Header'
 import AsyncStorage from '@react-native-community/async-storage'
 import Notificacao from '../../components/Notificacao/Notificacao'
@@ -21,7 +21,6 @@ export default class Notificacoes extends Component {
         semNotificacoes: false,
         atualizando: false,
         carregando: true,
-        numNotificacoes: 0,
     }
 
     componentDidMount = async () => {
@@ -29,12 +28,12 @@ export default class Notificacoes extends Component {
 
         this.setState({ idUsuario })
 
-        await Api.put(`/notificacoes/${this.state.idUsuario}`).then((response) => {})
-        
+        await Api.put(`/notificacoes/${this.state.idUsuario}`).then((response) => { })
+
         await this.pegarNotificacoes()
 
         socket = io.connect('http://10.0.2.2:8080/')
-        
+
     }
 
     pegarNotificacoes = async () => {
@@ -51,7 +50,7 @@ export default class Notificacoes extends Component {
     }
 
     atualizarNotificacoes = async () => {
-        
+
         this.setState({ notificacoes: [], atualizando: true, semNotificacoes: false })
 
         await Api.get(`/notificacoes/${this.state.idUsuario}`).then((response) => {
@@ -64,7 +63,7 @@ export default class Notificacoes extends Component {
             this.setState({ carregando: false, atualizando: false })
         })
 
-        await Api.put(`/notificacoes/${this.state.idUsuario}`).then((response) => {})
+        await Api.put(`/notificacoes/${this.state.idUsuario}`).then((response) => { })
     }
 
     ideia = (idIdeia) => {
@@ -92,15 +91,23 @@ export default class Notificacoes extends Component {
     }
 
     aceitar = async (data) => {
-        await Api.put(`/ideia/interesse`,{
-            ideia:{
+        await Api.put(`/ideia/interesse`, {
+            ideia: {
                 id_usuario: this.state.idUsuario,
                 id_ideia: data[1]
             },
-            usuario:{
+            usuario: {
                 id_usuario: data[0]
             }
-        }).then((response) =>{
+        }).then((response) => {
+
+            let dados_notificacao = {
+                id_usuario: data[0],
+                id_ideia: data[1],
+                acao: 4
+            }
+            socket.emit('notification', dados_notificacao)
+
             ToastAndroid.show('Usuário aceito na ideia.', ToastAndroid.SHORT);
         })
 
@@ -108,15 +115,15 @@ export default class Notificacoes extends Component {
     }
 
     recusar = async (data) => {
-        await Api.put(`/ideia/interesse`,{
-            ideia:{
+        await Api.put(`/ideia/interesse`, {
+            ideia: {
                 id_usuario: this.state.idUsuario,
                 id_ideia: data[1]
             },
-            usuario:{
+            usuario: {
                 id_usuario: data[0]
             }
-        }).then((response) =>{
+        }).then((response) => {
             ToastAndroid.show('Usuário recusado na ideia.', ToastAndroid.SHORT);
         })
 
@@ -127,8 +134,8 @@ export default class Notificacoes extends Component {
 
         renderItem = ({ item }) => {
 
-            return <Notificacao key={item.id_evento} ideia={data => this.ideia(item.id_ideia)} 
-            mostrarPefil={data => this.mostrarPerfil(data)} aceitar={data => this.aceitar(data)} recusar={data => this.recusar(data)} {...item} />
+            return <Notificacao key={item.id_evento} ideia={data => this.ideia(item.id_ideia)}
+                mostrarPefil={data => this.mostrarPerfil(data)} aceitar={data => this.aceitar(data)} recusar={data => this.recusar(data)} {...item} />
         }
 
         return (
@@ -141,7 +148,7 @@ export default class Notificacoes extends Component {
                     refreshControl={this.state.carregando ? null : <RefreshControl refreshing={this.state.atualizando} onRefresh={() => this.atualizarNotificacoes()} />}
                     initialNumToRender={5}
                     data={this.state.notificacoes}
-                    style={{ width: '100%', height: '90%' }}
+                    style={{ width: '100%', height: '93%' }}
                     keyExtractor={item => `${item.id_evento}`}
                     renderItem={renderItem} />
             </View>
