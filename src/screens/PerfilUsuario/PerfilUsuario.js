@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Header from '../../components/Header/Header'
-import { View, Text, FlatList, ScrollView, ToastAndroid } from 'react-native'
+import { View, Text, FlatList, ScrollView, ToastAndroid, RefreshControl } from 'react-native'
 import StylePerfilUsuario from './StylePerfilUsuario'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import InformacoesUsuario from '../../components/InformacoesUsuario/InformacoesUsuario'
@@ -10,6 +10,7 @@ import Api from '../../api/Api'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import AsyncStorage from '@react-native-community/async-storage'
 import Denuncia from '../../components/Denuncia/Denuncia'
+import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 
 export default class PerfilUsuario extends Component {
 
@@ -27,7 +28,11 @@ export default class PerfilUsuario extends Component {
         portfolio: [],
         projetosAtuais: [],
         idUsuarioLogado: '',
-        mostrarDenuncia: false
+        mostrarDenuncia: false,
+        carregando: true,
+        atualizando: false,
+        Semportfolio: false,
+        semProjetosAtuais: false,
     }
 
     componentDidMount = async () => {
@@ -54,6 +59,19 @@ export default class PerfilUsuario extends Component {
     }
 
     buscarInformacoesUsuario = async () => {
+
+        this.setState({
+            emailUsuario: null,
+            tecnologias: [],
+            dsBio: null,
+            nmUsuario: null,
+            portfolio: [],
+            projetosAtuais: [],
+            idUsuarioLogado: '',
+            mostrarDenuncia: false,
+            carregando: true,
+        })
+
         await Api.get(`/usuario/perfil/${this.state.idUsuario}&${this.state.idUsuario}`).then((response) => {
 
             this.setState(
@@ -114,6 +132,11 @@ export default class PerfilUsuario extends Component {
         })
     }
 
+    atualizar = async () => {
+        this.setState({ semProjetosAtuais: false, Semportfolio: false, carregando: true })
+        await this.buscarInformacoesUsuario()
+        this.setState({ atualizando: false })
+    }
 
     /**
      *  Função que volta para a pagina que o usuario estava 
@@ -140,43 +163,71 @@ export default class PerfilUsuario extends Component {
         return (
             <View>
                 <Header icon={"arrow-left"} onPress={() => this.voltarPagina()} />
-                <ScrollView style={{ height: '92%' }}>
-                    <Denuncia isVisible={this.state.mostrarDenuncia} onCancel={() => this.setState({ mostrarDenuncia: false })} denunciar={data => this.denunciar(data)} />
-                    <View style={StylePerfilUsuario.container}>
-                        <View style={StylePerfilUsuario.informacaoArea}>
-                            <Icon name={"user-ninja"} size={40} style={StylePerfilUsuario.iconUser} />
-                            <Text style={StylePerfilUsuario.nmUsuario}>{this.state.nmUsuario}</Text>
+                {this.state.carregando &&
+                    <View>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StylePerfilUsuario.shimmerAvatar} />
+                            <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StylePerfilUsuario.shimmerNome} />
                         </View>
-                        <InformacoesUsuario perfilUsuario tecnologias={this.state.tecnologias} descricao={this.state.dsBio} email={this.state.emailUsuario} />
-                        {this.state.idUsuario != this.state.idUsuarioLogado &&
-                            <TouchableOpacity onPress={() => this.setState({ mostrarDenuncia: true })}>
-                                <Icon name={"exclamation-circle"} size={25} style={StylePerfilUsuario.iconDenuncia} />
-                            </TouchableOpacity>
-                        }
-                        <Text style={StylePerfilUsuario.text}>Portfólio</Text>
-                        <Text style={StylePerfilUsuario.subText}>Projetos já concluídos.</Text>
-                        {this.state.Semportfolio &&
-                            <Text style={StylePerfilUsuario.textNoIdeias}>{this.state.nmUsuario} não concluiu nenhum projeto.</Text>
-                        }
-                        <FlatList
-                            initialNumToRender={3}
-                            data={this.state.portfolio}
-                            keyExtractor={item => `${item.id_ideia}`}
-                            renderItem={renderItemPort}
-                        />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StylePerfilUsuario.shimmerLinha} />
+                        <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StylePerfilUsuario.shimmerLinha} />
+                        <View style={{ alignItems: 'center' }}>
+                            <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={[StylePerfilUsuario.shimmerIdeia]} />
+                            <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StylePerfilUsuario.shimmerTitulo} />
+                        </View>
 
-                        <Text style={StylePerfilUsuario.text}>Projetos Atuais</Text>
-                        <Text style={StylePerfilUsuario.subText}>Projetos em andamento.</Text>
-                        {this.state.semProjetosAtuais &&
-                            <Text style={StylePerfilUsuario.textNoIdeias}>{this.state.nmUsuario} não participa de nenhum projeto.</Text>
-                        }
-                        <FlatList
-                            initialNumToRender={3}
-                            data={this.state.projetosAtuais}
-                            keyExtractor={item => `${item.id_ideia}`}
-                            renderItem={renderItemProj} />
+                        <View style={{ alignItems: 'center' }}>
+                            <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={[StylePerfilUsuario.shimmerIdeia]} />
+                            <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StylePerfilUsuario.shimmerTitulo} />
+                        </View>
+
+                        <View style={{ alignItems: 'center' }}>
+                            <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={[StylePerfilUsuario.shimmerIdeia]} />
+                            <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={StylePerfilUsuario.shimmerTitulo} />
+                        </View>
+
                     </View>
-                </ScrollView>
+                }
+                {!this.state.carregando &&
+
+                    <ScrollView style={{ height: '92%' }} refreshControl={this.state.carregando ? null : <RefreshControl refreshing={this.state.atualizando} onRefresh={() => this.atualizar()} />}>
+                        <Denuncia isVisible={this.state.mostrarDenuncia} onCancel={() => this.setState({ mostrarDenuncia: false })} denunciar={data => this.denunciar(data)} />
+                        <View style={StylePerfilUsuario.container}>
+                            <View style={StylePerfilUsuario.informacaoArea}>
+                                <Icon name={"user-ninja"} size={40} style={StylePerfilUsuario.iconUser} />
+                                <Text style={StylePerfilUsuario.nmUsuario}>{this.state.nmUsuario}</Text>
+                            </View>
+                            <InformacoesUsuario perfilUsuario tecnologias={this.state.tecnologias} descricao={this.state.dsBio} email={this.state.emailUsuario} />
+                            {this.state.idUsuario != this.state.idUsuarioLogado &&
+                                <TouchableOpacity onPress={() => this.setState({ mostrarDenuncia: true })}>
+                                    <Icon name={"exclamation-circle"} size={25} style={StylePerfilUsuario.iconDenuncia} />
+                                </TouchableOpacity>
+                            }
+                            <Text style={StylePerfilUsuario.text}>Portfólio</Text>
+                            <Text style={StylePerfilUsuario.subText}>Projetos já concluídos.</Text>
+                            {this.state.Semportfolio &&
+                                <Text style={StylePerfilUsuario.textNoIdeias}>{this.state.nmUsuario} não concluiu nenhum projeto.</Text>
+                            }
+                            <FlatList
+                                initialNumToRender={3}
+                                data={this.state.portfolio}
+                                keyExtractor={item => `${item.id_ideia}`}
+                                renderItem={renderItemPort}
+                            />
+
+                            <Text style={StylePerfilUsuario.text}>Projetos Atuais</Text>
+                            <Text style={StylePerfilUsuario.subText}>Projetos em andamento.</Text>
+                            {this.state.semProjetosAtuais &&
+                                <Text style={StylePerfilUsuario.textNoIdeias}>{this.state.nmUsuario} não participa de nenhum projeto.</Text>
+                            }
+                            <FlatList
+                                initialNumToRender={3}
+                                data={this.state.projetosAtuais}
+                                keyExtractor={item => `${item.id_ideia}`}
+                                renderItem={renderItemProj} />
+                        </View>
+                    </ScrollView>
+                }
             </View>
         )
     }

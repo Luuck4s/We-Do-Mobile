@@ -44,6 +44,39 @@ const style = StyleSheet.create({
         fontSize: 16,
         textAlign: "center",
         color: EstiloComum.cores.fundoWeDo
+    },
+    shimmerAvatar:{
+        marginTop: '3%',
+        marginLeft: '3%',
+        width: 80,
+        alignSelf: 'flex-start',
+        height: 80,
+        borderRadius: 100,
+    },
+    shimmerNome: {
+        marginLeft: '3%',
+        width: 230,
+        alignSelf: 'center',
+        height: 30,
+    },
+    shimmerLinha:{
+        marginTop: '3%',
+        marginLeft: '3%',
+        width: '90%',
+        alignSelf: 'center',
+        height: 30,
+    },
+    shimmerIdeia:{
+        marginTop: '3%',
+        width: 80,
+        height: 80,
+        borderRadius: 100,
+    },
+    shimmerTitulo:{
+        marginTop: '3%',
+        width: 150,
+        alignSelf: 'center',
+        height: 20,
     }
 })
 

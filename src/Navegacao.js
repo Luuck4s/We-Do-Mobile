@@ -39,6 +39,10 @@ const InicioStack = createAppContainer(createStackNavigator({
     Pesquisa: {
         name: 'Pesquisa',
         screen: Pesquisa
+    },
+    Ajuda: {
+        name: 'Ajuda',
+        screen: Ajuda,
     }
 }, {
     headerMode: 'none',
