@@ -3,6 +3,9 @@ import { createSwitchNavigator, createBottomTabNavigator, createDrawerNavigator,
 import BottomTabBar from "react-navigation-selective-tab-bar"
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import EstiloComum from './EstiloComum'
+import { Avatar, Badge, withBadge } from 'react-native-elements'
+import { View, Alert} from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage'
 
 import AuthOrInicio from './screens/AuthOrInicio/AuthOrInicio'
 import Auth from './screens/Auth/Auth'
@@ -183,7 +186,11 @@ const MenuRoutes = createAppContainer(createBottomTabNavigator(
             navigationOptions: {
                 title: 'Notificação',
                 tabBarIcon: ({ tintColor }) =>
-                    <Icon name='medapps' size={30} color={tintColor} />
+                    <View style={{ flexDirection: 'row' }}>
+                        <Icon name='medapps' size={30} color={tintColor} />
+                        <Badge value={`10`} status="error" />
+                    </View>
+
             }
         },
         Projetos: {
@@ -368,7 +375,7 @@ const AuthStack = createAppContainer(createStackNavigator({
         name: "Politicas",
         screen: PoliticasPrivacidade
     },
-    RecuperarSenha:{
+    RecuperarSenha: {
         name: "RecuperarSenha",
         screen: RecuperarSenha
     }
