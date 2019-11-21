@@ -113,7 +113,10 @@ export default class InformacoesUsuario extends Component {
                         <Icon name={"envelope"} size={20} style={StyleInformacoes.iconEmail} />
                         <Text style={StyleInformacoes.textoEmail}>{this.props.email}</Text>
                     </View>
-
+                    <View style={StyleInformacoes.containerEmail}>
+                        <Icon name={"mobile"} size={20} style={StyleInformacoes.iconEmail} />
+                        <Text style={StyleInformacoes.textoEmail}>{this.props.tel_usuario}</Text>
+                    </View>
                     <View style={StyleInformacoes.containerTecnologias}>
                         <TecnologiaPerfil tecnologias={this.props.tecnologias} />
                     </View>

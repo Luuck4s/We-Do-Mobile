@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Header from '../../components/Header/Header'
-import { View, Text, FlatList, ScrollView, ToastAndroid, RefreshControl } from 'react-native'
+import { View, Text, FlatList, ScrollView, ToastAndroid, RefreshControl, Alert } from 'react-native'
 import StylePerfilUsuario from './StylePerfilUsuario'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import InformacoesUsuario from '../../components/InformacoesUsuario/InformacoesUsuario'
@@ -11,6 +11,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import AsyncStorage from '@react-native-community/async-storage'
 import Denuncia from '../../components/Denuncia/Denuncia'
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
+
+var idUsuarioG
 
 export default class PerfilUsuario extends Component {
 
@@ -33,14 +35,18 @@ export default class PerfilUsuario extends Component {
         atualizando: false,
         Semportfolio: false,
         semProjetosAtuais: false,
+        tel_usuario: '',
+        denunciado: null
     }
 
     componentDidMount = async () => {
-        let idUsuarioLogado = await AsyncStorage.getItem('@weDo:userId')
+        let idUsuario = await AsyncStorage.getItem('@weDo:userId')
         let idUser = await this.props.navigation.getParam('idPerfilUsuario')
         let pageAnterior = await this.props.navigation.getParam('paginaAnterior')
 
-        this.setState({ idUsuario: idUser, pageAnterior, idUsuarioLogado })
+        idUsuarioG = idUsuario
+
+        await this.setState({ idUsuario: idUser, pageAnterior, idUsuarioLogado: idUsuario })
 
         await this.buscarInformacoesUsuario()
     }
@@ -48,11 +54,13 @@ export default class PerfilUsuario extends Component {
     componentDidUpdate = async (PrevProps, PrevState) => {
         if ((this.props.navigation.getParam('idPerfilUsuario') != this.state.idUsuario) ||
             (this.props.navigation.getParam('paginaAnterior') != PrevProps.navigation.getParam('paginaAnterior'))) {
-            let idUsuarioLogado = await AsyncStorage.getItem('@weDo:userId')
+            let idUsuario = await AsyncStorage.getItem('@weDo:userId')
             let idUser = await this.props.navigation.getParam('idPerfilUsuario')
             let pageAnterior = await this.props.navigation.getParam('paginaAnterior')
 
-            this.setState({ idUsuario: idUser, pageAnterior, idUsuarioLogado })
+            idUsuarioG = idUsuario
+
+            await this.setState({ idUsuario: idUser, pageAnterior, idUsuarioLogado: idUsuario })
 
             await this.buscarInformacoesUsuario()
         }
@@ -70,6 +78,7 @@ export default class PerfilUsuario extends Component {
             idUsuarioLogado: '',
             mostrarDenuncia: false,
             carregando: true,
+            denunciado: null
         })
 
         await Api.get(`/usuario/perfil/${this.state.idUsuario}&${this.state.idUsuario}`).then((response) => {
@@ -79,9 +88,21 @@ export default class PerfilUsuario extends Component {
                     emailUsuario: response.data.perfil_usuario.email_usuario,
                     tecnologias: response.data.perfil_usuario.tecnologias,
                     dsBio: response.data.perfil_usuario.ds_bio ? response.data.perfil_usuario.ds_bio : 'Sem descrição',
-                    nmUsuario: response.data.perfil_usuario.nm_usuario
+                    nmUsuario: response.data.perfil_usuario.nm_usuario,
+                    tel_usuario: response.data.perfil_usuario.tel_usuario
                 }
             )
+        })
+
+        let idUsuario = await AsyncStorage.getItem('@weDo:userId')
+
+        await Api.post(`/usuario/saber_denuncia`,{
+            denuncia:{
+                id_usuario_acusador: idUsuario,
+                id_usuario_denunciado: this.state.idUsuario
+            }
+        }).then((response) => {
+            this.setState({denunciado: response.data.denuncia})
         })
 
         await this.buscarProjetosEPort()
@@ -121,15 +142,49 @@ export default class PerfilUsuario extends Component {
     }
 
     denunciar = async (data) => {
+        let idUsuario = await AsyncStorage.getItem('@weDo:userId')
+        
         await Api.post(`/usuario/denuncia`, {
             denuncia: {
                 descricao_denuncia: data,
-                id_usuario_acusador: this.state.idUsuarioLogado,
+                id_usuario_acusador: idUsuario,
                 id_usuario_denunciado: this.state.idUsuario
             }
         }).then((response) => {
             ToastAndroid.show('Denuncia realizada com sucesso', ToastAndroid.SHORT)
         })
+
+        await this.atualizar()
+    }
+
+    confirmarRemoverDenuncia = () => {
+        Alert.alert(
+            'Confirmação',
+            `Deseja realmente remover a sua denuncia  ?`,
+            [
+                {
+                    text: 'Cancelar', onPress: () => false
+                },
+                { text: 'Confirmar', onPress: () => this.removerDenuncia() }
+            ]
+        )
+    }
+
+    removerDenuncia = async () => {
+
+        let idUsuario = await AsyncStorage.getItem('@weDo:userId')
+
+        await Api.post(`/usuario/denuncia`, {
+            denuncia: {
+                descricao_denuncia: '',
+                id_usuario_acusador: idUsuario,
+                id_usuario_denunciado: this.state.idUsuario
+            }
+        }).then((response) => {
+            ToastAndroid.show('Denuncia cancelada com sucesso', ToastAndroid.SHORT)
+        })
+
+        await this.atualizar()
     }
 
     atualizar = async () => {
@@ -197,10 +252,10 @@ export default class PerfilUsuario extends Component {
                                 <Icon name={"user-ninja"} size={40} style={StylePerfilUsuario.iconUser} />
                                 <Text style={StylePerfilUsuario.nmUsuario}>{this.state.nmUsuario}</Text>
                             </View>
-                            <InformacoesUsuario perfilUsuario tecnologias={this.state.tecnologias} descricao={this.state.dsBio} email={this.state.emailUsuario} />
-                            {this.state.idUsuario != this.state.idUsuarioLogado &&
-                                <TouchableOpacity onPress={() => this.setState({ mostrarDenuncia: true })}>
-                                    <Icon name={"exclamation-circle"} size={25} style={StylePerfilUsuario.iconDenuncia} />
+                            <InformacoesUsuario perfilUsuario tecnologias={this.state.tecnologias} descricao={this.state.dsBio} email={this.state.emailUsuario} tel_usuario={this.state.tel_usuario} />
+                            {this.state.idUsuario != idUsuarioG &&
+                                <TouchableOpacity onPress={() => this.state.denunciado ? this.confirmarRemoverDenuncia():this.setState({ mostrarDenuncia: true })}>
+                                    <Icon name={"exclamation-circle"} size={25} color= {this.state.denunciado ? '#009' :'#900'} style={StylePerfilUsuario.iconDenuncia} />
                                 </TouchableOpacity>
                             }
                             <Text style={StylePerfilUsuario.text}>Portfólio</Text>

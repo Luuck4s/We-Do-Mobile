@@ -88,7 +88,7 @@ export default class Perfil extends Component {
                 this.setState({ projetosAtuais: response.data.ideias })
             }
 
-            this.setState({ carregando: false })
+            this.setState({ carregando: false, atualizando: false })
         })
     }
 
@@ -106,9 +106,34 @@ export default class Perfil extends Component {
     }
 
     atualizar = async () => {
-        this.setState({ semProjetosAtuais: false, Semportfolio: false, carregando: true })
-        await this.pegarInformacoesUsuario()
-        this.setState({ atualizando: false })
+
+        this.setState({
+            portfolio: [], projetosAtuais: [], emailUsuario: null,
+            tecnologias: [],
+            dsBio: null,
+            nmUsuario: null,
+            mostrarAddTec: false,
+            semProjetosAtuais: false, 
+            Semportfolio: false, 
+            carregando: true 
+        })
+
+        await Api.get(`/usuario/perfil/${this.state.idUsuario}&${this.state.idUsuario}`).then((response) => {
+
+            this.setState(
+                {
+                    emailUsuario: response.data.perfil_usuario.email_usuario,
+                    tecnologias: response.data.perfil_usuario.tecnologias,
+                    dsBio: response.data.perfil_usuario.ds_bio,
+                    telUsuario: response.data.perfil_usuario.tel_usuario,
+                    dtNascimento: response.data.perfil_usuario.dtNascimento,
+                    nmUsuario: response.data.perfil_usuario.nm_usuario,
+                    novoNome: response.data.perfil_usuario.nm_usuario
+                }
+            )
+        })
+
+        await this.buscarProjetosEPort()
     }
 
     verificarMudanca = () => {
@@ -135,6 +160,12 @@ export default class Perfil extends Component {
 
         this.setState({ editNome: false })
 
+        let idTecnologias = []
+
+        this.state.tecnologias.map((item, index) => {
+            idTecnologias.push(item.id_tecnologia)
+        })
+
         await Api.put(`/usuario/alterar/${this.state.idUsuario}`, {
             usuario: {
                 nm_usuario: this.state.novoNome,
@@ -142,7 +173,7 @@ export default class Perfil extends Component {
                 ds_bio: this.state.dsBio,
                 tel_usuario: this.state.telUsuario,
             },
-            tecnologias: this.state.tecnologias
+            tecnologias: idTecnologias
 
         }).then((response) => {
             this.storeName(this.state.novoNome)
@@ -164,6 +195,12 @@ export default class Perfil extends Component {
      * Função para mudar a descrição
      */
     mudarDesc = async (data) => {
+        let idTecnologias = []
+        
+        this.state.tecnologias.map((item, index) => {
+            idTecnologias.push(item.id_tecnologia)
+        })
+
         await Api.put(`/usuario/alterar/${this.state.idUsuario}`, {
             usuario: {
                 nm_usuario: this.state.nmUsuario,
@@ -171,7 +208,7 @@ export default class Perfil extends Component {
                 ds_bio: data,
                 tel_usuario: this.state.telUsuario,
             },
-            tecnologias: this.state.tecnologias
+            tecnologias: idTecnologias
 
         }).then((response) => {
             ToastAndroid.show('Descrição atualizada', ToastAndroid.SHORT);
@@ -181,7 +218,10 @@ export default class Perfil extends Component {
     }
 
     mudarSenha = async (data) => {
-        await Api.put(`/usuario/alterar_senha/${this.state.idUsuario}`, {
+
+        Alert.alert('dasdas',`${data[0]} ${data[1]} `)
+
+        /*await Api.put(`/usuario/alterar_senha/${this.state.idUsuario}`, {
             usuario: {
                 senha_antiga: data[0],
                 senha_nova: data[1]
@@ -193,7 +233,7 @@ export default class Perfil extends Component {
             } else {
                 ToastAndroid.show('Senha atualizada', ToastAndroid.SHORT);
             }
-        })
+        })*/
 
         await this.atualizar()
     }

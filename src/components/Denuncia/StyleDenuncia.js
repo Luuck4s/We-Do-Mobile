@@ -11,11 +11,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'rgba(0,0,0,0.3)',
     },
-    denunciasAnteriores: {
-        marginTop: 20,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
     novaDenuncia: {
         marginTop: '10%',
         width: '100%',

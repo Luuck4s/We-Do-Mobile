@@ -334,15 +334,12 @@ export default class Ideia extends Component {
                     <TouchableOpacity onPress={this.props.onPresNomeIdeia}>
                         <Text style={StyleIdeia.titulo}>{this.iconePosicao()} {this.props.nm_ideia}</Text>
                     </TouchableOpacity>
-
-                    <Text style={StyleIdeia.autor} onPress={this.props.onPressAutor}>por {this.props.nm_idealizador}</Text>
-
+                    <TouchableOpacity onPress={this.props.onPressAutor}>
+                        <Text style={StyleIdeia.autor} >por {this.props.nm_idealizador}</Text>
+                    </TouchableOpacity>
                     <TecnologiaIdeia tecnologias={this.props.tecnologias} />
-
                     <Text style={StyleIdeia.descricao}>{this.props.ds_ideia}</Text>
-
                     <MembroIdeia onPressMembros={this.props.onPressMembros} membros={this.props.membros} />
-
                     <View style={{ flexDirection: 'row' }}>
                         {this.props.status_ideia != 2 &&
                             <TouchableOpacity onPress={() => this.curtida()}>
@@ -389,7 +386,9 @@ export default class Ideia extends Component {
                         <IconFont5 onPress={() => this.verificarAlteracao()} name={'check'} size={25}
                             style={StyleIdeia.iconeConfirmTitulo} />
                     }
-                    <Text style={StyleIdeia.autor} onPress={this.props.onPressAutor}>por {idealizador}</Text>
+                    <TouchableOpacity  onPress={this.props.onPressAutor}>
+                        <Text style={StyleIdeia.autor} >por {idealizador}</Text>
+                    </TouchableOpacity>
                     <TecnologiaIdeia ideiaPage removerTecnologia={data => this.props.removerTecnologia(data)} donoIdeia={this.state.donoIdeia ? true : false} tecnologias={this.props.tecnologias} />
                     {!this.state.editDesc &&
                         <Text style={StyleIdeia.descricao}>{this.props.ds_ideia}</Text>
@@ -422,12 +421,12 @@ export default class Ideia extends Component {
                         </Icon>
                     </View>
                     {this.state.donoIdeia &&
-                        <View style={{flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'flex-end', marginTop: -10}}>
+                        <View style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'flex-end', marginTop: -10 }}>
                             <TouchableOpacity onPress={() => this.setState({ mostrarAddTec: true })}>
                                 <Icon name={"plus"} size={23} style={StyleIdeia.iconAddTec} />
                             </TouchableOpacity>
                             <TouchableOpacity style={StyleIdeia.configuracoes} onPress={() => this.setState({ mostrarConfig: true })}>
-                                <Icon name={"cogs"} size={23} style={{marginLeft: 15, marginRight: 15}} />
+                                <Icon name={"cogs"} size={23} style={{ marginLeft: 15, marginRight: 15 }} />
                             </TouchableOpacity>
                         </View>
                     }
@@ -449,8 +448,9 @@ export default class Ideia extends Component {
                     <TouchableOpacity onPress={this.props.onPresNomeIdeia}>
                         <Text style={StyleIdeia.titulo}>{this.props.nm_ideia}</Text>
                     </TouchableOpacity>
-
-                    <Text style={StyleIdeia.autor} onPress={this.props.onPressAutor}>por {idealizador}</Text>
+                    <TouchableOpacity onPress={this.props.onPressAutor}>
+                        <Text style={StyleIdeia.autor} >por {idealizador}</Text>
+                    </TouchableOpacity>
 
                     <TecnologiaIdeia tecnologias={this.props.tecnologias} />
 

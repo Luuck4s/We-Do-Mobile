@@ -130,7 +130,7 @@ export default class Notificacoes extends Component {
 
         renderItem = ({ item }) => {
 
-            return <Notificacao key={item.id_evento} ideia={data => this.ideia(item.id_ideia)}
+            return <Notificacao key={Math.random()} ideia={data => this.ideia(item.id_ideia)}
                 mostrarPefil={data => this.mostrarPerfil(data)} aceitar={data => this.aceitar(data)} recusar={data => this.recusar(data)} {...item} />
         }
 
@@ -145,7 +145,7 @@ export default class Notificacoes extends Component {
                     initialNumToRender={5}
                     data={this.state.notificacoes}
                     style={{ width: '100%', height: '93%' }}
-                    keyExtractor={item => `${item.id_evento}`}
+                    keyExtractor={item => `${Math.random()}`}
                     renderItem={renderItem} />
             </View>
         )

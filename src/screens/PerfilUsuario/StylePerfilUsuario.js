@@ -13,7 +13,6 @@ const style = StyleSheet.create({
     },
     iconDenuncia:{
         alignSelf: 'flex-end',
-        color: '#900',
         marginRight: '2%',
     },
     nmUsuario:{

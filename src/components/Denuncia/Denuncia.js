@@ -53,9 +53,6 @@ export default class Denuncia extends Component {
                 <View style={StyleDenuncia.container}>
                     <ScrollView style={{ width: '100%', paddingBottom: 80 }}>
                         <Text style={StyleDenuncia.title}>Denunciar Usuário</Text>
-                        <View style={StyleDenuncia.denunciasAnteriores}>
-                            <Text style={StyleDenuncia.noDenunciaText}>Não foi encontrado nenhuma denúncia anterior! </Text>
-                        </View>
                         <View style={StyleDenuncia.novaDenuncia}>
                             <TextInput style={StyleDenuncia.inputDenuncia} value={this.state.textDenuncia}
                                 autoCorrect={true}
