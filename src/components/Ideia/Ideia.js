@@ -87,13 +87,16 @@ export default class Ideia extends Component {
 
         await membros.map((item, index) => {
             if (this.state.idUsuarioAtual == item.id_usuario && item.idealizador == 1) {
-                return this.setState({ donoIdeia: true })
+                this.setState({ donoIdeia: true })
+                return
             }
             if (this.state.idUsuarioAtual == item.id_usuario && item.status_solicitacao == 1) {
-                return this.setState({ interesse: true, participante: true })
+                this.setState({ interesse: true, participante: true })
+                return
             }
             if (this.state.idUsuarioAtual == item.id_usuario && item.status_solicitacao == 0) {
-                return this.setState({ interesse: true })
+                this.setState({ interesse: true })
+                return
             }
 
         })

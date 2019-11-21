@@ -7,11 +7,9 @@ import { GiftedChat, InputToolbar, Bubble, Send, Time } from 'react-native-gifte
 import AsyncStorage from '@react-native-community/async-storage'
 import Api from '../../api/Api'
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
-import Icon from 'react-native-vector-icons'
 import moment from 'moment'
 import 'moment/locale/pt-br'
-
-var socket
+import socket from '../../socket/socket'
 
 export default class Chat extends Component {
 
@@ -39,10 +37,6 @@ export default class Chat extends Component {
         this.setState({ idUsuario: idUser, nm_usuario: nmUser, ideiaAtual, nmIdeia })
 
         await this.pegarMensagems()
-
-        socket = io.connect('http://10.0.2.2:8080/', {
-            timeout: 10000,
-        })
 
         socket.on("chat_message", (dados) => {
 
@@ -76,10 +70,6 @@ export default class Chat extends Component {
             this.setState({ idUsuario: idUser, nm_usuario: nmUser, ideiaAtual, nmIdeia })
 
             await this.pegarMensagems()
-
-            socket = io.connect('http://10.0.2.2:8080/', {
-                timeout: 10000,
-            })
 
             socket.on("chat_message", (dados) => {
 

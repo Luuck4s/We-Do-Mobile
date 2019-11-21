@@ -10,9 +10,7 @@ import ActionButton from 'react-native-action-button'
 import AddIdeia from '../AddIdeia/AddIdeia'
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 import NetInfo from "@react-native-community/netinfo"
-import io from 'socket.io-client'
-
-var socket
+import socket from '../../socket/socket'
 
 export default class Inicio extends Component {
 
@@ -31,7 +29,6 @@ export default class Inicio extends Component {
     }
 
     componentDidMount = async () => {
-        socket = io.connect('http://10.0.2.2:8080/')
         setTimeout(() => this.buscarFeed(), 1500)
     }
 
@@ -188,6 +185,7 @@ export default class Inicio extends Component {
                 id_ideia: idIdeia
             }
         }).then((response) => {
+
             let dados_notificacao = {
                 id_usuario: this.state.idUsuario,
                 id_ideia: idIdeia,
@@ -285,7 +283,7 @@ export default class Inicio extends Component {
                 }
                 <AddIdeia isVisible={this.state.AddIdeia} onCancel={() => this.setState({ AddIdeia: false })} adicionarIdeia={dataIdeia => this.adicionarIdeia(dataIdeia)} />
                 {this.state.carregando &&
-                    <View>
+                    <View style={{width: '80%', height: '80%', flex: 1}}>
                         <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={EstiloComum.shimmerTitle} />
                         <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={EstiloComum.shimmerUser} />
                         <ShimmerPlaceHolder autoRun={true} visible={!this.state.carregando} style={EstiloComum.shimmerDesc} />

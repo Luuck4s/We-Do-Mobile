@@ -26,10 +26,10 @@ export default props => {
                                 <TextInput {...props} style={StyleAuthInput.input} />
                             }
                             {props.senha &&
-                                <TextInput {...props} style={[StyleAuthInput.input, { width: '84%' }]} />
+                                <TextInput {...props} style={[StyleAuthInput.input, { width: '80%' }]} />
                             }
                             {props.senha &&
-                                <TouchableOpacity onPress={() => props.onPressEye()} style={{ alignSelf: 'center' }} >
+                                <TouchableOpacity onPress={() => props.onPressEye()} style={{alignSelf: 'center' }} >
                                     <Icon name={props.esconderSenha ? "eye" :"eye-slash"} size={20} />
                                 </TouchableOpacity>
                             }

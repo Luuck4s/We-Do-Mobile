@@ -4,9 +4,7 @@ import { View, Alert } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import Api from './api/Api'
-import io from 'socket.io-client'
-
-var socket
+import socket from './socket/socket'
 
 export default class BottomNotification extends Component {
 
@@ -21,18 +19,20 @@ export default class BottomNotification extends Component {
 
         this.setState({ idUsuario })
 
-        socket = io('http://10.0.2.2:8080/')
-
         socket.on("notification", (dados) => {
-            if (dados.id_usuario == this.state.idUsuario) {
-                this.setState({ numNotificacao: this.state.numNotificacao + 1 })
+            if(dados != null){
+                if(dados.id_usuario != undefined){
+                    if (dados.id_usuario == this.state.idUsuario) {
+                        this.setState({ numNotificacao: this.state.numNotificacao + 1 })
+                    }
+                }   
             }
         })
 
         this.pegarNotiticacoes()
     }
 
-    componentDidUpdate = async (PrevProps,PrevState) => {
+    componentDidUpdate = async (PrevProps, PrevState) => {
         let numNoti = 0
 
         await Api.get(`/notificacoes/${this.state.idUsuario}`).then((response) => {
@@ -44,9 +44,10 @@ export default class BottomNotification extends Component {
             })
         })
 
-        if(numNoti != this.state.numNotificacao){
-            this.setState({numNotificacao: numNoti})
+        if (numNoti != this.state.numNotificacao) {
+            this.setState({ numNotificacao: numNoti })
         }
+
     }
 
     pegarNotiticacoes = async () => {

@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
 		color: '#FFF'
 	},
 	textEsqueceu:{
-		fontSize: 14,
+		fontSize: 15,
 		color: '#FFF'
 	}
 })

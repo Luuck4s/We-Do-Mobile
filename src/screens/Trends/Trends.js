@@ -5,9 +5,7 @@ import StyleTrends from './StyleTrends'
 import Api from '../../api/Api'
 import Ideia from '../../components/Ideia/Ideia'
 import AsyncStorage from '@react-native-community/async-storage'
-import io from 'socket.io-client'
-
-var socket
+import socket from '../../socket/socket'
 
 export default class Trends extends Component {
 
@@ -24,8 +22,6 @@ export default class Trends extends Component {
     componentDidMount = async () => {
         let idUsuario = await AsyncStorage.getItem('@weDo:userId')
         this.setState({ idUsuario })
-
-        socket = io.connect('http://10.0.2.2:8080/')
 
         await this.buscarTrends()
     }

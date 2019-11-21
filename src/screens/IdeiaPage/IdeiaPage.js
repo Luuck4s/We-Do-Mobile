@@ -9,9 +9,7 @@ import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 import moment from 'moment'
 import 'moment/locale/pt-br'
 import AsyncStorage from '@react-native-community/async-storage'
-import io from 'socket.io-client'
-
-var socket
+import socket from '../../socket/socket'
 
 export default class IdeiaPage extends Component {
 
@@ -31,8 +29,6 @@ export default class IdeiaPage extends Component {
         let idUsuario = await this.props.navigation.getParam('id_usuario')
         let idIdeia = await this.props.navigation.getParam('id_ideia')
         this.setState({ idUsuario: idUsuario, idIdeia })
-
-        socket = io.connect('http://10.0.2.2:8080/')
 
         setTimeout(() => this.getInfoIdeia(), 1500)
     }

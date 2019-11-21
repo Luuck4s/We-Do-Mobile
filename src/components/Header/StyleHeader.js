@@ -25,8 +25,8 @@ const styles = StyleSheet.create({
         resizeMode: 'contain'
     },
     icon: {
-        marginLeft: '65%',
-        marginRight: 5,
+        marginLeft: '60%',
+        marginRight: 2,
         color: '#000',
     },
     icon2: {
