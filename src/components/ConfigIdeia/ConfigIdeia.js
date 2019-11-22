@@ -206,14 +206,14 @@ export default class ConfigIdeia extends Component {
                     </View>
                     <View style={StyleConfigIdeia.containerTags}>
                         <Text style={StyleConfigIdeia.titleTags}>Tags da ideia</Text>
-                        <ScrollView>
+                        <ScrollView style={{marginBottom: -5}}>
                             <Tags tags={this.props.tags} />
                         </ScrollView>
                     </View>
                     <TextInput style={StyleConfigIdeia.inputTag} value={this.state.textTag}
                         autoCorrect={false}
                         maxLength={20}
-                        placeholder="Adicione mais tags"
+                        placeholder="Digite uma nova tag"
                         autoFocus={false} onChangeText={textTag => this.setState({ textTag })}
                         onKeyPress={(event) => {
                             if (event.nativeEvent.key == " ") {

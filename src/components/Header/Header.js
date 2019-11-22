@@ -47,7 +47,7 @@ export default class Header extends Component {
                             autoCorrect={false}
                             placeholder="Escreva algo para pesquisar"
                             onChangeText={this.props.onChangeText}
-                            onSubmitEditing={() => this.props.onSubmitEditing}
+                            onSubmitEditing={() => this.props.onSubmitEditing()}
                             autoFocus={true} />
                         <View style={StyleHeader.inputTec}>
                             <SectionedMultiSelect

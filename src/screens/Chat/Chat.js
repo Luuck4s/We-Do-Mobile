@@ -55,8 +55,6 @@ export default class Chat extends Component {
             }))
 
         })
-
-        console.log(socket)
     }
 
     componentDidUpdate = async (prevProps, prevState) => {
@@ -90,8 +88,6 @@ export default class Chat extends Component {
                 }))
 
             })
-
-            console.log(socket)
         }
     }
 
@@ -150,8 +146,6 @@ export default class Chat extends Component {
 
         socket.emit('chat_message', dados_mensagens)
 
-        console.log(socket)
-
     }
 
     voltarPagina = () => {
@@ -198,7 +192,6 @@ export default class Chat extends Component {
                         onSend={messages => this.enviarMensagem(messages)}
                         showUserAvatar={true}
                         dateFormat={"DD [de] MMMM, YYYY"}
-                        timeFormat={"hh:mm"}
                         renderSend={this.renderSend}
                         user={{
                             _id: `${this.state.idUsuario}`,

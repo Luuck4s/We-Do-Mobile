@@ -341,7 +341,7 @@ export default class Auth extends Component {
 						<View style={StyleAuth.conectado}>
 							<Switch
 								thumbColor={'#FFF'}
-								trackColor={{ true: '#313c4d', false: '#FFF' }}
+								trackColor={{ true: '#FFF', false: '#313c4d' }}
 								onValueChange={manterConectado => this.setState({ manterConectado })}
 								value={this.state.manterConectado} />
 							<Text style={StyleAuth.textManterConectado}>Manter-se Conectado</Text>

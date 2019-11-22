@@ -89,7 +89,7 @@ const TrendsStack = createAppContainer(createStackNavigator({
     },
     IdeiaPage: {
         name: 'IdeiaPage',
-        screen: IdeiaPage,
+        screen: IdeiaStack,
     },
     PerfilUsuario: {
         name: 'PerfilUsuario',
@@ -115,7 +115,7 @@ TrendsStack.navigationOptions = ({ navigation }) => {
 
 
 const ChatStack = createAppContainer(createStackNavigator({
-    Trends: {
+    Projetos: {
         name: 'Projetos',
         screen: Projetos,
     },
@@ -149,7 +149,7 @@ const NotificacaoStack = createAppContainer(createStackNavigator({
     },
     IdeiaPage: {
         name: 'IdeiaPage',
-        screen: IdeiaPage,
+        screen: IdeiaStack,
     },
     PerfilUsuario: {
         name: 'PerfilUsuario',
@@ -252,7 +252,7 @@ const ProjetosAtuaisStack = createAppContainer(createStackNavigator({
     },
     IdeiaPage: {
         name: 'IdeiaPage',
-        screen: IdeiaPage,
+        screen: IdeiaStack,
     }
 }, {
     headerMode: 'none',
@@ -269,7 +269,7 @@ const PerfilStack = createAppContainer(createStackNavigator({
     },
     IdeiaPage: {
         name: 'IdeiaPage',
-        screen: IdeiaPage,
+        screen: IdeiaStack,
     },
     PerfilUsuario: {
         name: 'PerfilUsuario',
@@ -291,7 +291,7 @@ const PortfolioStack = createAppContainer(createStackNavigator({
     },
     IdeiaPage: {
         name: 'IdeiaPage',
-        screen: IdeiaPage,
+        screen: IdeiaStack,
     },
     PerfilUsuario: {
         name: 'PerfilUsuario',

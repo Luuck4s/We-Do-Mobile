@@ -28,11 +28,15 @@ export default class Projetos extends Component {
         await this.buscarProjetosAtuais()
     }
 
+    componentDidUpdate = async (PrevProps, PrevState) => {  
+
+    }
+
     buscarProjetosAtuais = async () => {
         await Api.get(`/ideia/projetos_atuais/${this.state.idUsuario}`).then((response) => {
 
             if (response.data.ideias == undefined) {
-                this.setState({ ideias: [], semChat: true})
+                this.setState({ ideias: [], semChat: true })
             } else {
                 this.setState({ ideias: response.data.ideias })
             }
@@ -56,7 +60,7 @@ export default class Projetos extends Component {
 
         await Api.get(`/ideia/projetos_atuais/${this.state.idUsuario}`).then((response) => {
             if (response.data.ideias == undefined) {
-                this.setState({ ideias: [], semChat: true})
+                this.setState({ ideias: [], semChat: true })
             } else {
                 this.setState({ ideias: response.data.ideias })
             }
