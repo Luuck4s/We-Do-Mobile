@@ -320,6 +320,15 @@ export default class Ideia extends Component {
         }
     }
 
+    irParaChat = (idIdeia) => {
+        let id = {
+            "idIdeiaChat": idIdeia,
+            "nmIdeiaChat": this.props.nm_ideia
+        }
+
+        this.props.mudarPagina(id)
+    }
+
     render() {
         let idCriador = ''
         let idealizador = this.props.membros.map((item, index) => {
@@ -386,9 +395,14 @@ export default class Ideia extends Component {
                         <IconFont5 onPress={() => this.verificarAlteracao()} name={'check'} size={25}
                             style={StyleIdeia.iconeConfirmTitulo} />
                     }
-                    <TouchableOpacity  onPress={this.props.onPressAutor}>
+                    <TouchableOpacity onPress={this.props.onPressAutor}>
                         <Text style={StyleIdeia.autor} >por {idealizador}</Text>
                     </TouchableOpacity>
+                    {this.state.donoIdeia &&
+                        <TouchableOpacity onPress={() => this.setState({ mostrarAddTec: true })} style={{ marginRight: '2%' }}>
+                            <Icon name={"plus"} size={23} style={StyleIdeia.iconAddTec} />
+                        </TouchableOpacity>
+                    }
                     <TecnologiaIdeia ideiaPage removerTecnologia={data => this.props.removerTecnologia(data)} donoIdeia={this.state.donoIdeia ? true : false} tecnologias={this.props.tecnologias} />
                     {!this.state.editDesc &&
                         <Text style={StyleIdeia.descricao}>{this.props.ds_ideia}</Text>
@@ -422,8 +436,8 @@ export default class Ideia extends Component {
                     </View>
                     {this.state.donoIdeia &&
                         <View style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'flex-end', marginTop: -10 }}>
-                            <TouchableOpacity onPress={() => this.setState({ mostrarAddTec: true })}>
-                                <Icon name={"plus"} size={23} style={StyleIdeia.iconAddTec} />
+                            <TouchableOpacity style={StyleIdeia.configuracoes} onPress={() => this.irParaChat(this.props.id_ideia)}>
+                                <IconFont5 name={"comment-alt"} size={23} style={{ marginLeft: 15, marginRight: 15 }} />
                             </TouchableOpacity>
                             <TouchableOpacity style={StyleIdeia.configuracoes} onPress={() => this.setState({ mostrarConfig: true })}>
                                 <Icon name={"cogs"} size={23} style={{ marginLeft: 15, marginRight: 15 }} />
@@ -431,9 +445,18 @@ export default class Ideia extends Component {
                         </View>
                     }
                     {!this.state.donoIdeia &&
-                        <TouchableOpacity style={StyleIdeia.interesse} onPress={() => this.verificarInterrese()}>
-                            {this.renderInteresse()}
-                        </TouchableOpacity>
+                        <View style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'flex-end' }}>
+                            {this.state.participante &&
+                                <View style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'flex-end' }}>
+                                    <TouchableOpacity style={StyleIdeia.configuracoes} onPress={() => this.irParaChat(this.props.id_ideia)}>
+                                        <IconFont5 name={"comment-alt"} size={23} style={{ marginRight: 20, color: EstiloComum.cores.fundoWeDo }} />
+                                    </TouchableOpacity>
+                                </View>
+                            }
+                            <TouchableOpacity style={StyleIdeia.interesse} onPress={() => this.verificarInterrese()}>
+                                {this.renderInteresse()}
+                            </TouchableOpacity>
+                        </View>
                     }
                     <AddComentario adicionarComentario={data => this.adicionarComentario(data)} />
                     <Comentarios apagarComentario={id_mensagem => this.confirmarApagar(id_mensagem)} idIdeia={this.props.idIdeia}

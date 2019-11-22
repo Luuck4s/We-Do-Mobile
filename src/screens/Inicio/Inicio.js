@@ -154,6 +154,9 @@ export default class Inicio extends Component {
      * @param - idIdeia 
     */
     interesse = async (idIdeia) => {
+
+        let idUsuario = await AsyncStorage.getItem('@weDo:userId')
+
         await Api.post('/interesse', {
             usuario: {
                 id_usuario: this.state.idUsuario,
@@ -164,10 +167,11 @@ export default class Inicio extends Component {
         }).then((response) => {
 
             let dados_notificacao = {
-                id_usuario: this.state.idUsuario,
+                id_usuario: idUsuario,
                 id_ideia: idIdeia,
                 acao: 3
             }
+            
             socket.emit('notification', dados_notificacao)
         })
     }
@@ -177,6 +181,8 @@ export default class Inicio extends Component {
      * @param - IdIdeia
      */
     curtirIdeia = async (idIdeia) => {
+        let idUsuario = await AsyncStorage.getItem('@weDo:userId')
+
         await Api.post('/curtida', {
             usuario: {
                 id_usuario: this.state.idUsuario
@@ -187,7 +193,7 @@ export default class Inicio extends Component {
         }).then((response) => {
 
             let dados_notificacao = {
-                id_usuario: this.state.idUsuario,
+                id_usuario: idUsuario,
                 id_ideia: idIdeia,
                 acao: 1
             }
@@ -232,6 +238,9 @@ export default class Inicio extends Component {
      * Função de adicionar comentarios
     */
     adicionarComentario = async (data, idIdeia) => {
+
+        let idUsuario = await AsyncStorage.getItem('@weDo:userId')
+
         await Api.post(`/comentario`, {
             usuario: {
                 id_usuario: this.state.idUsuario
@@ -246,7 +255,7 @@ export default class Inicio extends Component {
             Api.defaults.headers.common['Authorization'] = `${response.data.token}`
 
             let dados_notificacao = {
-                id_usuario: this.state.idUsuario,
+                id_usuario: idUsuario,
                 id_ideia: idIdeia,
                 acao: 2
             }

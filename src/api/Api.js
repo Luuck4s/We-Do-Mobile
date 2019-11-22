@@ -4,5 +4,5 @@
 import axios from 'axios'
 
 export default api = axios.create({
-	baseURL: 'http://192.168.0.107:3000'
+	baseURL: 'http://192.168.0.105:3000'
 })

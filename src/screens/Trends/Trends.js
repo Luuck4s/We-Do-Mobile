@@ -48,6 +48,9 @@ export default class Trends extends Component {
      * @param - idIdeia 
     */
     interesse = async (idIdeia) => {
+
+        let idUsuario = this.props.navigation.getParam('id_usuario')
+
         await Api.post('/interesse', {
             usuario: {
                 id_usuario: this.state.idUsuario,
@@ -58,7 +61,7 @@ export default class Trends extends Component {
         }).then((response) => {
 
             let dados_notificacao = {
-                id_usuario: this.state.idUsuario,
+                id_usuario: idUsuario,
                 id_ideia: idIdeia,
                 acao: 3
             }
@@ -71,6 +74,9 @@ export default class Trends extends Component {
      * @param - IdIdeia
      */
     curtirIdeia = async (idIdeia) => {
+
+        let idUsuario = this.props.navigation.getParam('id_usuario')
+
         await Api.post('/curtida', {
             usuario: {
                 id_usuario: this.state.idUsuario
@@ -81,7 +87,7 @@ export default class Trends extends Component {
         }).then((response) => {
 
             let dados_notificacao = {
-                id_usuario: this.state.idUsuario,
+                id_usuario: idUsuario,
                 id_ideia: idIdeia,
                 acao: 1
             }

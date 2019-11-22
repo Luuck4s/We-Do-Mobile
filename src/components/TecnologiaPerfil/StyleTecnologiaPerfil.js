@@ -4,12 +4,13 @@ import EstiloComum from '../../EstiloComum'
 const styles = StyleSheet.create({
     TecContainer: {
         marginLeft: 3,
-        width: 90,
+        width: 'auto',
         height: 'auto',
         marginTop: 5,
         borderRadius: 5,
         backgroundColor: EstiloComum.cores.fundoWeDo,
         alignItems: 'center',
+        padding: 5
     },
     nomeTecnologia: {
         fontSize: 14,

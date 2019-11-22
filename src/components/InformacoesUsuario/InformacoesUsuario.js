@@ -139,7 +139,7 @@ export default class InformacoesUsuario extends Component {
                         }
                         {!this.state.editDesc &&
                             <TouchableOpacity onPress={() => this.setState({ editDesc: true })}>
-                                <Icon name={"edit"} size={20} style={StyleInformacoes.iconEditDesc} />
+                                <Icon name={"edit"} size={23} style={StyleInformacoes.iconEditDesc} />
                             </TouchableOpacity>
                         }
                         {this.state.editDesc &&
@@ -161,7 +161,7 @@ export default class InformacoesUsuario extends Component {
                         }
                         {!this.state.editSenha &&
                             <TouchableOpacity onPress={() => this.setState({ editSenha: true })}>
-                                <Icon name={"edit"} size={20} style={StyleInformacoes.iconeEditSenha} />
+                                <Icon name={"edit"} size={23} style={StyleInformacoes.iconeEditSenha} />
                             </TouchableOpacity>
                         }
                         {this.state.editSenha &&

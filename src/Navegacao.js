@@ -27,6 +27,25 @@ import Splash from './screens/SplashScreen/Splash'
 import RecuperarSenha from './screens/RecuperarSenha/RecuperarSenha'
 import BottomNotification from './BottomNotification'
 
+
+const IdeiaStack = createAppContainer(createStackNavigator({
+    IdeiaPage: {
+        name: 'IdeiaPage',
+        screen: IdeiaPage,
+    },
+    Chat: {
+        name: 'Chat',
+        screen: Chat,
+    }
+}, {
+    headerMode: 'none',
+    navigationOptions: {
+        headerVisible: false,
+    }
+}
+))
+
+
 const InicioStack = createAppContainer(createStackNavigator({
     Inicio: {
         name: 'Inicio',
@@ -34,7 +53,7 @@ const InicioStack = createAppContainer(createStackNavigator({
     },
     IdeiaPage: {
         name: 'IdeiaPage',
-        screen: IdeiaPage,
+        screen: IdeiaStack,
     },
     PerfilUsuario: {
         name: 'PerfilUsuario',
@@ -43,10 +62,6 @@ const InicioStack = createAppContainer(createStackNavigator({
     Pesquisa: {
         name: 'Pesquisa',
         screen: Pesquisa
-    },
-    Ajuda: {
-        name: 'Ajuda',
-        screen: Ajuda,
     }
 }, {
     headerMode: 'none',

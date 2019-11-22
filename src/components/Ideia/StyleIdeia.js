@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
         width: 100,
         height: 30,
         backgroundColor: EstiloComum.cores.fundoWeDo,
-        marginLeft: '70%',
+        alignSelf: 'flex-end'
     },
     configuracoes:{
         borderRadius: 5,

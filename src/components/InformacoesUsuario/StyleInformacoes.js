@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
     },
     containerEmail:{
         flexDirection: "row",
-        marginTop: '2%',
         justifyContent: 'space-around'
     },
     iconEmail:{
@@ -40,7 +39,6 @@ const styles = StyleSheet.create({
     },
     containerSenha:{
         flexDirection: "row",
-        marginTop: '2%',
         justifyContent: 'space-around'
     },
     iconSenha:{

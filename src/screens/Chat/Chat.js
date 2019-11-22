@@ -55,6 +55,8 @@ export default class Chat extends Component {
             }))
 
         })
+
+        console.log(socket)
     }
 
     componentDidUpdate = async (prevProps, prevState) => {
@@ -88,11 +90,9 @@ export default class Chat extends Component {
                 }))
 
             })
-        }
-    }
 
-    componentWillUnmount() {
-        socket.disconnect()
+            console.log(socket)
+        }
     }
 
     /**
@@ -150,11 +150,12 @@ export default class Chat extends Component {
 
         socket.emit('chat_message', dados_mensagens)
 
+        console.log(socket)
+
     }
 
     voltarPagina = () => {
         this.props.navigation.goBack()
-        socket.disconnect()
     }
 
     renderSend(props) {
@@ -193,7 +194,6 @@ export default class Chat extends Component {
                 {!this.state.carregando &&
                     <GiftedChat
                         placeholder={"Escreva sua mensagem"}
-                        scrollToBottom
                         messages={this.state.messages}
                         onSend={messages => this.enviarMensagem(messages)}
                         showUserAvatar={true}

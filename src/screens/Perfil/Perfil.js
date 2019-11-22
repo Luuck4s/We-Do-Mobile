@@ -219,21 +219,19 @@ export default class Perfil extends Component {
 
     mudarSenha = async (data) => {
 
-        Alert.alert('dasdas',`${data[0]} ${data[1]} `)
-
-        /*await Api.put(`/usuario/alterar_senha/${this.state.idUsuario}`, {
+        await Api.put(`/usuario/alterar_senha/${this.state.idUsuario}`, {
             usuario: {
-                senha_antiga: data[0],
-                senha_nova: data[1]
+                senha_antiga: `${data[0]}`,
+                senha_nova: `${data[1]}`
             }
 
         }).then((response) => {
-            if (response.data.msg) {
+            if (response.data.err) {
                 ToastAndroid.show('Senha atual incorreta', ToastAndroid.SHORT);
             } else {
                 ToastAndroid.show('Senha atualizada', ToastAndroid.SHORT);
             }
-        })*/
+        })
 
         await this.atualizar()
     }
@@ -322,7 +320,7 @@ export default class Perfil extends Component {
                                 }
                                 {!this.state.editNome &&
                                     <TouchableOpacity onPress={() => this.setState({ editNome: true })}>
-                                        <Icon name={"edit"} size={20} style={StylePerfil.iconEditName} />
+                                        <Icon name={"edit"} size={23} style={StylePerfil.iconEditName} />
                                     </TouchableOpacity>
                                 }
                                 {this.state.editNome &&

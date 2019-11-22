@@ -87,6 +87,9 @@ export default class IdeiaPage extends Component {
      * @param - idIdeia 
     */
     interesse = async (idIdeia) => {
+
+        let idUsuario = await AsyncStorage.getItem('@weDo:userId')
+
         await Api.post('/interesse', {
             usuario: {
                 id_usuario: this.state.idUsuario,
@@ -97,7 +100,7 @@ export default class IdeiaPage extends Component {
         }).then((response) => {
 
             let dados_notificacao = {
-                id_usuario: this.state.idUsuario,
+                id_usuario: idUsuario,
                 id_ideia: idIdeia,
                 acao: 3
             }
@@ -110,6 +113,9 @@ export default class IdeiaPage extends Component {
      * @param - IdIdeia
      */
     curtirIdeia = async (idIdeia) => {
+
+        let idUsuario = await AsyncStorage.getItem('@weDo:userId')
+
         await Api.post('/curtida', {
             usuario: {
                 id_usuario: this.state.idUsuario
@@ -119,7 +125,7 @@ export default class IdeiaPage extends Component {
             }
         }).then((response) => {
             let dados_notificacao = {
-                id_usuario: this.state.idUsuario,
+                id_usuario: idUsuario,
                 id_ideia: idIdeia,
                 acao: 1
             }
@@ -154,6 +160,7 @@ export default class IdeiaPage extends Component {
      * Função de adicionar comentarios
     */
     adicionarComentario = async (data, idIdeia) => {
+        let idUsuario2 = await AsyncStorage.getItem('@weDo:userId')
         var nmUsuario = await AsyncStorage.getItem('@weDo:userName')
 
         await Api.post(`/comentario`, {
@@ -188,7 +195,7 @@ export default class IdeiaPage extends Component {
             })
 
             let dados_notificacao = {
-                id_usuario: this.state.idUsuario,
+                id_usuario: idUsuario2,
                 id_ideia: idIdeia,
                 acao: 2
             }
@@ -439,6 +446,9 @@ export default class IdeiaPage extends Component {
         this.props.navigation.pop()
     }
 
+    mudarPagina = (data) => {
+        this.props.navigation.navigate('Chat',data)
+    }
 
     render() {
         renderItem = ({ item }) => (<Ideia ideiaPage={true}
@@ -458,6 +468,7 @@ export default class IdeiaPage extends Component {
             passarIdeia={data => this.passarIdeia(data)}
             adicionarNovasTags={data => this.adicionarNovasTags(data)}
             adicionarnovaTec={data => this.adicionarNovaTec(data)}
+            mudarPagina = {data => this.mudarPagina(data)}
             idIdeia={this.state.idIdeia} />)
 
         return (
