@@ -234,12 +234,7 @@ export default class Auth extends Component {
 			nmInvalido = false
 		}
 
-		if (this.state.email_usuario && !(this.state.email_usuario.includes('@gmail.com')
-			|| this.state.email_usuario.includes('@hotmail.com')
-			|| this.state.email_usuario.includes('@hotmail.com.br')
-			|| this.state.email_usuario.includes('@outlook.com')
-			|| this.state.email_usuario.includes('@outlook.com.br') 
-			|| this.state.email_usuario.includes('@yahoo.com'))) {
+		if (this.state.email_usuario && !(this.state.email_usuario.includes('@') && this.state.email_usuario.includes('.com'))) {
 			emailInvalido = true
 		} else {
 			emailInvalido = false
@@ -278,12 +273,7 @@ export default class Auth extends Component {
 			validacao.push(this.state.senha_usuario && this.state.senha_usuario.length >= 6)
 			validacao.push(this.state.senha_usuario == this.state.confirmar_senha)
 		} else {
-			validacao.push(this.state.email_usuario && (this.state.email_usuario.includes('@gmail.com')
-				|| this.state.email_usuario.includes('@hotmail.com')
-				|| this.state.email_usuario.includes('@hotmail.com.br')
-				|| this.state.email_usuario.includes('@outlook.com')
-				|| this.state.email_usuario.includes('@outlook.com.br')
-				|| this.state.email_usuario.includes('@yahoo.com')))
+			validacao.push(this.state.email_usuario && this.state.email_usuario.includes('@') && this.state.email_usuario.includes('.com'))
 			validacao.push(this.state.senha_usuario && this.state.senha_usuario.length >= 6)
 		}
 
