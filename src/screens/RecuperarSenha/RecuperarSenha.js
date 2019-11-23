@@ -6,6 +6,8 @@ import logo from '../../../assets/img/weDo_logo.png'
 import AuthInput from '../../components/AuthInput/AuthInput'
 import Api from '../../api/Api'
 
+var emailInvalido = false
+
 export default class RecuperarSenha extends Component {
 
 
@@ -19,8 +21,8 @@ export default class RecuperarSenha extends Component {
                 email_usuario: this.state.email_usuario
             }
         }).then((response) => {
-            if (response.msg) {
-                Alert.alert(`Houve um erro`, `${response.data.msg}`)
+            if (response.data.err) {
+                Alert.alert(`Houve um erro`, `${response.data.err}`)
             } else {
                 Alert.alert(`Confirmação`, `${response.data.msg}`)
                 this.props.navigation.navigate('Auth')
@@ -31,7 +33,23 @@ export default class RecuperarSenha extends Component {
     render() {
         const validacao = []
 
-        validacao.push(this.state.email_usuario && this.state.email_usuario.includes('@'))
+        if (this.state.email_usuario && !(this.state.email_usuario.includes('@gmail.com')
+            || this.state.email_usuario.includes('@hotmail.com')
+            || this.state.email_usuario.includes('@hotmail.com.br')
+            || this.state.email_usuario.includes('@outlook.com')
+            || this.state.email_usuario.includes('@outlook.com.br')
+            || this.state.email_usuario.includes('@yahoo.com'))) {
+            emailInvalido = true
+        } else {
+            emailInvalido = false
+        }
+
+        validacao.push(this.state.email_usuario && (this.state.email_usuario.includes('@gmail.com')
+            || this.state.email_usuario.includes('@hotmail.com')
+            || this.state.email_usuario.includes('@hotmail.com.br')
+            || this.state.email_usuario.includes('@outlook.com')
+            || this.state.email_usuario.includes('@outlook.com.br')
+            || this.state.email_usuario.includes('@yahoo.com')))
         const validaFormulario = validacao.reduce((all, v) => all && v)
 
         return (
@@ -44,7 +62,7 @@ export default class RecuperarSenha extends Component {
                 </View>
                 <Image source={logo} style={StyleRecuperarSenha.logo} />
                 <View style={StyleRecuperarSenha.formContainer}>
-                    <AuthInput style={StyleRecuperarSenha.input}
+                    <AuthInput style={[StyleRecuperarSenha.input , emailInvalido ? { borderColor: '#F00', borderWidth: 1.4 } : null]}
                         icon='envelope'
                         autoFocus={false}
                         keyboardType={'email-address'}

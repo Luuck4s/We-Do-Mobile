@@ -17,6 +17,12 @@ YellowBox.ignoreWarnings([
 
 const tecnologias = []
 
+var nmInvalido = false
+var emailInvalido = false
+var dataInvalida = false
+var senhaInvalida = false
+var verificarSenhaInvalida = false
+
 export default class Auth extends Component {
 
 	constructor(props) {
@@ -221,6 +227,50 @@ export default class Auth extends Component {
 		 * e validados e so assim libero o botão para cadastro ou login.
 		 */
 		const validacao = []
+
+		if (this.state.nm_usuario && this.state.nm_usuario.trim() == '') {
+			nmInvalido = true
+		} else {
+			nmInvalido = false
+		}
+
+		if (this.state.email_usuario && !(this.state.email_usuario.includes('@gmail.com')
+			|| this.state.email_usuario.includes('@hotmail.com')
+			|| this.state.email_usuario.includes('@hotmail.com.br')
+			|| this.state.email_usuario.includes('@outlook.com')
+			|| this.state.email_usuario.includes('@outlook.com.br') 
+			|| this.state.email_usuario.includes('@yahoo.com'))) {
+			emailInvalido = true
+		} else {
+			emailInvalido = false
+		}
+
+		if (this.state.dt_nascimento && this.state.dt_nascimento.length <= 9) {
+			dataInvalida = true
+		} else {
+			dataInvalida = false
+		}
+
+		if (this.state.senha_usuario && this.state.senha_usuario.length < 6) {
+			senhaInvalida = true
+		} else {
+			senhaInvalida = false
+		}
+
+		if (this.state.criarConta) {
+			if (this.state.senha_usuario && this.state.senha_usuario.length < 6) {
+				senhaInvalida = true
+			} else {
+				senhaInvalida = false
+			}
+
+			if (this.state.confirmar_senha != this.state.senha_usuario) {
+				verificarSenhaInvalida = true
+			} else {
+				verificarSenhaInvalida = false
+			}
+		}
+
 		validacao.push(this.state.conectado)
 		if (this.state.criarConta) {
 			validacao.push(this.state.nm_usuario && this.state.nm_usuario.trim())
@@ -228,11 +278,18 @@ export default class Auth extends Component {
 			validacao.push(this.state.senha_usuario && this.state.senha_usuario.length >= 6)
 			validacao.push(this.state.senha_usuario == this.state.confirmar_senha)
 		} else {
-			validacao.push(this.state.email_usuario && this.state.email_usuario.includes('@'))
+			validacao.push(this.state.email_usuario && (this.state.email_usuario.includes('@gmail.com')
+				|| this.state.email_usuario.includes('@hotmail.com')
+				|| this.state.email_usuario.includes('@hotmail.com.br')
+				|| this.state.email_usuario.includes('@outlook.com')
+				|| this.state.email_usuario.includes('@outlook.com.br')
+				|| this.state.email_usuario.includes('@yahoo.com')))
 			validacao.push(this.state.senha_usuario && this.state.senha_usuario.length >= 6)
 		}
 
 		const validaFormulario = validacao.reduce((all, v) => all && v)
+
+		console.log(validacao)
 
 		return (
 			<View style={this.state.criarConta ? StyleAuth.containerCadastrar : StyleAuth.container}>
@@ -246,22 +303,22 @@ export default class Auth extends Component {
 
 				<View style={StyleAuth.formContainer}>
 					{this.state.criarConta &&
-						<AuthInput style={StyleAuth.input}
+						<AuthInput style={[StyleAuth.input, nmInvalido ? { borderColor: '#F00', borderWidth: 1.4 } : null]}
 							icon='user'
 							placeholder='Nome'
 							autoCorrect={false}
 							autoFocus={false}
 							value={this.state.nm_usuario}
 							maxLength={80}
-							returnKeyType="next" 
+							returnKeyType="next"
 							onChangeText={nm_usuario => this.setState({ nm_usuario })} />
 					}
 					{!this.state.criarConta &&
-						<TouchableOpacity onPress={() => this.props.navigation.navigate('RecuperarSenha')} style={{width: '45%', height: 'auto', flexDirection: 'row', alignItems: 'flex-end', alignSelf: "flex-end"}}>
+						<TouchableOpacity onPress={() => this.props.navigation.navigate('RecuperarSenha')} style={{ width: '45%', height: 'auto', flexDirection: 'row', alignItems: 'flex-end', alignSelf: "flex-end" }}>
 							<Text style={StyleAuth.textEsqueceu}>Esqueceu a senha ?</Text>
 						</TouchableOpacity>
 					}
-					<AuthInput style={StyleAuth.input}
+					<AuthInput style={[StyleAuth.input, emailInvalido ? { borderColor: '#F00', borderWidth: 1.4 } : null]}
 						icon='envelope'
 						autoFocus={false}
 						keyboardType={'email-address'}
@@ -272,11 +329,11 @@ export default class Auth extends Component {
 						onChangeText={email_usuario => this.setState({ email_usuario })}
 						returnKeyType="next" />
 					{this.state.criarConta &&
-						<AuthInput style={StyleAuth.input}
+						<AuthInput style={[StyleAuth.input, dataInvalida ? { borderColor: '#F00', borderWidth: 1.4 } : null]}
 							icon='calendar'
 							date={true}
 							placeholder="Data Nascimento"
-							returnKeyType="next" 
+							returnKeyType="next"
 							value={this.state.dt_nascimento}
 							onChangeText={dt_nascimento => this.setState({ dt_nascimento })} />
 					}
@@ -286,8 +343,8 @@ export default class Auth extends Component {
 							maxLength={80}
 							autoFocus={false}
 							secureTextEntry={true}
-							returnKeyType="next" 
-							style={StyleAuth.inputMetadeSenha}
+							returnKeyType="next"
+							style={[StyleAuth.inputMetadeSenha, senhaInvalida ? { borderColor: '#F00', borderWidth: 1.4 } : null]}
 							value={this.state.senha_usuario}
 							onChangeText={senha_usuario => this.setState({ senha_usuario })} />
 					}
@@ -296,23 +353,23 @@ export default class Auth extends Component {
 							senha={true}
 							secureTextEntry={this.state.esconderSenha}
 							esconderSenha={this.state.esconderSenha}
-							onPressEye={() => this.setState({esconderSenha: !this.state.esconderSenha})}
+							onPressEye={() => this.setState({ esconderSenha: !this.state.esconderSenha })}
 							maxLength={80}
-							style={StyleAuth.input}
+							style={[StyleAuth.input, senhaInvalida ? { borderColor: '#F00', borderWidth: 1.4 } : null]}
 							value={this.state.senha_usuario}
 							autoFocus={false}
 							onChangeText={senha_usuario => this.setState({ senha_usuario })}
 							onSubmitEditing={this.logarOuCadastrar} />
 					}
 					{this.state.criarConta &&
-						<AuthInput style={StyleAuth.inputMetadeConfirmarSenha}
+						<AuthInput style={[StyleAuth.inputMetadeConfirmarSenha, verificarSenhaInvalida ? { borderColor: '#F00', borderWidth: 1.4 } : null]}
 							metade={true}
 							icon='asterisk'
 							maxLength={80}
 							placeholder='Confirmar Senha'
 							autoFocus={false}
 							secureTextEntry={true}
-							returnKeyType="next" 
+							returnKeyType="next"
 							value={this.state.confirmar_senha}
 							onChangeText={confirmar_senha => this.setState({ confirmar_senha })} />
 					}
@@ -347,9 +404,9 @@ export default class Auth extends Component {
 							<Text style={StyleAuth.textManterConectado}>Manter-se Conectado</Text>
 						</View>
 					}
-					<TouchableOpacity style={{width: '40%', height: 'auto', flexDirection: 'row', alignItems: 'flex-end', alignSelf: "flex-end"}}
+					<TouchableOpacity style={{ width: '40%', height: 'auto', flexDirection: 'row', alignItems: 'flex-end', alignSelf: "flex-end" }}
 						onPress={() => this.setState({ criarConta: !this.state.criarConta })}>
-						<Text style={[this.state.criarConta ? [StyleAuth.textLink, { marginTop: 12, marginLeft: '0%'}] : StyleAuth.textLink]}>
+						<Text style={[this.state.criarConta ? [StyleAuth.textLink, { marginTop: 12, marginLeft: '0%' }] : StyleAuth.textLink]}>
 							{this.state.criarConta
 								? 'Já possui conta ?'
 								: 'Cadastre-se'}
