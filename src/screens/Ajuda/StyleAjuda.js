@@ -15,7 +15,7 @@ const style = StyleSheet.create({
     scrollPoliticas:{
         paddingLeft: 15,
         paddingRight: 15,
-        height: '93%'
+        height: '90%'
     },
     ajuda:{
         fontSize: 15,

@@ -13,7 +13,7 @@ export default class Ajuda extends Component {
                     <View style={StyleAjuda.container}>
                         <Text style={[StyleAjuda.ajuda, { fontWeight: "bold", marginBottom: 5, color: EstiloComum.cores.fundoWeDo }]}>Me excluíram da equipe e agora?</Text>
                         <Text style={StyleAjuda.ajuda}>
-                            Bom, a plataforma WeDo não tem nenhuma responsabilidade sobre o que acontece nas equipes. O gerenciamento de entrada e saída
+                            Bom, a plataforma We Do não tem nenhuma responsabilidade sobre o que acontece nas equipes. O gerenciamento de entrada e saída
                             de membros da equipe é exclusivo do idealizador da ideia. Infelizmente quando você é excluído de
                             uma ideia, a mesma não ficará disponível em seu protfólio. Cabe ao idealizador comunicar-se com sua
                             equipe e informar qualquer mudança.
@@ -29,7 +29,7 @@ export default class Ajuda extends Component {
                             do momento que sua ideia teve a sua devida concretização, ela passa a se enquadrar não apenas em
                             direito intelectual, mas em direito industrial no Brasil, isto de acordo com a lei Nº 9.279 criada
                             em 14 de maio de 1996.
-                            Sendo assim nenhuma ideia que esteja somente no WeDo tem um proprietário. Não nos resposabilizamos caso você encontre alguma
+                            Sendo assim nenhuma ideia que esteja somente no We Do tem um proprietário. Não nos resposabilizamos caso você encontre alguma
                             ideia igual a sua. Lembre-se, se você crê que sua ideia é revolucionária e inovadora procure meios
                             legais de registrá-la.
                     </Text>
@@ -49,9 +49,13 @@ export default class Ajuda extends Component {
                         </Text>
                         <Text style={[StyleAjuda.ajuda, { fontWeight: "bold", marginBottom: 5, marginTop: 5, color: EstiloComum.cores.fundoWeDo }]}>Não sou desenvolvedor, posso entrar no WeDo?</Text>
                         <Text style={StyleAjuda.ajuda}>
-                            Mas é claro. O weDo está sempre aberto à todos que possuem novas ideias. Se você não manja de programação, pode deixar o
+                            Mas é claro. O we Do está sempre aberto à todos que possuem novas ideias. Se você não manja de programação, pode deixar o
                             campo de tecnologias vazio, assim diversas ideias irão aparecer no seu feed para você participar.
                             Fique livre para criar ideias sem tecnologias e adicionar tags do seu interesse.
+                        </Text>
+                        <Text style={[StyleAjuda.ajuda, { fontWeight: "bold", marginBottom: 5, marginTop: 5, color: EstiloComum.cores.fundoWeDo }]}> Minha dúvida não esta aqui. Como posso sanar minha dúvida?</Text>
+                        <Text style={StyleAjuda.ajuda}>
+                            Caso sua dúvida não esteja aqui na página de ajuda, você pode encaminhar um email para wedo.suporte@gmail.com com sa dúvida e e assim que a equipe puder nós postaremos sua dúvida e a resposta da mesma na página de ajuda.
                         </Text>
                     </View >
                 </ScrollView>
